@@ -205,6 +205,26 @@
     .s-scheduled{background:rgba(79,142,247,0.12);color:var(--blue);}
     .s-standby{background:rgba(240,192,64,0.12);color:var(--gold);}
     .s-disabled{background:rgba(122,132,153,0.1);color:var(--text3);}
+    /* ── Calendar / Crons ── */
+    .cal-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:20px;}
+    .cal-section-label{grid-column:1/-1;font-size:10px;font-weight:800;text-transform:uppercase;
+      letter-spacing:0.8px;color:var(--text3);padding:8px 0 4px;border-top:1px solid var(--border);}
+    .cal-section-label:first-child{border-top:none;padding-top:0;}
+    .cron-card{background:var(--surface);border:1px solid var(--border);border-radius:11px;
+      padding:14px;transition:border-color 0.2s;}
+    .cron-card:hover{border-color:var(--blue);}
+    .cron-card.disabled{opacity:0.5;}
+    .cron-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px;}
+    .cron-emoji{font-size:20px;margin-right:8px;}
+    .cron-name{font-size:13px;font-weight:700;color:var(--text1);flex:1;}
+    .cron-badge{font-size:9px;font-weight:700;padding:2px 8px;border-radius:6px;flex-shrink:0;}
+    .badge-on{background:rgba(62,207,110,0.12);color:var(--sage);}
+    .badge-off{background:rgba(122,132,153,0.1);color:var(--text3);}
+    .cron-schedule{font-size:11px;color:var(--blue);font-weight:600;margin-bottom:4px;}
+    .cron-desc{font-size:11px;color:var(--text2);line-height:1.4;margin-bottom:8px;}
+    .cron-meta{display:flex;gap:10px;flex-wrap:wrap;}
+    .cron-meta-item{font-size:10px;color:var(--text3);}
+    .cron-meta-item span{color:var(--text2);}
     .memory-list{display:flex;flex-direction:column;gap:8px;}
     .memory-entry{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;}
     .memory-date{font-size:12px;font-weight:700;color:var(--blue);margin-bottom:4px;}
@@ -253,6 +273,9 @@
       </button>
       <button class="sb-item" id="nav-projects" onclick="showTab('projects',this)">
         <span class="sb-item-icon">📁</span> Projects
+      </button>
+      <button class="sb-item" id="nav-calendar" onclick="showTab('calendar',this)">
+        <span class="sb-item-icon">📅</span> Calendar
       </button>
 
       <div class="sb-divider"></div>
@@ -352,6 +375,21 @@
         </div>
       </div>
 
+      <!-- ─ CALENDAR page ─ -->
+      <div class="page hidden" id="tab-calendar">
+        <div class="tab-content">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+            <div class="section-title" style="margin:0;">Scheduled Automations</div>
+            <div style="display:flex;gap:8px;">
+              <button class="tb-btn" id="cal-filter-all" onclick="calFilter('all',this)" style="border-color:var(--blue);color:var(--blue);">All</button>
+              <button class="tb-btn" id="cal-filter-enabled" onclick="calFilter('enabled',this)">Active</button>
+              <button class="tb-btn" id="cal-filter-disabled" onclick="calFilter('disabled',this)">Disabled</button>
+            </div>
+          </div>
+          <div id="calendarGrid"></div>
+        </div>
+      </div>
+
       <!-- ─ Live Activity Panel ─ -->
       <div class="activity-panel" id="activityPanel">
         <div class="activity-head">⚡ Live Activity</div>
@@ -404,7 +442,7 @@
 
 <script>
 var RAW="https://raw.githubusercontent.com/higneyintl/ava-mission-control/main/data/";
-var TAB_TITLES={mission:"Mission",tasks:"Tasks",projects:"Projects",team:"Agents",memory:"Memory"};
+var TAB_TITLES={mission:"Mission",tasks:"Tasks",projects:"Projects",calendar:"Calendar",team:"Agents",memory:"Memory"};
 var COLS=[
   {id:"todo",name:"Backlog",color:"#4a5568"},
   {id:"inprogress",name:"In Progress",color:"#4f8ef7"},
@@ -413,7 +451,7 @@ var COLS=[
 ];
 var PROJECT_MAP={p1:{name:"Metro Lagoons",cat:"hi"},p2:{name:"Wellness App",cat:"product"},
   p3:{name:"Get Newly Named",cat:"gnn"},p4:{name:"Etsy",cat:"etsy"}};
-var data={mission:null,tasks:[],projects:[],team:[]};
+var data={mission:null,tasks:[],projects:[],team:[],crons:[]};
 var activeFilter="all";
 
 // ── Fetch ──
@@ -428,8 +466,8 @@ function refreshData(){
 }
 function mergeLocal(){var l=getLocal();l.forEach(function(lt){if(!data.tasks.find(function(t){return t.id===lt.id;}))data.tasks.push(lt);});}
 
-Promise.all([fetchJSON("mission.json"),fetchJSON("tasks.json"),fetchJSON("projects.json"),fetchJSON("team.json")])
-  .then(function(r){data.mission=r[0];data.tasks=r[1];data.projects=r[2];data.team=r[3];mergeLocal();renderAll();updateThemeBtn();})
+Promise.all([fetchJSON("mission.json"),fetchJSON("tasks.json"),fetchJSON("projects.json"),fetchJSON("team.json"),fetchJSON("crons.json")])
+  .then(function(r){data.mission=r[0];data.tasks=r[1];data.projects=r[2];data.team=r[3];data.crons=r[4];mergeLocal();renderAll();updateThemeBtn();})
   .catch(function(){data.tasks=getLocal();renderAll();});
 
 function getLocal(){var v=localStorage.getItem("mc_tasks");return v?JSON.parse(v):[];}
@@ -456,7 +494,7 @@ function updateClock(){document.getElementById("timeBadge").textContent=new Date
 updateClock();setInterval(updateClock,30000);
 
 // ── Render all ──
-function renderAll(){renderMission();renderStatsInline();renderStatsCards();renderActivePreview();renderKanban();renderProjects();renderTeam();renderMemory();renderActivityFeed();}
+function renderAll(){renderMission();renderStatsInline();renderStatsCards();renderActivePreview();renderKanban();renderProjects();renderTeam();renderMemory();renderCalendar();renderActivityFeed();}
 
 // ── Mission ──
 function renderMission(){
@@ -668,11 +706,55 @@ function saveNewTask(){
   addActivity("Shameen","Added task: "+t.title.slice(0,35),"just now","#ff5f87");
 }
 
+// ── Calendar ──
+var calActiveFilter="all";
+function calFilter(f,btn){
+  calActiveFilter=f;
+  document.querySelectorAll("[id^='cal-filter-']").forEach(function(b){b.style.borderColor="";b.style.color="";});
+  btn.style.borderColor="var(--blue)";btn.style.color="var(--blue)";
+  renderCalendar();
+}
+var CAT_LABELS={ffe:"FF&E Operations",wellness:"Wellness & Family",crypto:"Crypto & Finance",ops:"System & Memory"};
+var CAT_ORDER=["ffe","wellness","crypto","ops"];
+function renderCalendar(){
+  var el=document.getElementById("calendarGrid");if(!el)return;
+  var crons=data.crons||[];
+  if(calActiveFilter==="enabled") crons=crons.filter(function(c){return c.enabled;});
+  else if(calActiveFilter==="disabled") crons=crons.filter(function(c){return !c.enabled;});
+  el.innerHTML="";
+  CAT_ORDER.forEach(function(cat){
+    var group=crons.filter(function(c){return c.category===cat;});
+    if(!group.length)return;
+    var lbl=document.createElement("div");lbl.className="cal-section-label";
+    lbl.textContent=CAT_LABELS[cat]||cat;
+    el.appendChild(lbl);
+    var grid=document.createElement("div");grid.className="cal-grid";
+    group.forEach(function(c){
+      var card=document.createElement("div");
+      card.className="cron-card"+(c.enabled?"":" disabled");
+      card.innerHTML="<div class='cron-head'>"+
+        "<span class='cron-emoji'>"+c.emoji+"</span>"+
+        "<div style='flex:1'><div class='cron-name'>"+c.name+"</div></div>"+
+        "<span class='cron-badge "+(c.enabled?"badge-on":"badge-off")+"'>"+(c.enabled?"● ON":"OFF")+"</span></div>"+
+        "<div class='cron-schedule'>⏰ "+c.schedule+"</div>"+
+        "<div class='cron-desc'>"+c.description+"</div>"+
+        "<div class='cron-meta'>"+
+        "<div class='cron-meta-item'>Agent: <span>"+c.agent+"</span></div>"+
+        (c.lastRun?"<div class='cron-meta-item'>Last: <span>"+c.lastRun+"</span></div>":"")+
+        (c.nextRun&&c.enabled?"<div class='cron-meta-item'>Next: <span>"+c.nextRun+"</span></div>":"")+
+        "</div>";
+      grid.appendChild(card);
+    });
+    el.appendChild(grid);
+  });
+  if(!crons.length)el.innerHTML="<div style='color:var(--text2);font-size:12px;padding:20px 0;'>No crons match filter.</div>";
+}
+
 // ── Tabs ──
 function showTab(id,btn){
   document.querySelectorAll(".sb-item").forEach(function(b){b.classList.remove("active");});
   if(btn)btn.classList.add("active");
-  var tabs=["mission","tasks","projects","team","memory"];
+  var tabs=["mission","tasks","projects","calendar","team","memory"];
   tabs.forEach(function(t){var el=document.getElementById("tab-"+t);if(el)el.classList.toggle("hidden",t!==id);});
   var tb=document.getElementById("topbarTitle");if(tb)tb.textContent=TAB_TITLES[id]||id;
   var ap=document.getElementById("activityPanel");if(ap)ap.style.display=(id==="tasks"?"flex":"none");
