@@ -269,6 +269,28 @@
     .cron-meta{display:flex;gap:10px;flex-wrap:wrap;}
     .cron-meta-item{font-size:10px;color:var(--text3);}
     .cron-meta-item span{color:var(--text2);}
+    /* ── Sub-tasks ── */
+    .subtask-list{margin-top:10px;border-top:1px solid var(--border);padding-top:10px;}
+    .subtask-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--border);}
+    .subtask-row:last-of-type{border-bottom:none;}
+    .subtask-check{width:16px;height:16px;border-radius:4px;border:2px solid var(--border);
+      cursor:pointer;flex-shrink:0;appearance:none;-webkit-appearance:none;
+      background:var(--surface2);position:relative;}
+    .subtask-check:checked{background:var(--sage);border-color:var(--sage);}
+    .subtask-check:checked::after{content:"✓";position:absolute;top:-2px;left:1px;
+      font-size:11px;color:#fff;font-weight:800;}
+    .subtask-text{flex:1;font-size:12px;color:var(--text2);line-height:1.4;}
+    .subtask-text.done{text-decoration:line-through;color:var(--text3);}
+    .subtask-del{background:none;border:none;color:var(--text3);cursor:pointer;font-size:14px;
+      padding:0 2px;line-height:1;}
+    .subtask-del:hover{color:var(--rose);}
+    .subtask-add-row{display:flex;gap:6px;margin-top:8px;}
+    .subtask-add-input{flex:1;background:var(--surface2);border:1px solid var(--border);
+      border-radius:6px;padding:6px 8px;font-size:12px;color:var(--text1);}
+    .subtask-add-input:focus{outline:none;border-color:var(--blue);}
+    .subtask-add-btn{background:var(--blue);color:#fff;border:none;border-radius:6px;
+      padding:6px 12px;font-size:11px;font-weight:700;cursor:pointer;}
+    .subtask-progress{font-size:10px;color:var(--text2);margin-top:4px;}
     /* ── Roadmap ── */
     .roadmap-phase{margin-bottom:14px;}
     .roadmap-phase-label{font-size:10px;font-weight:800;text-transform:uppercase;
@@ -711,6 +733,8 @@
         padding:10px;min-height:50px;word-break:break-word;white-space:pre-wrap;"></div>
     </div>
 
+    <div class="subtask-list" id="subtaskList"></div>
+
     <div class="modal-actions">
       <button class="btn btn-cancel" onclick="closeDetail()">Close</button>
     </div>
@@ -1095,6 +1119,72 @@ function openDetail(id){
   }
   document.getElementById("taskDetailModal").classList.remove("hidden");
 }
+// ── Sub-tasks ──
+function renderSubtasks(taskId){
+  var el=document.getElementById("subtaskList"); if(!el)return;
+  var t=data.tasks.find(function(x){return x.id===taskId;}); if(!t)return;
+  var subs=t.subtasks||[];
+  var done=subs.filter(function(s){return s.done;}).length;
+  var pct=subs.length?Math.round(done/subs.length*100):0;
+
+  var html="<div style='display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;'>"+
+    "<span style='font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;color:var(--text2);'>Sub-tasks</span>"+
+    (subs.length?"<span class='subtask-progress'>"+done+"/"+subs.length+" · "+pct+"%</span>":"")+"</div>";
+
+  if(subs.length){
+    html+="<div>";
+    subs.forEach(function(s,i){
+      html+="<div class='subtask-row'>"+
+        "<input type='checkbox' class='subtask-check' "+(s.done?"checked":"")+
+        " data-tid='"+taskId+"' data-idx='"+i+"' onchange='toggleSubtask(this.dataset.tid,parseInt(this.dataset.idx),this.checked)'>"+ 
+        "<span class='subtask-text"+(s.done?" done":"")+"'>"+s.text+"</span>"+
+        "<button class='subtask-del' data-tid='"+taskId+"' data-idx='"+i+"' onclick='deleteSubtask(this.dataset.tid,parseInt(this.dataset.idx))'>×</button>"+ 
+        "</div>";
+    });
+    html+="</div>";
+    // Mini progress bar
+    if(subs.length>0){
+      html+="<div style='height:3px;background:var(--surface2);border-radius:3px;overflow:hidden;margin:6px 0 10px;'>"+
+        "<div style='height:100%;width:"+pct+"%;background:var(--sage);border-radius:3px;transition:width 0.3s;'></div></div>";
+    }
+  }
+
+  html+="<div class='subtask-add-row'>"+
+    "<input class='subtask-add-input' id='subtaskInput' placeholder='Add a sub-task…' "+
+    "<button class='subtask-add-btn' data-tid='"+taskId+"' onclick='addSubtask(this.dataset.tid)'>Add</button></div>";
+
+  el.innerHTML=html;
+  // Attach enter key listener safely
+  var inp=document.getElementById("subtaskInput");
+  if(inp){ inp.addEventListener("keydown",function(e){if(e.key==="Enter")addSubtask(taskId);}); }
+}
+function addSubtask(taskId){
+  if(!taskId) taskId=document.getElementById("subtaskAddBtn") ? document.getElementById("subtaskAddBtn").dataset.tid : detailTaskId;
+  var input=document.getElementById("subtaskInput"); if(!input)return;
+  var text=input.value.trim(); if(!text)return;
+  var t=data.tasks.find(function(x){return x.id===taskId;}); if(!t)return;
+  if(!t.subtasks)t.subtasks=[];
+  t.subtasks.push({text:text,done:false});
+  saveLocal(data.tasks.filter(function(x){return x.id.startsWith("local_");}));
+  renderSubtasks(taskId);
+  renderKanban();
+}
+function toggleSubtask(taskId,idx,checked){
+  idx=parseInt(idx);
+  var t=data.tasks.find(function(x){return x.id===taskId;}); if(!t||!t.subtasks)return;
+  t.subtasks[idx].done=checked;
+  saveLocal(data.tasks.filter(function(x){return x.id.startsWith("local_");}));
+  renderSubtasks(taskId);
+  renderKanban();
+}
+function deleteSubtask(taskId,idx){
+  idx=parseInt(idx);
+  var t=data.tasks.find(function(x){return x.id===taskId;}); if(!t||!t.subtasks)return;
+  t.subtasks.splice(idx,1);
+  saveLocal(data.tasks.filter(function(x){return x.id.startsWith("local_");}));
+  renderSubtasks(taskId);
+}
+
 function closeDetail(){
   document.getElementById("taskDetailModal").classList.add("hidden");
   detailTaskId = null;
