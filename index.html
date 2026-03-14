@@ -1109,12 +1109,14 @@ function openProjectDetail(pid){
   if(filesEl){
     filesEl.innerHTML="";
     (ctx&&ctx.files||[]).forEach(function(f){
-      var a=document.createElement("a");
-      a.href="https://drive.google.com/file/d/"+f.id+"/view";
-      a.target="_blank";
-      a.style.cssText="display:block;font-size:11px;color:var(--blue);padding:3px 0;";
-      a.textContent="📎 "+f.name;
-      filesEl.appendChild(a);
+      var wrap=document.createElement("div");
+      wrap.style.cssText="display:flex;align-items:center;gap:8px;padding:4px 0;";
+      var driveColor=f.drive==="HI"?"var(--blue)":"var(--lavender)";
+      var driveIcon=f.drive==="HI"?"🏢":"👤";
+      wrap.innerHTML=
+        "<span style='font-size:9px;font-weight:700;padding:2px 7px;border-radius:5px;background:var(--surface2);color:"+driveColor+";flex-shrink:0;'>"+driveIcon+" "+(f.drive||"Drive")+"</span>"+
+        "<a href='https://drive.google.com/file/d/"+f.id+"/view' target='_blank' style='font-size:11px;color:var(--blue);text-decoration:none;'>📎 "+f.name+"</a>";
+      filesEl.appendChild(wrap);
     });
     filesEl.parentElement.style.display = (ctx&&ctx.files&&ctx.files.length) ? "block" : "none";
   }
