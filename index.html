@@ -17,7 +17,7 @@
       --activity-bg:#0d0f14;
     }
     @media(prefers-color-scheme:light){
-      :root{
+      :root:not(.dark){
         --bg:#f0f2f7; --surface:#ffffff; --surface2:#e8ecf4; --border:#d0d7e8;
         --sidebar:#1e2330; --sidebar-border:#2d3446;
         --text1:#111827; --text2:#57606a; --text3:#9ca3af;
@@ -28,6 +28,28 @@
         --progress-fill:linear-gradient(90deg,#1d64d8,#6d28d9);
         --activity-bg:#f8fafc;
       }
+    }
+    :root.light{
+      --bg:#f0f2f7; --surface:#ffffff; --surface2:#e8ecf4; --border:#d0d7e8;
+      --sidebar:#1e2330; --sidebar-border:#2d3446;
+      --text1:#111827; --text2:#57606a; --text3:#9ca3af;
+      --gold:#a07800; --rose:#d63b6b; --sage:#16a34a; --blue:#1d64d8;
+      --lavender:#6d28d9; --orange:#c2410c; --teal:#0f766e;
+      --tag-hi:#dbeafe; --tag-hi-t:#1d4ed8;
+      --tag-product:#ede9fe; --tag-product-t:#6d28d9;
+      --progress-fill:linear-gradient(90deg,#1d64d8,#6d28d9);
+      --activity-bg:#f8fafc;
+    }
+    :root.dark{
+      --bg:#0a0c10; --surface:#13161c; --surface2:#1c2030; --border:#252b3a;
+      --sidebar:#0d0f14; --sidebar-border:#1c2030;
+      --text1:#e8ecf4; --text2:#7a8499; --text3:#4a5568;
+      --gold:#f0c040; --rose:#ff5f87; --sage:#3ecf6e; --blue:#4f8ef7;
+      --lavender:#9b6dff; --orange:#f08c3e; --teal:#39d3b3;
+      --tag-hi:#1a3a5c; --tag-hi-t:#4f8ef7;
+      --tag-product:#2d1a5c; --tag-product-t:#9b6dff;
+      --progress-fill:linear-gradient(90deg,#4f8ef7,#9b6dff);
+      --activity-bg:#0d0f14;
     }
     *{box-sizing:border-box;margin:0;padding:0;}
     html,body{height:100%;overflow:hidden;}
@@ -159,8 +181,9 @@
     .mission-banner{background:linear-gradient(135deg,#1a1040,#0d1a35);
       border:1px solid #2d1f6a;border-radius:14px;padding:20px 24px;margin-bottom:20px;}
     @media(prefers-color-scheme:light){
-      .mission-banner{background:linear-gradient(135deg,#f0ebff,#e8f4ff);border-color:#c8b5f0;}
+      :root:not(.dark) .mission-banner{background:linear-gradient(135deg,#f0ebff,#e8f4ff);border-color:#c8b5f0;}
     }
+    :root.light .mission-banner{background:linear-gradient(135deg,#f0ebff,#e8f4ff);border-color:#c8b5f0;}
     .mission-label{font-size:10px;font-weight:800;letter-spacing:1px;
       text-transform:uppercase;color:var(--lavender);margin-bottom:8px;}
     .mission-text{font-size:14px;line-height:1.7;color:var(--text1);}
@@ -484,18 +507,25 @@ function getLocal(){var v=localStorage.getItem("mc_tasks");return v?JSON.parse(v
 function saveLocal(t){localStorage.setItem("mc_tasks",JSON.stringify(t));}
 
 // ── Theme ──
-(function(){var f=localStorage.getItem("mc_theme");if(f)document.documentElement.style.setProperty("color-scheme",f);})();
+function applyTheme(t){
+  document.documentElement.classList.remove("light","dark");
+  if(t) document.documentElement.classList.add(t);
+}
+(function(){ applyTheme(localStorage.getItem("mc_theme")); })();
 function toggleTheme(){
-  var c=localStorage.getItem("mc_theme"),s=window.matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light";
-  var n=!c?(s==="dark"?"light":"dark"):c==="dark"?"light":null;
-  if(n){localStorage.setItem("mc_theme",n);document.documentElement.style.setProperty("color-scheme",n);}
-  else{localStorage.removeItem("mc_theme");document.documentElement.style.removeProperty("color-scheme");}
+  var cur=localStorage.getItem("mc_theme");
+  var sys=window.matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light";
+  var next=!cur?(sys==="dark"?"light":"dark"):cur==="dark"?"light":null;
+  if(next) localStorage.setItem("mc_theme",next);
+  else localStorage.removeItem("mc_theme");
+  applyTheme(next);
   updateThemeBtn();
 }
 function updateThemeBtn(){
-  var b=document.getElementById("themeToggle");if(!b)return;
-  var f=localStorage.getItem("mc_theme"),d=f?f==="dark":window.matchMedia("(prefers-color-scheme:dark)").matches;
-  b.textContent=d?"☀️":"🌙";
+  var b=document.getElementById("themeToggle"); if(!b)return;
+  var f=localStorage.getItem("mc_theme");
+  var dark=f?f==="dark":window.matchMedia("(prefers-color-scheme:dark)").matches;
+  b.textContent=dark?"☀️":"🌙";
 }
 window.matchMedia("(prefers-color-scheme:dark)").addEventListener("change",function(){if(!localStorage.getItem("mc_theme"))updateThemeBtn();});
 
