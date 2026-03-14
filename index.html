@@ -466,9 +466,18 @@ function refreshData(){
 }
 function mergeLocal(){var l=getLocal();l.forEach(function(lt){if(!data.tasks.find(function(t){return t.id===lt.id;}))data.tasks.push(lt);});}
 
-Promise.all([fetchJSON("mission.json"),fetchJSON("tasks.json"),fetchJSON("projects.json"),fetchJSON("team.json"),fetchJSON("crons.json")])
-  .then(function(r){data.mission=r[0];data.tasks=r[1];data.projects=r[2];data.team=r[3];data.crons=r[4];mergeLocal();renderAll();updateThemeBtn();})
-  .catch(function(){data.tasks=getLocal();renderAll();});
+// Load each file independently — one failure won't wipe everything else
+var FILES={mission:"mission.json",tasks:"tasks.json",projects:"projects.json",team:"team.json",crons:"crons.json"};
+var loadCount=0,loadTotal=Object.keys(FILES).length;
+function onLoaded(){
+  loadCount++;
+  if(loadCount>=loadTotal){mergeLocal();renderAll();updateThemeBtn();}
+}
+Object.keys(FILES).forEach(function(key){
+  fetchJSON(FILES[key])
+    .then(function(d){data[key]=d;onLoaded();})
+    .catch(function(e){console.warn("Failed to load "+FILES[key],e);onLoaded();});
+});
 
 function getLocal(){var v=localStorage.getItem("mc_tasks");return v?JSON.parse(v):[];}
 function saveLocal(t){localStorage.setItem("mc_tasks",JSON.stringify(t));}
