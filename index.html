@@ -797,14 +797,17 @@ function renderCalendar(){
 function showTab(id,btn){
   document.querySelectorAll(".sb-item").forEach(function(b){b.classList.remove("active");});
   if(btn)btn.classList.add("active");
+  else{var nb=document.getElementById("nav-"+id);if(nb)nb.classList.add("active");}
   var tabs=["mission","tasks","projects","calendar","team","memory"];
   tabs.forEach(function(t){var el=document.getElementById("tab-"+t);if(el)el.classList.toggle("hidden",t!==id);});
   var tb=document.getElementById("topbarTitle");if(tb)tb.textContent=TAB_TITLES[id]||id;
   var ap=document.getElementById("activityPanel");if(ap)ap.style.display=(id==="tasks"?"flex":"none");
+  localStorage.setItem("mc_tab",id);
 }
 
-// Initialize to tasks tab
-showTab("tasks");
+// Restore last active tab on load
+var savedTab=localStorage.getItem("mc_tab")||"tasks";
+showTab(savedTab);
 </script>
 </body>
 </html>
