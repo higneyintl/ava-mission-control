@@ -1,158 +1,198 @@
 [
   {
-    "id": "0bd01ac8",
-    "name": "Stretch Reminder \u2014 Morning",
-    "schedule": "8:30 AM daily",
-    "expr": "30 8 * * *",
-    "agent": "Ava",
+    "id": "backup-2am",
+    "name": "Nightly Backup",
+    "emoji": "\ud83d\udcbe",
+    "category": "ops",
     "enabled": true,
-    "category": "wellness",
-    "emoji": "\ud83c\udf05",
-    "description": "Morning stretch reminder sent to Shameen via Telegram after trading session",
-    "lastRun": "today",
-    "nextRun": "tomorrow 8:30 AM"
-  },
-  {
-    "id": "17ea1fa7",
-    "name": "Stretch Reminder \u2014 Midday",
-    "schedule": "11:15 AM daily",
-    "expr": "15 11 * * *",
-    "agent": "Ava",
-    "enabled": true,
-    "category": "wellness",
-    "emoji": "\u2600\ufe0f",
-    "description": "Backup stretch reminder if morning was missed",
-    "lastRun": "today",
-    "nextRun": "tomorrow 11:15 AM"
+    "schedule": {
+      "type": "daily",
+      "hour": 2,
+      "minute": 0,
+      "days": "daily"
+    },
+    "lastStatus": "ok",
+    "lastRun": "2026-03-14",
+    "description": "Backs up all workspace memory files to HI Drive + Ava Personal Drive"
   },
   {
     "id": "ce6e8313",
-    "name": "FFE Scout \u2014 Daily Research",
-    "schedule": "8:00 AM daily",
-    "expr": "0 8 * * *",
-    "agent": "Scout",
-    "enabled": true,
-    "category": "ffe",
+    "name": "FFE Scout",
     "emoji": "\ud83d\udd0d",
-    "description": "Finds 5 new hospitality vendors, logs to Monday.com, posts to #vendor-scout",
-    "lastRun": "today",
-    "nextRun": "tomorrow 8:00 AM"
+    "category": "ffe",
+    "enabled": true,
+    "schedule": {
+      "type": "daily",
+      "hour": 8,
+      "minute": 0,
+      "days": "daily"
+    },
+    "lastStatus": "ok",
+    "lastRun": "2026-03-14",
+    "description": "Daily vendor research \u2192 Monday.com + #vendor-scout"
+  },
+  {
+    "id": "0bd01ac8",
+    "name": "Stretch Reminder",
+    "emoji": "\ud83c\udf05",
+    "category": "wellness",
+    "enabled": true,
+    "schedule": {
+      "type": "daily",
+      "hour": 8,
+      "minute": 30,
+      "days": "daily"
+    },
+    "lastStatus": "ok",
+    "lastRun": "2026-03-14",
+    "description": "Morning stretch reminder sent to Shameen via Telegram"
+  },
+  {
+    "id": "17ea1fa7",
+    "name": "Stretch Backup",
+    "emoji": "\u2600\ufe0f",
+    "category": "wellness",
+    "enabled": true,
+    "schedule": {
+      "type": "daily",
+      "hour": 11,
+      "minute": 15,
+      "days": "daily"
+    },
+    "lastStatus": "ok",
+    "lastRun": "2026-03-14",
+    "description": "Backup stretch reminder if morning was missed"
   },
   {
     "id": "3dcd3f7e",
-    "name": "Crypto Signal Alert",
-    "schedule": "8:00 PM daily",
-    "expr": "0 20 * * *",
-    "agent": "Ava",
-    "enabled": true,
-    "category": "crypto",
+    "name": "Crypto Signal",
     "emoji": "\ud83d\udcc8",
-    "description": "Scans XRP, BTC, SOL for significant news. Posts to Discord if signal crosses threshold.",
-    "lastRun": "today",
-    "nextRun": "today 8:00 PM"
+    "category": "crypto",
+    "enabled": true,
+    "schedule": {
+      "type": "daily",
+      "hour": 20,
+      "minute": 0,
+      "days": "daily"
+    },
+    "lastStatus": "ok",
+    "lastRun": "2026-03-14",
+    "description": "Scans XRP, BTC, SOL for significant news"
   },
   {
     "id": "aa400037",
-    "name": "Nightly Session Journal",
-    "schedule": "11:00 PM daily",
-    "expr": "0 23 * * *",
-    "agent": "Ava",
-    "enabled": true,
-    "category": "ops",
+    "name": "Session Journal",
     "emoji": "\ud83d\udcd3",
-    "description": "Writes daily journal to memory files, posts summary to #ava-journal on Discord",
-    "lastRun": "today",
-    "nextRun": "today 11:00 PM"
+    "category": "ops",
+    "enabled": true,
+    "schedule": {
+      "type": "daily",
+      "hour": 23,
+      "minute": 0,
+      "days": "daily"
+    },
+    "lastStatus": "ok",
+    "lastRun": "2026-03-14",
+    "description": "Writes daily journal + posts to #ava-journal"
   },
   {
     "id": "6f54b94e",
-    "name": "Weekly Memory Distill",
-    "schedule": "9:00 AM Saturdays",
-    "expr": "0 9 * * 6",
-    "agent": "Ava",
-    "enabled": true,
-    "category": "ops",
+    "name": "Memory Distill",
     "emoji": "\ud83e\udde0",
-    "description": "Reviews past 7 days of journals, updates MEMORY.md and facts files, posts summary",
-    "lastRun": "today (Sat)",
-    "nextRun": "next Saturday 9:00 AM"
+    "category": "ops",
+    "enabled": true,
+    "schedule": {
+      "type": "weekly",
+      "hour": 9,
+      "minute": 0,
+      "days": [
+        6
+      ]
+    },
+    "lastStatus": "ok",
+    "lastRun": "2026-03-14",
+    "description": "Weekly memory maintenance \u2014 updates MEMORY.md"
   },
   {
     "id": "8d7b7c77",
-    "name": "FFE Auditor \u2014 Business Hours",
-    "schedule": "Every 30 min, 9 AM\u20136 PM",
-    "expr": "*/30 9-18 * * 1-5",
-    "agent": "Auditor",
-    "enabled": false,
-    "category": "ffe",
+    "name": "Auditor (Business Hrs)",
     "emoji": "\ud83d\udccb",
-    "description": "Scans HI email for vendor quotes, uploads to Drive, triggers Analyst report",
-    "lastRun": "disabled",
-    "nextRun": "disabled"
+    "category": "ffe",
+    "enabled": false,
+    "schedule": {
+      "type": "interval",
+      "hour": null,
+      "minute": null,
+      "days": "weekdays",
+      "label": "Every 30min 9AM\u20136PM"
+    },
+    "lastStatus": "disabled",
+    "lastRun": "\u2014",
+    "description": "Scans HI email for vendor quotes during business hours"
   },
   {
     "id": "29a17088",
-    "name": "FFE Auditor \u2014 Morning Catch-Up",
-    "schedule": "8:00 AM weekdays",
-    "expr": "0 8 * * 1-5",
-    "agent": "Auditor",
-    "enabled": false,
-    "category": "ffe",
+    "name": "Auditor (Morning)",
     "emoji": "\ud83d\udccb",
-    "description": "Catches any overnight vendor emails before business hours start",
-    "lastRun": "disabled",
-    "nextRun": "disabled"
+    "category": "ffe",
+    "enabled": false,
+    "schedule": {
+      "type": "daily",
+      "hour": 8,
+      "minute": 0,
+      "days": "weekdays"
+    },
+    "lastStatus": "disabled",
+    "lastRun": "\u2014",
+    "description": "Catches overnight vendor emails before business hours"
   },
   {
     "id": "15b01c02",
-    "name": "FFE Auditor \u2014 Weekend Scan",
-    "schedule": "10:00 AM weekends",
-    "expr": "0 10 * * 6,0",
-    "agent": "Auditor",
-    "enabled": false,
-    "category": "ffe",
+    "name": "Auditor (Weekend)",
     "emoji": "\ud83d\udccb",
-    "description": "Weekend email scan for any vendor responses that came in",
-    "lastRun": "disabled",
-    "nextRun": "disabled"
+    "category": "ffe",
+    "enabled": false,
+    "schedule": {
+      "type": "daily",
+      "hour": 10,
+      "minute": 0,
+      "days": "weekends"
+    },
+    "lastStatus": "disabled",
+    "lastRun": "\u2014",
+    "description": "Weekend scan for vendor responses"
   },
   {
     "id": "c8b2a1d3",
-    "name": "FFE EOD Summary",
-    "schedule": "8:00 PM daily",
-    "expr": "0 20 * * *",
-    "agent": "Ava",
-    "enabled": false,
-    "category": "ffe",
+    "name": "EOD Summary",
     "emoji": "\ud83d\udcca",
-    "description": "End of day summary of all sourcing activity, posted to #mission-control",
-    "lastRun": "disabled",
-    "nextRun": "disabled"
+    "category": "ffe",
+    "enabled": false,
+    "schedule": {
+      "type": "daily",
+      "hour": 20,
+      "minute": 0,
+      "days": "daily"
+    },
+    "lastStatus": "disabled",
+    "lastRun": "\u2014",
+    "description": "End of day sourcing activity summary"
   },
   {
     "id": "341545df",
-    "name": "System Health Check",
-    "schedule": "Every 6 hours",
-    "expr": "0 */6 * * *",
-    "agent": "Ava",
-    "enabled": false,
-    "category": "ops",
+    "name": "Health Check",
     "emoji": "\ud83d\udd27",
-    "description": "Checks gateway health, disk space, cron status, alerts if anything is off",
-    "lastRun": "disabled",
-    "nextRun": "disabled"
-  },
-  {
-    "id": "backup-2am",
-    "name": "Nightly Memory Backup",
-    "schedule": "2:00 AM daily",
-    "expr": "0 2 * * *",
-    "agent": "Ava",
-    "enabled": true,
     "category": "ops",
-    "emoji": "\ud83d\udcbe",
-    "description": "Backs up all workspace memory files and uploads to both HI Drive and personal Drive",
-    "lastRun": "last night",
-    "nextRun": "tomorrow 2:00 AM"
+    "enabled": false,
+    "schedule": {
+      "type": "interval",
+      "hour": null,
+      "minute": null,
+      "days": "daily",
+      "label": "Every 6 hours"
+    },
+    "lastStatus": "disabled",
+    "lastRun": "\u2014",
+    "description": "Gateway health, disk space, cron status check"
   }
 ]
