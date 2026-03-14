@@ -249,6 +249,22 @@
     .cron-meta{display:flex;gap:10px;flex-wrap:wrap;}
     .cron-meta-item{font-size:10px;color:var(--text3);}
     .cron-meta-item span{color:var(--text2);}
+    /* ── Session Log ── */
+    .session-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;
+      padding:16px;margin-bottom:12px;}
+    .session-date{font-size:11px;font-weight:700;color:var(--blue);margin-bottom:4px;}
+    .session-title{font-size:14px;font-weight:800;color:var(--text1);margin-bottom:8px;}
+    .session-summary{font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:10px;}
+    .session-section{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;
+      color:var(--text3);margin-bottom:5px;margin-top:10px;}
+    .session-decision{font-size:11px;color:var(--text2);padding:3px 0;
+      display:flex;gap:6px;align-items:flex-start;}
+    .session-decision::before{content:"→";color:var(--gold);flex-shrink:0;}
+    .session-open{font-size:11px;color:var(--text2);padding:3px 0;
+      display:flex;gap:6px;align-items:flex-start;}
+    .session-open::before{content:"◦";color:var(--rose);flex-shrink:0;}
+    .session-tags{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;}
+    .session-tag{font-size:9px;padding:2px 8px;border-radius:6px;background:var(--surface2);color:var(--text2);}
     .memory-list{display:flex;flex-direction:column;gap:8px;}
     .memory-entry{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;}
     .memory-date{font-size:12px;font-weight:700;color:var(--blue);margin-bottom:4px;}
@@ -405,6 +421,9 @@
       <div class="sb-divider"></div>
       <div class="sb-section">System</div>
 
+      <button class="sb-item" id="nav-sessions" onclick="showTab('sessions',this)">
+        <span class="sb-item-icon">📝</span> Session Log
+      </button>
       <button class="sb-item" id="nav-memory" onclick="showTab('memory',this)">
         <span class="sb-item-icon">🧠</span> Memory
       </button>
@@ -508,6 +527,19 @@
         </div>
       </div>
 
+      <!-- ─ SESSION LOG page ─ -->
+      <div class="page hidden" id="tab-sessions">
+        <div class="tab-content">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+            <div class="section-title" style="margin:0;">Session Log
+              <span style="font-size:10px;color:var(--text3);font-weight:400;text-transform:none;letter-spacing:0;"> (Ava's memory across compactions)</span>
+            </div>
+            <button class="tb-btn" onclick="renderSessions()">↻ Refresh</button>
+          </div>
+          <div id="sessionList"></div>
+        </div>
+      </div>
+
       <!-- ─ Live Activity Panel ─ -->
       <div class="activity-panel" id="activityPanel">
         <div class="activity-head">⚡ Live Activity</div>
@@ -546,6 +578,21 @@
       </div>
     </div>
 
+    <!-- Context notes -->
+    <div id="pdNotesSection" style="margin-bottom:14px;flex-shrink:0;">
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--text3);margin-bottom:5px;">Notes</div>
+      <div id="pdContextNotes" style="font-size:11px;color:var(--text2);line-height:1.6;"></div>
+    </div>
+    <!-- Key contacts -->
+    <div id="pdContactsSection" style="margin-bottom:14px;flex-shrink:0;">
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--text3);margin-bottom:5px;">Key Contacts</div>
+      <div id="pdContacts"></div>
+    </div>
+    <!-- Files -->
+    <div id="pdFilesSection" style="margin-bottom:14px;flex-shrink:0;">
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--text3);margin-bottom:5px;">Files</div>
+      <div id="pdFilesList"></div>
+    </div>
     <!-- Task list -->
     <div style="flex-shrink:0;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;">
       <div style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:0.6px;color:var(--text2);">Tasks <span id="pdTaskCount" style="font-weight:400;color:var(--text3);"></span></div>
@@ -659,7 +706,7 @@
 
 <script>
 var RAW="https://raw.githubusercontent.com/higneyintl/ava-mission-control/main/data/";
-var TAB_TITLES={mission:"Mission",tasks:"Tasks",projects:"Projects",calendar:"Calendar",team:"Agents",memory:"Memory"};
+var TAB_TITLES={mission:"Mission",tasks:"Tasks",projects:"Projects",calendar:"Calendar",team:"Agents",sessions:"Session Log",memory:"Memory"};
 var COLS=[
   {id:"todo",name:"Backlog",color:"#4a5568"},
   {id:"inprogress",name:"In Progress",color:"#4f8ef7"},
@@ -668,7 +715,7 @@ var COLS=[
 ];
 var PROJECT_MAP={p1:{name:"Metro Lagoons",cat:"hi"},p2:{name:"Mommy",cat:"product"},
   p3:{name:"Get Newly Named",cat:"gnn"},p4:{name:"Etsy",cat:"etsy"},p9:{name:"Personal",cat:"personal"}};
-var data={mission:null,tasks:[],projects:[],team:[],crons:[]};
+var data={mission:null,tasks:[],projects:[],team:[],crons:[],sessions:[],context:{}};
 var activeFilter="all";
 
 // ── Fetch ──
@@ -684,7 +731,7 @@ function refreshData(){
 function mergeLocal(){var l=getLocal();l.forEach(function(lt){if(!data.tasks.find(function(t){return t.id===lt.id;}))data.tasks.push(lt);});}
 
 // Load each file independently — one failure won't wipe everything else
-var FILES={mission:"mission.json",tasks:"tasks.json",projects:"projects.json",team:"team.json",crons:"crons.json"};
+var FILES={mission:"mission.json",tasks:"tasks.json",projects:"projects.json",team:"team.json",crons:"crons.json",sessions:"sessions.json",context:"context.json"};
 var loadCount=0,loadTotal=Object.keys(FILES).length;
 function onLoaded(){
   loadCount++;
@@ -727,7 +774,7 @@ function updateClock(){document.getElementById("timeBadge").textContent=new Date
 updateClock();setInterval(updateClock,30000);
 
 // ── Render all ──
-function renderAll(){renderMission();renderStatsInline();renderStatsCards();renderActivePreview();renderKanban();renderProjects();renderTeam();renderMemory();renderCalendar();renderActivityFeed();}
+function renderAll(){renderMission();renderStatsInline();renderStatsCards();renderActivePreview();renderKanban();renderProjects();renderTeam();renderMemory();renderCalendar();renderSessions();renderActivityFeed();}
 
 // ── Mission ──
 function renderMission(){
@@ -968,6 +1015,35 @@ function openProjectDetail(pid){
   document.getElementById("pdName").textContent = p.name;
   document.getElementById("pdCategory").textContent = p.category||"";
   document.getElementById("pdDesc").textContent = p.description||"";
+  // Load context notes if available
+  var ctx = data.context ? data.context[pid] : null;
+  var notesEl = document.getElementById("pdContextNotes");
+  var filesEl = document.getElementById("pdFilesList");
+  var contactsEl = document.getElementById("pdContacts");
+  if(notesEl) notesEl.textContent = ctx ? ctx.notes||"" : "";
+  if(notesEl) notesEl.parentElement.style.display = (ctx&&ctx.notes) ? "block" : "none";
+  if(filesEl){
+    filesEl.innerHTML="";
+    (ctx&&ctx.files||[]).forEach(function(f){
+      var a=document.createElement("a");
+      a.href="https://drive.google.com/file/d/"+f.id+"/view";
+      a.target="_blank";
+      a.style.cssText="display:block;font-size:11px;color:var(--blue);padding:3px 0;";
+      a.textContent="📎 "+f.name;
+      filesEl.appendChild(a);
+    });
+    filesEl.parentElement.style.display = (ctx&&ctx.files&&ctx.files.length) ? "block" : "none";
+  }
+  if(contactsEl){
+    contactsEl.innerHTML="";
+    (ctx&&ctx.keyContacts||[]).forEach(function(c){
+      var d=document.createElement("div");
+      d.style.cssText="font-size:11px;color:var(--text2);padding:3px 0;";
+      d.textContent="👤 "+c.name+(c.role?" · "+c.role:"")+(c.email?" · "+c.email:"");
+      contactsEl.appendChild(d);
+    });
+    contactsEl.parentElement.style.display = (ctx&&ctx.keyContacts&&ctx.keyContacts.length) ? "block" : "none";
+  }
 
   // Calc real progress from tasks
   var ptasks = data.tasks.filter(function(t){return t.project===pid;});
@@ -1033,6 +1109,31 @@ function saveNewTask(){
   addActivity("Shameen","Added task: "+t.title.slice(0,35),"just now","#ff5f87");
 }
 
+// ── Session Log ──
+function renderSessions(){
+  var list=document.getElementById("sessionList"); if(!list)return;
+  var sessions=data.sessions||[];
+  if(!sessions.length){
+    list.innerHTML="<div style='color:var(--text2);font-size:12px;padding:16px 0;'>No sessions logged yet.</div>";
+    return;
+  }
+  list.innerHTML="";
+  sessions.forEach(function(s){
+    var card=document.createElement("div"); card.className="session-card";
+    var decisions=(s.decisions||[]).map(function(d){return "<div class='session-decision'>"+d+"</div>";}).join("");
+    var open=(s.openItems||[]).map(function(d){return "<div class='session-open'>"+d+"</div>";}).join("");
+    var tags=(s.projects||[]).map(function(t){return "<span class='session-tag'>"+t+"</span>";}).join("");
+    card.innerHTML=
+      "<div class='session-date'>📅 "+s.date+"</div>"+
+      "<div class='session-title'>"+s.title+"</div>"+
+      "<div class='session-summary'>"+s.summary+"</div>"+
+      (decisions?"<div class='session-section'>Key Decisions</div>"+decisions:"")+
+      (open?"<div class='session-section'>Open Items</div>"+open:"")+
+      (tags?"<div class='session-tags'>"+tags+"</div>":"");
+    list.appendChild(card);
+  });
+}
+
 // ── Calendar ──
 var calActiveFilter="all";
 function refreshCal(){
@@ -1085,7 +1186,7 @@ function showTab(id,btn){
   document.querySelectorAll(".sb-item").forEach(function(b){b.classList.remove("active");});
   if(btn)btn.classList.add("active");
   else{var nb=document.getElementById("nav-"+id);if(nb)nb.classList.add("active");}
-  var tabs=["mission","tasks","projects","calendar","team","memory"];
+  var tabs=["mission","tasks","projects","calendar","team","sessions","memory"];
   tabs.forEach(function(t){var el=document.getElementById("tab-"+t);if(el)el.classList.toggle("hidden",t!==id);});
   var tb=document.getElementById("topbarTitle");if(tb)tb.textContent=TAB_TITLES[id]||id;
   var ap=document.getElementById("activityPanel");if(ap)ap.style.display=(id==="tasks"?"flex":"none");
