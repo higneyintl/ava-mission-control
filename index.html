@@ -217,6 +217,7 @@
   <div id="tab-tasks" class="hidden">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
       <div class="section-title" style="margin:0;">Task Board</div>
+      <button onclick="refreshData()" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:6px 14px;font-size:11px;color:var(--text2);cursor:pointer;">↻ Refresh</button>
       <button class="btn btn-primary" onclick="openAddTask()" style="font-size:11px;padding:6px 14px;">+ New Task</button>
     </div>
     <div class="kanban" id="kanbanBoard"></div>
@@ -299,9 +300,21 @@ var PROJECT_CATS = {
 };
 var data = {mission:null, tasks:[], projects:[], team:[]};
 
-// ── Fetch data ──
+// ── Fetch data (no-store = always fresh) ──
 function fetchJSON(file) {
-  return fetch(RAW+file+"?t="+Date.now()).then(function(r){return r.json();});
+  return fetch(RAW+file+"?nc="+Date.now(), {cache:"no-store"})
+    .then(function(r){return r.json();});
+}
+
+function refreshData(){
+  document.getElementById("kanbanBoard").innerHTML="<div style='padding:20px;color:var(--text2);'>Refreshing…</div>";
+  Promise.all([fetchJSON("tasks.json"),fetchJSON("projects.json")])
+    .then(function(res){
+      data.tasks=res[0]; data.projects=res[1];
+      var local=getLocalTasks();
+      local.forEach(function(lt){if(!data.tasks.find(function(t){return t.id===lt.id;}))data.tasks.push(lt);});
+      renderKanban(); renderStats(); renderActivePreview(); renderProjects();
+    });
 }
 
 Promise.all([
@@ -478,7 +491,7 @@ function renderTeam(){
 function renderMemory(){
   var list=document.getElementById("memoryList");
   list.innerHTML="<div style='color:var(--text2);font-size:12px;padding:12px 0;'>Loading memories…</div>";
-  fetch(RAW+"memories.json?t="+Date.now())
+  fetch(RAW+"memories.json?nc="+Date.now(),{cache:"no-store"})
     .then(function(r){return r.json();})
     .then(function(entries){
       list.innerHTML="";
