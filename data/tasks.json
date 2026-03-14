@@ -118,5 +118,25 @@
     "priority": "medium",
     "notes": "Use Print/PDF button in wellness app Birth Plan tab",
     "createdAt": "2026-03-14"
+  },
+  {
+    "id": "t13",
+    "title": "Get Canadian passport photos taken",
+    "project": "p9",
+    "assignee": "shameen",
+    "status": "todo",
+    "priority": "medium",
+    "notes": "Required before submitting passport application",
+    "createdAt": "2026-03-14"
+  },
+  {
+    "id": "t14",
+    "title": "Apply for new Canadian passport",
+    "project": "p9",
+    "assignee": "shameen",
+    "status": "todo",
+    "priority": "medium",
+    "notes": "Do after photos are taken",
+    "createdAt": "2026-03-14"
   }
 ]
