@@ -518,6 +518,47 @@
   </div><!-- /main -->
 </div><!-- /shell -->
 
+<!-- Project Detail Modal -->
+<div class="modal-overlay hidden" id="projectDetailModal" onclick="if(event.target===this)closeProjectDetail()">
+  <div class="modal" style="max-width:560px;max-height:85vh;display:flex;flex-direction:column;">
+
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;flex-shrink:0;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div id="pdEmoji" style="font-size:32px;"></div>
+        <div>
+          <div id="pdCategory" style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;color:var(--blue);margin-bottom:4px;"></div>
+          <div id="pdName" style="font-size:18px;font-weight:800;color:var(--text1);"></div>
+        </div>
+      </div>
+      <button onclick="closeProjectDetail()" style="background:none;border:none;font-size:20px;color:var(--text3);cursor:pointer;line-height:1;margin-left:12px;">×</button>
+    </div>
+
+    <div id="pdDesc" style="font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:14px;flex-shrink:0;"></div>
+
+    <!-- Progress bar -->
+    <div style="margin-bottom:16px;flex-shrink:0;">
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+        <span style="font-size:11px;font-weight:700;color:var(--text2);">Progress</span>
+        <span id="pdPct" style="font-size:11px;font-weight:700;color:var(--blue);"></span>
+      </div>
+      <div class="progress-bar" style="height:6px;">
+        <div class="progress-fill" id="pdProgressBar" style="width:0%;transition:width 0.4s;"></div>
+      </div>
+    </div>
+
+    <!-- Task list -->
+    <div style="flex-shrink:0;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;">
+      <div style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:0.6px;color:var(--text2);">Tasks <span id="pdTaskCount" style="font-weight:400;color:var(--text3);"></span></div>
+      <button onclick="openAddTaskForProject()" style="background:var(--blue);color:#fff;border:none;border-radius:6px;padding:4px 12px;font-size:11px;font-weight:700;cursor:pointer;">＋ Add</button>
+    </div>
+    <div id="pdTaskList" style="flex:1;overflow-y:auto;"></div>
+
+    <div class="modal-actions" style="flex-shrink:0;margin-top:12px;">
+      <button class="btn btn-cancel" onclick="closeProjectDetail()">Close</button>
+    </div>
+  </div>
+</div>
+
 <!-- Task Detail Modal -->
 <div class="modal-overlay hidden" id="taskDetailModal" onclick="if(event.target===this)closeDetail()">
   <div class="modal" style="max-width:500px;">
@@ -625,7 +666,7 @@ var COLS=[
   {id:"review",name:"Review",color:"#f0c040"},
   {id:"done",name:"Done",color:"#3ecf6e"}
 ];
-var PROJECT_MAP={p1:{name:"Metro Lagoons",cat:"hi"},p2:{name:"Wellness App",cat:"product"},
+var PROJECT_MAP={p1:{name:"Metro Lagoons",cat:"hi"},p2:{name:"Mommy",cat:"product"},
   p3:{name:"Get Newly Named",cat:"gnn"},p4:{name:"Etsy",cat:"etsy"},p9:{name:"Personal",cat:"personal"}};
 var data={mission:null,tasks:[],projects:[],team:[],crons:[]};
 var activeFilter="all";
@@ -801,7 +842,7 @@ function renderProjects(){
             (p.category||"").toLowerCase().includes("product")?"product":
             (p.category||"").toLowerCase().includes("etsy")?"etsy":"gnn";
     var items=(p.openItems||[]).slice(0,3).map(function(i){return "<div class='open-item'>"+i+"</div>";}).join("");
-    var card=document.createElement("div");card.className="project-card";
+    var card=document.createElement("div");card.className="project-card";card.style.cursor="pointer";card.onclick=function(){openProjectDetail(p.id);};
     card.innerHTML="<div class='project-head'><span class='project-emoji'>"+p.emoji+"</span>"+
       "<span class='project-status ps-"+(p.status||"active")+"'>"+p.status+"</span></div>"+
       "<div class='project-name'>"+p.name+"</div>"+
@@ -918,12 +959,63 @@ function updateDetailAssignee(){
   renderKanban();
 }
 
+// ── Project Detail ──
+var pdProjectId = null;
+function openProjectDetail(pid){
+  pdProjectId = pid;
+  var p = data.projects.find(function(x){return x.id===pid;}); if(!p)return;
+  document.getElementById("pdEmoji").textContent = p.emoji||"📁";
+  document.getElementById("pdName").textContent = p.name;
+  document.getElementById("pdCategory").textContent = p.category||"";
+  document.getElementById("pdDesc").textContent = p.description||"";
+
+  // Calc real progress from tasks
+  var ptasks = data.tasks.filter(function(t){return t.project===pid;});
+  var done = ptasks.filter(function(t){return t.status==="done";}).length;
+  var pct = ptasks.length ? Math.round(done/ptasks.length*100) : 0;
+  document.getElementById("pdPct").textContent = pct+"%";
+  document.getElementById("pdProgressBar").style.width = pct+"%";
+  document.getElementById("pdTaskCount").textContent = "("+ptasks.length+")";
+
+  // Render task list
+  var list = document.getElementById("pdTaskList"); list.innerHTML="";
+  if(!ptasks.length){
+    list.innerHTML="<div style='color:var(--text2);font-size:12px;padding:12px 0;'>No tasks yet. Add one above.</div>";
+  } else {
+    var order=["inprogress","review","todo","done"];
+    ptasks.sort(function(a,b){return order.indexOf(a.status)-order.indexOf(b.status);});
+    ptasks.forEach(function(t){
+      var statusColors={todo:"var(--text3)",inprogress:"var(--blue)",review:"var(--gold)",done:"var(--sage)"};
+      var statusLabels={todo:"Backlog",inprogress:"In Progress",review:"Review",done:"Done"};
+      var row=document.createElement("div");
+      row.style.cssText="display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;cursor:pointer;margin-bottom:4px;background:var(--surface2);border:1px solid var(--border);";
+      row.onclick=function(){closeProjectDetail();setTimeout(function(){openDetail(t.id);},100);};
+      row.innerHTML=
+        "<div style='width:8px;height:8px;border-radius:50%;background:"+statusColors[t.status||"todo"]+";flex-shrink:0;'></div>"+
+        "<div style='flex:1;font-size:12px;font-weight:600;color:var(--text1);'>"+t.title+"</div>"+
+        "<div style='font-size:10px;color:"+statusColors[t.status||"todo"]+";font-weight:600;flex-shrink:0;'>"+statusLabels[t.status||"todo"]+"</div>"+
+        "<div style='font-size:12px;flex-shrink:0;'>"+(t.assignee==="ava"?"🖤":"👩")+"</div>";
+      list.appendChild(row);
+    });
+  }
+  document.getElementById("projectDetailModal").classList.remove("hidden");
+}
+function closeProjectDetail(){
+  document.getElementById("projectDetailModal").classList.add("hidden");
+  pdProjectId=null;
+}
+function openAddTaskForProject(){
+  closeProjectDetail();
+  setTimeout(function(){openAddTask("todo",pdProjectId);},100);
+}
+
 // ── Add task ──
 var addTaskStatus="todo";
-function openAddTask(status){
+function openAddTask(status,projectId){
   addTaskStatus=status||"todo";
   var sel=document.getElementById("newProject");sel.innerHTML="";
   data.projects.forEach(function(p){var o=document.createElement("option");o.value=p.id;o.textContent=p.emoji+" "+p.name;sel.appendChild(o);});
+  if(projectId) sel.value=projectId;
   document.getElementById("addTaskModal").classList.remove("hidden");
 }
 function closeAddTask(){document.getElementById("addTaskModal").classList.add("hidden");}
