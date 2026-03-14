@@ -236,7 +236,10 @@
 
   <!-- MEMORY -->
   <div id="tab-memory" class="hidden">
-    <div class="section-title">Memory Log</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+    <div class="section-title" style="margin:0;">Memory Log <span style="font-size:10px;color:var(--text3);font-weight:400;text-transform:none;letter-spacing:0;">(auto-synced each heartbeat)</span></div>
+    <button onclick="renderMemory()" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:5px 12px;font-size:11px;color:var(--text2);cursor:pointer;">↻ Refresh</button>
+  </div>
     <div class="memory-list" id="memoryList"></div>
   </div>
 
@@ -474,20 +477,27 @@ function renderTeam(){
 // ── Memory ──
 function renderMemory(){
   var list=document.getElementById("memoryList");
-  var entries=[
-    {date:"2026-03-14",preview:"Wellness app: Pregnancy tab, 6 daily health checks, day navigation, birth plan tab. Mission Control roadmap created. Data backup feature added.",tags:["Wellness App","Birth Plan","Mission Control"]},
-    {date:"2026-03-13",preview:"HI Procurement Tracker: Submitted for Client Approval status added. MetroLagoons_Items_to_Source_v3.pptx with Fire Pit Tables. Beach umbrella report updated.",tags:["Metro Lagoons","Tracker","PPTX"]},
-    {date:"2026-03-12",preview:"Manual backup completed to both Drive accounts. Budget summary sent to Jonathan Kelly ($100K net savings). Gateway reconnection fixed — Amphetamine added to Login Items.",tags:["Backup","Metro Lagoons","Infrastructure"]},
-    {date:"2026-03-10",preview:"Tiki hut permit research completed. FL §553.73(10)(i) chickee exemption documented. Security podium sourced. Decoscape Sectional Sofa v2 PPT redesigned.",tags:["Tiki Huts","Security Podium","PPT"]},
-    {date:"2026-03-09",preview:"All cron jobs fixed after gateway failure. March 9 journal written to #ava-journal. Chickee exemption report uploaded to Drive.",tags:["Cron Jobs","Discord","Infrastructure"]}
-  ];
-  list.innerHTML="";
-  entries.forEach(function(e){
-    var div=document.createElement("div"); div.className="memory-entry";
-    var tags=e.tags.map(function(t){return "<span class=\"memory-tag\">"+t+"</span>";}).join("");
-    div.innerHTML="<div class=\"memory-date\">📅 "+e.date+"</div><div class=\"memory-preview\">"+e.preview+"</div><div class=\"memory-tags\">"+tags+"</div>";
-    list.appendChild(div);
-  });
+  list.innerHTML="<div style='color:var(--text2);font-size:12px;padding:12px 0;'>Loading memories…</div>";
+  fetch(RAW+"memories.json?t="+Date.now())
+    .then(function(r){return r.json();})
+    .then(function(entries){
+      list.innerHTML="";
+      entries.forEach(function(e){
+        if(!e.hasContent&&e.date!=="HOT MEMORY")return;
+        var div=document.createElement("div"); div.className="memory-entry";
+        var isHot=e.date==="HOT MEMORY";
+        var tags=(e.tags||[]).map(function(t){return "<span class=\"memory-tag\">"+t+"</span>";}).join("");
+        div.innerHTML=
+          "<div class=\"memory-date\">"+(isHot?"🧠":"📅 ")+e.date+"</div>"+
+          "<div class=\"memory-preview\">"+e.preview+"</div>"+
+          "<div class=\"memory-tags\">"+tags+"</div>";
+        if(isHot){div.style.borderColor="var(--lavender)";}
+        list.appendChild(div);
+      });
+    })
+    .catch(function(){
+      list.innerHTML="<div style='color:var(--text2);font-size:12px;padding:12px;'>Could not load memories. Sync may be pending.</div>";
+    });
 }
 
 // ── Add task ──
