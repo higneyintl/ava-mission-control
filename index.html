@@ -517,6 +517,64 @@
   </div><!-- /main -->
 </div><!-- /shell -->
 
+<!-- Task Detail Modal -->
+<div class="modal-overlay hidden" id="taskDetailModal" onclick="if(event.target===this)closeDetail()">
+  <div class="modal" style="max-width:500px;">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;">
+      <div style="flex:1;">
+        <div id="detailProject" style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;color:var(--blue);margin-bottom:6px;"></div>
+        <div id="detailTitle" style="font-size:16px;font-weight:800;color:var(--text1);line-height:1.4;"></div>
+      </div>
+      <button onclick="closeDetail()" style="background:none;border:none;font-size:20px;color:var(--text3);cursor:pointer;margin-left:12px;line-height:1;">×</button>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
+      <div>
+        <div class="form-label">Status</div>
+        <select class="form-select" id="detailStatus" onchange="updateDetailStatus()">
+          <option value="todo">📋 Backlog</option>
+          <option value="inprogress">⚡ In Progress</option>
+          <option value="review">👀 Review</option>
+          <option value="done">✅ Done</option>
+        </select>
+      </div>
+      <div>
+        <div class="form-label">Priority</div>
+        <select class="form-select" id="detailPriority" onchange="updateDetailPriority()">
+          <option value="high">🔴 High</option>
+          <option value="medium">🟡 Medium</option>
+          <option value="low">⚪ Low</option>
+        </select>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
+      <div>
+        <div class="form-label">Assigned to</div>
+        <select class="form-select" id="detailAssignee" onchange="updateDetailAssignee()">
+          <option value="ava">🖤 Ava</option>
+          <option value="shameen">👩 Shameen</option>
+        </select>
+      </div>
+      <div>
+        <div class="form-label">Created</div>
+        <div style="font-size:12px;color:var(--text2);padding:8px 0;" id="detailCreated"></div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:16px;">
+      <div class="form-label">Notes</div>
+      <div id="detailNotes" style="font-size:12px;color:var(--text2);line-height:1.6;
+        background:var(--surface2);border:1px solid var(--border);border-radius:8px;
+        padding:10px;min-height:50px;word-break:break-word;white-space:pre-wrap;"></div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn btn-cancel" onclick="closeDetail()">Close</button>
+    </div>
+  </div>
+</div>
+
 <!-- Add Task Modal -->
 <div class="modal-overlay hidden" id="addTaskModal">
   <div class="modal">
@@ -814,6 +872,49 @@ function renderActivity(){
       "<div class='activity-msg'>"+a.msg+"</div><div class='activity-time'>"+a.time+"</div>";
     list.appendChild(div);
   });
+}
+
+// ── Task Detail ──
+var detailTaskId = null;
+function openDetail(id){
+  var t = data.tasks.find(function(x){return x.id===id;}); if(!t)return;
+  detailTaskId = id;
+  var pm = PROJECT_MAP[t.project]||{name:"Personal",cat:"hi"};
+  document.getElementById("detailProject").textContent = pm.name;
+  document.getElementById("detailTitle").textContent = t.title;
+  document.getElementById("detailStatus").value = t.status||"todo";
+  document.getElementById("detailPriority").value = t.priority||"medium";
+  document.getElementById("detailAssignee").value = t.assignee||"ava";
+  document.getElementById("detailCreated").textContent = t.createdAt||"—";
+  var notesEl = document.getElementById("detailNotes");
+  if(t.notes && t.notes.startsWith("http")){
+    notesEl.innerHTML = "<a href='"+t.notes+"' target='_blank' style='color:var(--blue);word-break:break-all;'>"+t.notes+"</a>";
+  } else {
+    notesEl.textContent = t.notes||"No notes.";
+  }
+  document.getElementById("taskDetailModal").classList.remove("hidden");
+}
+function closeDetail(){
+  document.getElementById("taskDetailModal").classList.add("hidden");
+  detailTaskId = null;
+}
+function updateDetailStatus(){
+  var t=data.tasks.find(function(x){return x.id===detailTaskId;}); if(!t)return;
+  t.status=document.getElementById("detailStatus").value;
+  saveLocal(data.tasks.filter(function(x){return x.id.startsWith("local_");}));
+  renderKanban(); renderStatsInline(); renderStatsCards();
+}
+function updateDetailPriority(){
+  var t=data.tasks.find(function(x){return x.id===detailTaskId;}); if(!t)return;
+  t.priority=document.getElementById("detailPriority").value;
+  saveLocal(data.tasks.filter(function(x){return x.id.startsWith("local_");}));
+  renderKanban();
+}
+function updateDetailAssignee(){
+  var t=data.tasks.find(function(x){return x.id===detailTaskId;}); if(!t)return;
+  t.assignee=document.getElementById("detailAssignee").value;
+  saveLocal(data.tasks.filter(function(x){return x.id.startsWith("local_");}));
+  renderKanban();
 }
 
 // ── Add task ──
