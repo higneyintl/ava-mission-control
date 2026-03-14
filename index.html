@@ -269,6 +269,20 @@
     .cron-meta{display:flex;gap:10px;flex-wrap:wrap;}
     .cron-meta-item{font-size:10px;color:var(--text3);}
     .cron-meta-item span{color:var(--text2);}
+    /* ── Roadmap ── */
+    .roadmap-phase{margin-bottom:14px;}
+    .roadmap-phase-label{font-size:10px;font-weight:800;text-transform:uppercase;
+      letter-spacing:0.5px;margin-bottom:6px;padding:4px 0;border-bottom:1px solid var(--border);}
+    .roadmap-item{display:flex;align-items:flex-start;gap:8px;padding:6px 4px;
+      border-radius:6px;transition:background 0.15s;}
+    .roadmap-item:hover{background:var(--surface2);}
+    .roadmap-item-icon{font-size:12px;flex-shrink:0;margin-top:1px;}
+    .roadmap-item-text{flex:1;font-size:11px;color:var(--text2);line-height:1.4;}
+    .roadmap-item-text.built{color:var(--text3);text-decoration:line-through;}
+    .roadmap-add-task{font-size:9px;font-weight:700;padding:2px 8px;border-radius:5px;
+      background:rgba(79,142,247,0.1);color:var(--blue);border:none;cursor:pointer;flex-shrink:0;}
+    .roadmap-add-task:hover{background:rgba(79,142,247,0.2);}
+    .roadmap-in-tasks{font-size:9px;color:var(--sage);flex-shrink:0;}
     /* ── Session Log ── */
     .session-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;
       padding:16px;margin-bottom:12px;}
@@ -620,6 +634,15 @@
     </div>
     <div id="pdTaskList" style="flex:1;overflow-y:auto;"></div>
 
+    <!-- Roadmap section (shown only for p2 Mommy) -->
+    <div id="pdRoadmapSection" class="hidden" style="flex-shrink:0;margin-top:4px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--text3);">Roadmap</div>
+        <button onclick="addRoadmapIdea()" style="background:var(--lavender);color:#fff;border:none;border-radius:6px;padding:3px 10px;font-size:10px;font-weight:700;cursor:pointer;">+ Add Idea</button>
+      </div>
+      <div id="pdRoadmapList" style="max-height:320px;overflow-y:auto;"></div>
+    </div>
+
     <div class="modal-actions" style="flex-shrink:0;margin-top:12px;">
       <button class="btn btn-cancel" onclick="closeProjectDetail()">Close</button>
     </div>
@@ -745,7 +768,7 @@ var COLS=[
 ];
 var PROJECT_MAP={p1:{name:"Metro Lagoons",cat:"hi"},p2:{name:"Mommy",cat:"product"},
   p3:{name:"Get Newly Named",cat:"gnn"},p4:{name:"Etsy",cat:"etsy"},p9:{name:"Personal",cat:"personal"}};
-var data={mission:null,tasks:[],projects:[],team:[],crons:[],sessions:[],context:{}};
+var data={mission:null,tasks:[],projects:[],team:[],crons:[],sessions:[],context:{},roadmap:{}};
 var activeFilter="all";
 
 // ── Fetch ──
@@ -758,14 +781,32 @@ function refreshData(){
     addActivity("Ava","Refreshed task board","just now","#3ecf6e");
   });
 }
+function mergeLocalRoadmap(){
+  var saved=localStorage.getItem("mc_roadmap");
+  if(!saved||!data.roadmap)return;
+  try{
+    var local=JSON.parse(saved);
+    Object.keys(local).forEach(function(pid){
+      if(!data.roadmap[pid])return;
+      var localIdeas=(local[pid].phases||[]).find(function(p){return p.id==="ideas";});
+      var liveIdeas=(data.roadmap[pid].phases||[]).find(function(p){return p.id==="ideas";});
+      if(!localIdeas||!liveIdeas)return;
+      localIdeas.items.forEach(function(li){
+        if(!liveIdeas.items.find(function(x){return x.id===li.id;})){
+          liveIdeas.items.push(li);
+        }
+      });
+    });
+  }catch(e){}
+}
 function mergeLocal(){var l=getLocal();l.forEach(function(lt){if(!data.tasks.find(function(t){return t.id===lt.id;}))data.tasks.push(lt);});}
 
 // Load each file independently — one failure won't wipe everything else
-var FILES={mission:"mission.json",tasks:"tasks.json",projects:"projects.json",team:"team.json",crons:"crons.json",sessions:"sessions.json",context:"context.json"};
+var FILES={mission:"mission.json",tasks:"tasks.json",projects:"projects.json",team:"team.json",crons:"crons.json",sessions:"sessions.json",context:"context.json",roadmap:"roadmap.json"};
 var loadCount=0,loadTotal=Object.keys(FILES).length;
 function onLoaded(){
   loadCount++;
-  if(loadCount>=loadTotal){mergeLocal();renderAll();updateThemeBtn();}
+  if(loadCount>=loadTotal){mergeLocal();mergeLocalRoadmap();renderAll();updateThemeBtn();}
 }
 Object.keys(FILES).forEach(function(key){
   fetchJSON(FILES[key])
@@ -1160,7 +1201,66 @@ function openProjectDetail(pid){
       list.appendChild(row);
     });
   }
+  // Show roadmap section for Mommy project
+  var roadmapSection = document.getElementById("pdRoadmapSection");
+  if(roadmapSection){
+    var rm = data.roadmap ? data.roadmap[pid] : null;
+    if(rm){
+      roadmapSection.classList.remove("hidden");
+      renderRoadmapInProject(pid, rm);
+    } else {
+      roadmapSection.classList.add("hidden");
+    }
+  }
   document.getElementById("projectDetailModal").classList.remove("hidden");
+}
+function renderRoadmapInProject(pid, rm){
+  var list = document.getElementById("pdRoadmapList"); if(!list)return;
+  list.innerHTML="";
+  (rm.phases||[]).forEach(function(phase){
+    var ph=document.createElement("div"); ph.className="roadmap-phase";
+    var items="";
+    (phase.items||[]).forEach(function(item){
+      var isBuilt=item.status==="built";
+      var inTasks=data.tasks.find(function(t){return t.roadmapId===item.id&&t.status!=="done";});
+      var actionBtn=isBuilt?"":inTasks
+        ?"<span class='roadmap-in-tasks'>✓ In tasks</span>"
+        :"<button class='roadmap-add-task' data-pid='"+pid+"' data-iid='"+item.id+"' onclick='addRoadmapItemAsTask(this.dataset.pid,this.dataset.iid)'>→ Add to tasks</button>";
+      items+="<div class='roadmap-item'>"+
+        "<span class='roadmap-item-icon'>"+(isBuilt?"✅":phase.id==="next"?"🏗️":"💡")+"</span>"+
+        "<span class='roadmap-item-text"+(isBuilt?" built":"")+"'>"+item.title+"</span>"+
+        actionBtn+"</div>";
+    });
+    ph.innerHTML="<div class='roadmap-phase-label' style='color:"+phase.color+";'>"+phase.label+"</div>"+items;
+    list.appendChild(ph);
+  });
+}
+function addRoadmapItemAsTask(pid, itemId){
+  var rm=data.roadmap?data.roadmap[pid]:null; if(!rm)return;
+  var item; (rm.phases||[]).forEach(function(ph){ph.items.forEach(function(i){if(i.id===itemId)item=i;});});
+  if(!item)return;
+  var newTask={id:"local_"+Date.now(),title:item.title,project:pid,assignee:"ava",
+    status:"todo",priority:"medium",notes:item.notes||"",roadmapId:itemId,
+    createdAt:new Date().toISOString().slice(0,10)};
+  data.tasks.push(newTask);
+  var l=getLocal(); l.push(newTask); saveLocal(l);
+  renderKanban(); renderStatsInline(); renderStatsCards();
+  // Re-render roadmap to show "✓ In tasks"
+  renderRoadmapInProject(pid, rm);
+  addActivity("Shameen","Added to tasks: "+item.title.slice(0,35),"just now","#9b6dff");
+}
+function addRoadmapIdea(){
+  var idea=prompt("Describe your idea:");
+  if(!idea||!idea.trim())return;
+  var rm=data.roadmap?data.roadmap[pdProjectId]:null; if(!rm)return;
+  var ideasPhase=rm.phases.find(function(p){return p.id==="ideas";});
+  if(!ideasPhase)return;
+  var newId="r"+Date.now();
+  ideasPhase.items.push({id:newId,title:idea.trim(),status:"idea"});
+  // Save to localStorage
+  localStorage.setItem("mc_roadmap",JSON.stringify(data.roadmap));
+  renderRoadmapInProject(pdProjectId, rm);
+  addActivity("Shameen","New idea added: "+idea.slice(0,40),"just now","#9b6dff");
 }
 function closeProjectDetail(){
   document.getElementById("projectDetailModal").classList.add("hidden");
