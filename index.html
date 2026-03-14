@@ -150,6 +150,26 @@
     .k-tag-product{background:var(--tag-product);color:var(--tag-product-t);}
     .k-tag-etsy{background:#2d1a10;color:#f08c3e;}
     .k-tag-personal{background:#2d1220;color:#ff5f87;}
+    .due-badge{font-size:9px;font-weight:700;padding:2px 7px;border-radius:5px;margin-left:auto;}
+    .due-overdue{background:rgba(255,95,135,0.15);color:#ff5f87;}
+    .due-soon{background:rgba(240,192,64,0.15);color:#f0c040;}
+    .due-ok{background:rgba(79,142,247,0.1);color:#4f8ef7;}
+    .focus-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;
+      padding:12px 14px;margin-bottom:8px;display:flex;align-items:center;gap:12px;cursor:pointer;}
+    .focus-card:hover{border-color:var(--blue);}
+    .focus-num{width:24px;height:24px;border-radius:50%;background:var(--blue);
+      color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;
+      justify-content:center;flex-shrink:0;}
+    .focus-body{flex:1;min-width:0;}
+    .focus-title{font-size:13px;font-weight:700;color:var(--text1);margin-bottom:3px;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .focus-meta{font-size:10px;color:var(--text2);}
+    .upcoming-item{display:flex;align-items:center;gap:10px;padding:8px 0;
+      border-bottom:1px solid var(--border);}
+    .upcoming-item:last-child{border-bottom:none;}
+    .upcoming-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+    .upcoming-text{font-size:12px;color:var(--text1);flex:1;}
+    .upcoming-date{font-size:10px;color:var(--text2);}
     .k-tag-gnn{background:#0f2a1a;color:#3ecf6e;}
     .p-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
     .p-high{background:var(--rose);} .p-medium{background:var(--gold);} .p-low{background:var(--text3);}
@@ -650,6 +670,16 @@
         <div style="font-size:12px;color:var(--text2);padding:8px 0;" id="detailCreated"></div>
       </div>
     </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
+      <div>
+        <div class="form-label">Due Date</div>
+        <div style="font-size:12px;padding:8px 0;" id="detailDue"></div>
+      </div>
+      <div>
+        <div class="form-label">Set Due Date</div>
+        <input type="date" class="form-input" id="detailDueInput" onchange="updateDetailDue()" style="font-size:12px;padding:6px 8px;"/>
+      </div>
+    </div>
 
     <div style="margin-bottom:16px;">
       <div class="form-label">Notes</div>
@@ -774,7 +804,7 @@ function updateClock(){document.getElementById("timeBadge").textContent=new Date
 updateClock();setInterval(updateClock,30000);
 
 // ── Render all ──
-function renderAll(){renderMission();renderStatsInline();renderStatsCards();renderActivePreview();renderKanban();renderProjects();renderTeam();renderMemory();renderCalendar();renderSessions();renderActivityFeed();}
+function renderAll(){renderMission();renderStatsInline();renderStatsCards();renderTodayFocus();renderUpcoming();renderKanban();renderProjects();renderTeam();renderMemory();renderCalendar();renderSessions();renderActivityFeed();}
 
 // ── Mission ──
 function renderMission(){
@@ -820,20 +850,42 @@ function renderStatsCards(){
 }
 
 // ── Active preview (mission view) ──
-function renderActivePreview(){
-  var el=document.getElementById("activePreview");
-  var active=data.tasks.filter(function(t){return t.status==="inprogress"||t.status==="review";}).slice(0,4);
-  el.innerHTML="";
-  active.forEach(function(t){
-    var pm=PROJECT_MAP[t.project]||{name:"",cat:"hi"};
-    var d=document.createElement("div");d.className="k-card";d.style.marginBottom="8px";
-    d.innerHTML="<div class='k-card-title'>"+t.title+"</div>"+
-      "<div class='k-card-foot'><span class='k-tag k-tag-"+pm.cat+"'>"+pm.name+"</span>"+
-      "<span class='p-dot p-"+t.priority+"'></span>"+
-      "<span class='k-avatar'>"+(t.assignee==="ava"?"🖤":"👩")+"</span></div>";
-    el.appendChild(d);
+function renderActivePreview(){renderTodayFocus();renderUpcoming();}
+function renderTodayFocus(){
+  var el=document.getElementById("todayFocus"); if(!el)return;
+  var active=data.tasks.filter(function(t){return t.status!=="done";});
+  active.sort(function(a,b){
+    var da=dueDays(a.dueDate),db=dueDays(b.dueDate);
+    var sa=(da!==null&&da<0?-100:0)+(a.priority==="high"?-10:a.priority==="medium"?-5:0)+(a.status==="inprogress"?-3:0);
+    var sb=(db!==null&&db<0?-100:0)+(b.priority==="high"?-10:b.priority==="medium"?-5:0)+(b.status==="inprogress"?-3:0);
+    return sa-sb;
   });
-  if(!active.length)el.innerHTML="<div style='color:var(--text2);font-size:12px;padding:16px 0;'>All clear! 🎉</div>";
+  var top=active.slice(0,3); el.innerHTML="";
+  if(!top.length){el.innerHTML="<div style='color:var(--text2);font-size:12px;'>All clear! 🎉</div>";return;}
+  top.forEach(function(t,i){
+    var pm=PROJECT_MAP[t.project]||{name:"?",cat:"hi"};
+    var days=dueDays(t.dueDate);
+    var metaTxt=pm.name+" · "+(t.assignee==="ava"?"🖤 Ava":"👩 Shameen");
+    if(days!==null) metaTxt+=" · "+(days<0?"⚠️ Overdue "+Math.abs(days)+"d":days===0?"⚠️ Due today":"📅 Due in "+days+"d");
+    var fc=document.createElement("div"); fc.className="focus-card"; fc.onclick=function(){openDetail(t.id);};
+    fc.innerHTML="<div class='focus-num'>"+(i+1)+"</div><div class='focus-body'><div class='focus-title'>"+t.title+"</div><div class='focus-meta'>"+metaTxt+"</div></div>";
+    el.appendChild(fc);
+  });
+}
+function renderUpcoming(){
+  var el=document.getElementById("upcomingDeadlines"); if(!el)return;
+  var withDue=data.tasks.filter(function(t){return t.dueDate&&t.status!=="done";});
+  withDue.sort(function(a,b){return new Date(a.dueDate)-new Date(b.dueDate);});
+  var top=withDue.slice(0,5); el.innerHTML="";
+  if(!top.length){el.innerHTML="<div style='color:var(--text2);font-size:12px;'>No upcoming deadlines.</div>";return;}
+  top.forEach(function(t){
+    var days=dueDays(t.dueDate);
+    var col=days<0?"var(--rose)":days<=3?"var(--gold)":"var(--sage)";
+    var item=document.createElement("div"); item.className="upcoming-item"; item.style.cursor="pointer";
+    item.onclick=function(){showTab("tasks");setTimeout(function(){openDetail(t.id);},100);};
+    item.innerHTML="<div class='upcoming-dot' style='background:"+col+"'></div><div class='upcoming-text'>"+t.title+"</div><div class='upcoming-date' style='color:"+col+";'>"+(days<0?"Overdue":days===0?"Today":days+"d")+"</div>";
+    el.appendChild(item);
+  });
 }
 
 // ── Filter ──
@@ -846,6 +898,23 @@ function setFilter(f,btn){
   document.querySelectorAll(".filter-btn").forEach(function(b){b.classList.remove("active");});
   btn.classList.add("active");
   renderKanban();renderStatsInline();
+}
+
+// ── Due date helpers ──
+function dueDays(dateStr){
+  if(!dateStr) return null;
+  var due = new Date(dateStr); due.setHours(23,59,59);
+  var now = new Date();
+  return Math.round((due-now)/(1000*60*60*24));
+}
+function dueBadge(dateStr){
+  var days = dueDays(dateStr);
+  if(days===null) return "";
+  if(days < 0) return "<span class='due-badge due-overdue'>Overdue "+Math.abs(days)+"d</span>";
+  if(days === 0) return "<span class='due-badge due-overdue'>Due today</span>";
+  if(days <= 5) return "<span class='due-badge due-soon'>Due "+days+"d</span>";
+  var d = new Date(dateStr);
+  return "<span class='due-badge due-ok'>"+(d.getMonth()+1)+"/"+d.getDate()+"</span>";
 }
 
 // ── Kanban ──
@@ -975,6 +1044,8 @@ function openDetail(id){
   document.getElementById("detailPriority").value = t.priority||"medium";
   document.getElementById("detailAssignee").value = t.assignee||"ava";
   document.getElementById("detailCreated").textContent = t.createdAt||"—";
+  var dueInput = document.getElementById("detailDueInput");
+  if(dueInput) dueInput.value = t.dueDate||"";
   var notesEl = document.getElementById("detailNotes");
   if(t.notes && t.notes.startsWith("http")){
     notesEl.innerHTML = "<a href='"+t.notes+"' target='_blank' style='color:var(--blue);word-break:break-all;'>"+t.notes+"</a>";
@@ -1004,6 +1075,19 @@ function updateDetailAssignee(){
   t.assignee=document.getElementById("detailAssignee").value;
   saveLocal(data.tasks.filter(function(x){return x.id.startsWith("local_");}));
   renderKanban();
+}
+function updateDetailDue(){
+  var t=data.tasks.find(function(x){return x.id===detailTaskId;}); if(!t)return;
+  t.dueDate=document.getElementById("detailDueInput").value||null;
+  saveLocal(data.tasks.filter(function(x){return x.id.startsWith("local_");}));
+  renderKanban();
+  // Refresh due display
+  var dueEl=document.getElementById("detailDue");
+  var days=dueDays(t.dueDate);
+  if(t.dueDate && dueEl){
+    var cls=days<0?"color:var(--rose)":days<=5?"color:var(--gold)":"color:var(--blue)";
+    dueEl.innerHTML="<span style='"+cls+";font-weight:700;'>"+t.dueDate+"</span>"+(days!==null?" ("+(days<0?"overdue "+Math.abs(days)+"d":days===0?"today":days+"d away")+")" :"");
+  }
 }
 
 // ── Project Detail ──
