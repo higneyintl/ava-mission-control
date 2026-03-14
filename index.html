@@ -1117,6 +1117,7 @@ function openDetail(id){
   } else {
     notesEl.textContent = t.notes||"No notes.";
   }
+  renderSubtasks(id);
   document.getElementById("taskDetailModal").classList.remove("hidden");
 }
 // ── Sub-tasks ──
