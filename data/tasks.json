@@ -1,14 +1,122 @@
 [
-  {"id":"t1","title":"Send tiki hut permit email to Jonathan Kelly","project":"p1","assignee":"shameen","status":"review","priority":"high","notes":"Draft ready — Shameen to send","createdAt":"2026-03-14"},
-  {"id":"t2","title":"Push beach umbrella report to HI Drive","project":"p1","assignee":"ava","status":"todo","priority":"high","notes":"Awaiting Shameen approval on avasinclaire3 Drive version","createdAt":"2026-03-14"},
-  {"id":"t3","title":"Get planter qty + target height from Shameen","project":"p1","assignee":"shameen","status":"todo","priority":"medium","notes":"Then request quotes from ePlanters (MO.100) and Jay Scotts","createdAt":"2026-03-14"},
-  {"id":"t4","title":"Security podium trade pricing — await vendor response","project":"p1","assignee":"ava","status":"inprogress","priority":"medium","notes":"Draft sent to sales@thesecuritystation.com","createdAt":"2026-03-14"},
-  {"id":"t5","title":"Update crypto gain/loss Excel","project":"p6","assignee":"ava","status":"todo","priority":"medium","notes":"MATIC $0.30/unit × 170.6 = $51.18 | SOL $30/unit × 7.49 = $224.79","createdAt":"2026-03-14"},
-  {"id":"t6","title":"Register GetNewlyNamed.com domain","project":"p3","assignee":"shameen","status":"todo","priority":"low","notes":"~$12 on Namecheap or GoDaddy","createdAt":"2026-03-14"},
-  {"id":"t7","title":"Easter bundle — Canva design session","project":"p4","assignee":"ava","status":"todo","priority":"high","notes":"Apr 5 deadline. Need: scripture content, color palette, SEO keywords, pricing","createdAt":"2026-03-14"},
-  {"id":"t8","title":"W9 approval → publish Fiverr QB gigs","project":"p7","assignee":"shameen","status":"todo","priority":"medium","notes":"Gig 1 + Gig 2 ready to publish once W9 approved","createdAt":"2026-03-14"},
-  {"id":"t9","title":"Wellness app — onboarding questionnaire","project":"p2","assignee":"ava","status":"todo","priority":"medium","notes":"Diapering / faith / feeding / childhood approach preferences","createdAt":"2026-03-14"},
-  {"id":"t10","title":"Wellness app — exercise library","project":"p2","assignee":"ava","status":"todo","priority":"medium","notes":"Browse & add exercises, custom exercises, remove/reorder","createdAt":"2026-03-14"},
-  {"id":"t11","title":"Send FF&E sourcing summary email to Jonathan + Liz","project":"p1","assignee":"shameen","status":"review","priority":"high","notes":"Valet Stands, Trash Cans, Ceiling Fans, Fire Pit Tables — with v3 PPTX attached","createdAt":"2026-03-14"},
-  {"id":"t12","title":"Print birth plan for hospital bag","project":"p8","assignee":"shameen","status":"todo","priority":"medium","notes":"Use Print/PDF button in wellness app Birth Plan tab","createdAt":"2026-03-14"}
+  {
+    "id": "t1",
+    "title": "Send tiki hut permit email to Jonathan Kelly",
+    "project": "p1",
+    "assignee": "shameen",
+    "status": "done",
+    "priority": "high",
+    "notes": "Draft ready \u2014 Shameen to send",
+    "createdAt": "2026-03-14"
+  },
+  {
+    "id": "t2",
+    "title": "Push beach umbrella report to HI Drive",
+    "project": "p1",
+    "assignee": "ava",
+    "status": "done",
+    "priority": "high",
+    "notes": "Awaiting Shameen approval on avasinclaire3 Drive version",
+    "createdAt": "2026-03-14"
+  },
+  {
+    "id": "t3",
+    "title": "Get planter qty + target height from Shameen",
+    "project": "p1",
+    "assignee": "shameen",
+    "status": "done",
+    "priority": "medium",
+    "notes": "Then request quotes from ePlanters (MO.100) and Jay Scotts",
+    "createdAt": "2026-03-14"
+  },
+  {
+    "id": "t4",
+    "title": "Security podium trade pricing \u2014 await vendor response",
+    "project": "p1",
+    "assignee": "ava",
+    "status": "inprogress",
+    "priority": "medium",
+    "notes": "Draft sent to sales@thesecuritystation.com",
+    "createdAt": "2026-03-14"
+  },
+  {
+    "id": "t5",
+    "title": "Update crypto gain/loss Excel",
+    "project": "p6",
+    "assignee": "ava",
+    "status": "done",
+    "priority": "medium",
+    "notes": "MATIC $0.30/unit \u00d7 170.6 = $51.18 | SOL $30/unit \u00d7 7.49 = $224.79",
+    "createdAt": "2026-03-14"
+  },
+  {
+    "id": "t6",
+    "title": "Register GetNewlyNamed.com domain",
+    "project": "p3",
+    "assignee": "shameen",
+    "status": "todo",
+    "priority": "low",
+    "notes": "~$12 on Namecheap or GoDaddy",
+    "createdAt": "2026-03-14"
+  },
+  {
+    "id": "t7",
+    "title": "Easter bundle \u2014 Canva design session",
+    "project": "p4",
+    "assignee": "ava",
+    "status": "done",
+    "priority": "high",
+    "notes": "Apr 5 deadline. Need: scripture content, color palette, SEO keywords, pricing",
+    "createdAt": "2026-03-14"
+  },
+  {
+    "id": "t8",
+    "title": "W9 approval \u2192 publish Fiverr QB gigs",
+    "project": "p7",
+    "assignee": "shameen",
+    "status": "done",
+    "priority": "medium",
+    "notes": "Gig 1 + Gig 2 ready to publish once W9 approved",
+    "createdAt": "2026-03-14"
+  },
+  {
+    "id": "t9",
+    "title": "Wellness app \u2014 onboarding questionnaire",
+    "project": "p2",
+    "assignee": "ava",
+    "status": "todo",
+    "priority": "medium",
+    "notes": "Diapering / faith / feeding / childhood approach preferences",
+    "createdAt": "2026-03-14"
+  },
+  {
+    "id": "t10",
+    "title": "Wellness app \u2014 exercise library",
+    "project": "p2",
+    "assignee": "ava",
+    "status": "todo",
+    "priority": "medium",
+    "notes": "Browse & add exercises, custom exercises, remove/reorder",
+    "createdAt": "2026-03-14"
+  },
+  {
+    "id": "t11",
+    "title": "Send FF&E sourcing summary email to Jonathan + Liz",
+    "project": "p1",
+    "assignee": "shameen",
+    "status": "done",
+    "priority": "high",
+    "notes": "Valet Stands, Trash Cans, Ceiling Fans, Fire Pit Tables \u2014 with v3 PPTX attached",
+    "createdAt": "2026-03-14"
+  },
+  {
+    "id": "t12",
+    "title": "Print birth plan for hospital bag",
+    "project": "p8",
+    "assignee": "shameen",
+    "status": "done",
+    "priority": "medium",
+    "notes": "Use Print/PDF button in wellness app Birth Plan tab",
+    "createdAt": "2026-03-14"
+  }
 ]
