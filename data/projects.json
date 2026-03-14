@@ -18,17 +18,17 @@
   },
   {
     "id": "p2",
-    "name": "Mama & Baby Wellness App",
+    "name": "Mommy",
     "emoji": "\ud83e\udd30",
     "category": "Product Ventures",
     "status": "active",
-    "description": "Daily wellness companion for pregnant women and new moms. Built live with Shameen's first baby. Future product launch planned.",
+    "description": "Shameen's prenatal wellness app \u2014 stretches, daily health checks, baby guide, birth plan, and more.",
     "progress": 60,
     "keyContact": "Shameen",
     "openItems": [
       "Onboarding questionnaire",
       "Exercise library",
-      "Week-by-week progression from week 4",
+      "Week-by-week progression",
       "Settings screen"
     ]
   },
