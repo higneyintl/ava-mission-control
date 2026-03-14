@@ -2,89 +2,64 @@
   {
     "id": "p1",
     "name": "Metro Lagoons / Project Seaire",
-    "emoji": "🌊",
+    "emoji": "\ud83c\udf0a",
     "category": "HI Operations",
     "status": "active",
     "description": "FF&E procurement for Seaire Lagoon, 9411 Carter Rd., Palmetto FL. Sourcing tiki huts, beach umbrellas, planters, ceiling fans, fire pit tables, valet stands, trash cans, security podiums.",
     "progress": 45,
     "keyContact": "Jonathan Kelly / Liz Iwanski",
-    "openItems": ["Tiki hut permit email pending send", "Beach umbrella report → HI Drive", "Planter qty/height needed", "Security podium trade pricing pending", "Fire pit table quotes pending"]
+    "openItems": [
+      "Tiki hut permit email pending send",
+      "Beach umbrella report \u2192 HI Drive",
+      "Planter qty/height needed",
+      "Security podium trade pricing pending",
+      "Fire pit table quotes pending"
+    ]
   },
   {
     "id": "p2",
     "name": "Mama & Baby Wellness App",
-    "emoji": "🤰",
+    "emoji": "\ud83e\udd30",
     "category": "Product Ventures",
     "status": "active",
     "description": "Daily wellness companion for pregnant women and new moms. Built live with Shameen's first baby. Future product launch planned.",
     "progress": 60,
     "keyContact": "Shameen",
-    "openItems": ["Onboarding questionnaire", "Exercise library", "Week-by-week progression from week 4", "Settings screen"]
+    "openItems": [
+      "Onboarding questionnaire",
+      "Exercise library",
+      "Week-by-week progression from week 4",
+      "Settings screen"
+    ]
   },
   {
     "id": "p3",
     "name": "Get Newly Named",
-    "emoji": "💍",
+    "emoji": "\ud83d\udc8d",
     "category": "Product Ventures",
     "status": "planning",
     "description": "Name-change tracker app for newlyweds. $19-29 one-time purchase. Co-founders: Shameen & Lutfiya Miller.",
     "progress": 15,
     "keyContact": "Shameen + Lutfiya Miller",
-    "openItems": ["Register GetNewlyNamed.com (~$12)", "Build MVP", "Marketing strategy"]
+    "openItems": [
+      "Register GetNewlyNamed.com (~$12)",
+      "Build MVP",
+      "Marketing strategy"
+    ]
   },
   {
     "id": "p4",
-    "name": "Etsy — Faithful Nest Studio",
-    "emoji": "🏡",
+    "name": "Etsy \u2014 Faithful Nest Studio",
+    "emoji": "\ud83c\udfe1",
     "category": "Product Ventures",
     "status": "active",
     "description": "Digital printables store. Account: avasinclaire3@gmail.com. Current focus: Easter pack (Apr 5 deadline) + Paycheck Budget Pro.",
     "progress": 30,
     "keyContact": "Shameen",
-    "openItems": ["Easter bundle — Canva session overdue", "Scripture/devotional content", "SEO keywords + pricing"]
-  },
-  {
-    "id": "p5",
-    "name": "Trading — MNQ / SMC",
-    "emoji": "📈",
-    "category": "Financial Freedom",
-    "status": "active",
-    "description": "Smart Money Concepts trading on MNQ futures. Top One Futures $50K prop account. Mentor: David. NY Open sessions.",
-    "progress": 50,
-    "keyContact": "David (mentor)",
-    "openItems": ["Continue daily NY Open sessions", "Track P&L consistency"]
-  },
-  {
-    "id": "p6",
-    "name": "Crypto — XRP + Portfolio",
-    "emoji": "🪙",
-    "category": "Financial Freedom",
-    "status": "active",
-    "description": "Strong XRP conviction (ISO 20022 + Kim Clement). 1099-DA in progress. MATIC + SOL cost basis determined.",
-    "progress": 40,
-    "keyContact": "Shameen",
-    "openItems": ["Update gain/loss Excel (MATIC $0.30, SOL $30)", "Re-upload to Drive"]
-  },
-  {
-    "id": "p7",
-    "name": "Fiverr — QB Bookkeeping",
-    "emoji": "💼",
-    "category": "Financial Freedom",
-    "status": "paused",
-    "description": "QuickBooks bookkeeping gigs. Waiting on W9 approval before publishing.",
-    "progress": 80,
-    "keyContact": "Shameen",
-    "openItems": ["W9 approval → publish Gig 1 + Gig 2"]
-  },
-  {
-    "id": "p8",
-    "name": "Baby Readiness",
-    "emoji": "👶",
-    "category": "Family & Faith",
-    "status": "active",
-    "description": "Preparing for baby boy's arrival May 17, 2026. Birth plan complete. EC approach planned. Montessori-aligned.",
-    "progress": 55,
-    "keyContact": "Shameen + Peter",
-    "openItems": ["Hospital bag", "Birth plan printed for hospital", "Newborn essentials checklist"]
+    "openItems": [
+      "Easter bundle \u2014 Canva session overdue",
+      "Scripture/devotional content",
+      "SEO keywords + pricing"
+    ]
   }
 ]
