@@ -570,16 +570,24 @@
       <!-- ─ CALENDAR page ─ -->
       <div class="page hidden" id="tab-calendar">
         <div class="tab-content">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
-            <div class="section-title" style="margin:0;">Scheduled Automations</div>
-            <div style="display:flex;gap:8px;">
-              <button class="tb-btn" id="cal-filter-all" onclick="calFilter('all',this)" style="border-color:var(--blue);color:var(--blue);">All</button>
-              <button class="tb-btn" id="cal-filter-enabled" onclick="calFilter('enabled',this)">Active</button>
-              <button class="tb-btn" id="cal-filter-disabled" onclick="calFilter('disabled',this)">Disabled</button>
-              <button class="tb-btn" onclick="refreshCal()">↻ Refresh</button>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+            <div class="section-title" style="margin:0;">Automation Calendar</div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <button class="tb-btn" onclick="calNavWeek(-1)">‹ Prev</button>
+              <span id="calWeekLabel" style="font-size:12px;font-weight:700;color:var(--text1);white-space:nowrap;"></span>
+              <button class="tb-btn" onclick="calNavWeek(1)">Next ›</button>
+              <button class="tb-btn" onclick="calGoToday()">Today</button>
+              <button class="tb-btn" onclick="refreshCal()">↻</button>
             </div>
           </div>
-          <div id="calendarGrid"></div>
+          <div class="cal-legend">
+            <div class="cal-legend-item"><div class="cal-legend-dot" style="background:rgba(62,207,110,0.4);"></div>Ran OK</div>
+            <div class="cal-legend-item"><div class="cal-legend-dot" style="background:rgba(255,95,135,0.4);"></div>Error</div>
+            <div class="cal-legend-item"><div class="cal-legend-dot" style="background:rgba(79,142,247,0.3);"></div>Scheduled</div>
+            <div class="cal-legend-item"><div class="cal-legend-dot" style="background:rgba(122,132,153,0.2);"></div>Disabled</div>
+          </div>
+          <div id="calendarGrid" style="overflow-x:auto;"></div>
+          <div class="cal-disabled-list" id="calDisabledList"></div>
         </div>
       </div>
 
@@ -1412,6 +1420,124 @@ function renderSessions(){
 }
 
 // ── Calendar ──
+var calWeekOffset=0;
+function calNavWeek(d){calWeekOffset+=d;renderCalendar();}
+function calGoToday(){calWeekOffset=0;renderCalendar();}
+function refreshCal(){fetchJSON("crons.json").then(function(d){data.crons=d;renderCalendar();});}
+
+var HOURS=[0,2,6,8,9,10,11,12,14,16,18,20,22,23];
+var DAY_LABELS=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+
+function getWeekDates(offset){
+  var now=new Date(),dow=now.getDay();
+  var mon=new Date(now); mon.setDate(now.getDate()-dow+1+(offset*7)); mon.setHours(0,0,0,0);
+  var days=[]; for(var i=0;i<7;i++){var d=new Date(mon);d.setDate(mon.getDate()+i);days.push(d);}
+  return days;
+}
+function cronFitsDay(c,day){
+  if(!c.enabled||!c.schedule)return false;
+  if(c.schedule.type==="interval")return true;
+  var dow=day.getDay(),sch=c.schedule;
+  if(sch.days==="daily")return true;
+  if(sch.days==="weekdays")return dow>=1&&dow<=5;
+  if(sch.days==="weekends")return dow===0||dow===6;
+  if(Array.isArray(sch.days))return sch.days.indexOf(dow)>-1;
+  return true;
+}
+function renderCalendar(){
+  var el=document.getElementById("calendarGrid"); if(!el)return;
+  var crons=data.crons||[];
+  var days=getWeekDates(calWeekOffset);
+  var today=new Date(); today.setHours(0,0,0,0);
+  var lbl=document.getElementById("calWeekLabel");
+  if(lbl)lbl.textContent=(days[0].getMonth()+1)+"/"+days[0].getDate()+" – "+(days[6].getMonth()+1)+"/"+days[6].getDate()+", "+days[6].getFullYear();
+
+  var html="<div class='cal-week-grid'>";
+  // Header
+  html+="<div class='cal-time-col cal-day-header' style='background:var(--surface2);border-bottom:1px solid var(--border);padding:8px 4px;'></div>";
+  days.forEach(function(d){
+    var isToday=d.getTime()===today.getTime();
+    html+="<div class='cal-day-header"+(isToday?" today":"")+"'>"+DAY_LABELS[d.getDay()]+"<span>"+d.getDate()+"</span></div>";
+  });
+  // Rows
+  HOURS.forEach(function(hour){
+    html+="<div class='cal-time-col cal-time-slot'>"+(hour===0?"12am":hour<12?hour+"am":hour===12?"12pm":(hour-12)+"pm")+"</div>";
+    days.forEach(function(d){
+      var isPast=d<today,isToday=d.getTime()===today.getTime();
+      var todayStr=today.toISOString().slice(0,10);
+      var evts=crons.filter(function(c){
+        if(!c.enabled||!c.schedule)return false;
+        if(c.schedule.type==="interval")return hour===8&&cronFitsDay(c,d);
+        return c.schedule.hour===hour&&cronFitsDay(c,d);
+      });
+      var evHtml="";
+      evts.forEach(function(c){
+        var ranToday=c.lastRun===todayStr;
+        var cls=(isPast||ranToday)?(c.lastStatus==="ok"?"cal-event-ok":"cal-event-error"):"cal-event-future";
+        var icon=(isPast||ranToday)?(c.lastStatus==="ok"?"✓":"✗"):"◦";
+        var sn=c.name.length>13?c.name.slice(0,12)+"…":c.name;
+        evHtml+="<div class='cal-event "+cls+"' data-cid='"+c.id+"' onmouseenter='showCalTip(event,this.dataset.cid)' onmouseleave='hideCalTip()'>"+icon+" "+c.emoji+" "+sn+"</div>";
+      });
+      html+="<div class='cal-cell'"+(isToday?" style='background:rgba(79,142,247,0.04);'":"")+">"+ evHtml+"</div>";
+    });
+  });
+  html+="</div>";
+  el.innerHTML=html;
+
+  // Disabled list
+  var disEl=document.getElementById("calDisabledList"); if(!disEl)return;
+  var dis=crons.filter(function(c){return !c.enabled;});
+  if(dis.length){
+    var h="<div style='font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.6px;color:var(--text3);margin:16px 0 8px;'>Disabled Automations</div>";
+    dis.forEach(function(c){
+      h+="<div class='cron-card'><span style='font-size:18px;'>"+c.emoji+"</span>"+
+        "<div class='cron-card-name'>"+c.name+"<div class='cron-card-label'>"+c.description+"</div></div>"+
+        "<span class='badge-off'>OFF</span></div>";
+    });
+    disEl.innerHTML=h;
+  } else disEl.innerHTML="";
+}
+function showCalTip(e,id){
+  var c=(data.crons||[]).find(function(x){return x.id===id;}); if(!c)return;
+  var sch=c.schedule||{};
+  var st=sch.label||(sch.hour!=null?(sch.hour%12||12)+":"+(sch.minute?"0"+sch.minute:"00")+(sch.hour<12?"am":"pm")+" daily":"recurring");
+  var col=c.lastStatus==="ok"?"var(--sage)":c.lastStatus==="disabled"?"var(--text3)":"var(--rose)";
+  var stxt=c.lastStatus==="ok"?"✓ Last run OK":c.lastStatus==="disabled"?"Disabled":"✗ Error on last run";
+  var t=document.getElementById("calTooltip"); if(!t)return;
+  t.innerHTML="<div class='cal-tooltip-name'>"+c.emoji+" "+c.name+"</div>"+
+    "<div class='cal-tooltip-time'>⏰ "+st+"</div>"+
+    "<div class='cal-tooltip-desc'>"+c.description+"</div>"+
+    "<div class='cal-tooltip-status' style='color:"+col+";'>"+stxt+" · "+c.lastRun+"</div>";
+  t.classList.remove("hidden");
+  t.style.left=(e.clientX+12)+"px"; t.style.top=(e.clientY-10)+"px";
+}
+function hideCalTip(){var t=document.getElementById("calTooltip");if(t)t.classList.add("hidden");}
+// ── Session Log ──
+function renderSessions(){
+  var list=document.getElementById("sessionList"); if(!list)return;
+  var sessions=data.sessions||[];
+  if(!sessions.length){
+    list.innerHTML="<div style='color:var(--text2);font-size:12px;padding:16px 0;'>No sessions logged yet.</div>";
+    return;
+  }
+  list.innerHTML="";
+  sessions.forEach(function(s){
+    var card=document.createElement("div"); card.className="session-card";
+    var decisions=(s.decisions||[]).map(function(d){return "<div class='session-decision'>"+d+"</div>";}).join("");
+    var open=(s.openItems||[]).map(function(d){return "<div class='session-open'>"+d+"</div>";}).join("");
+    var tags=(s.projects||[]).map(function(t){return "<span class='session-tag'>"+t+"</span>";}).join("");
+    card.innerHTML=
+      "<div class='session-date'>📅 "+s.date+"</div>"+
+      "<div class='session-title'>"+s.title+"</div>"+
+      "<div class='session-summary'>"+s.summary+"</div>"+
+      (decisions?"<div class='session-section'>Key Decisions</div>"+decisions:"")+
+      (open?"<div class='session-section'>Open Items</div>"+open:"")+
+      (tags?"<div class='session-tags'>"+tags+"</div>":"");
+    list.appendChild(card);
+  });
+}
+
+// ── Calendar ──
 var calActiveFilter="all";
 function refreshCal(){
   fetchJSON('crons.json').then(function(d){data.crons=d;renderCalendar();});
@@ -1474,5 +1600,6 @@ function showTab(id,btn){
 var savedTab=localStorage.getItem("mc_tab")||"tasks";
 showTab(savedTab);
 </script>
+<div class="cal-tooltip hidden" id="calTooltip"></div>
 </body>
 </html>
