@@ -11,13 +11,30 @@
       --gold:#f0c040; --rose:#ff6b8a; --sage:#3fb950; --blue:#58a6ff;
       --lavender:#a371f7; --orange:#f0883e; --teal:#39d353;
       --shadow:0 4px 24px rgba(0,0,0,0.4);
+      --header-bg:linear-gradient(135deg,#0d1117 0%,#161b22 100%);
+      --mission-bg:linear-gradient(135deg,#1a1025,#0d1a2e);
+      --mission-border:#30265a;
+      --progress-fill:linear-gradient(90deg,#58a6ff,#a371f7);
+    }
+    @media(prefers-color-scheme:light){
+      :root{
+        --bg:#f6f8fa; --surface:#ffffff; --surface2:#f0f2f5; --border:#d1d9e0;
+        --text1:#1a1f36; --text2:#57606a; --text3:#8c959f;
+        --gold:#b08800; --rose:#d63b6b; --sage:#1a7f37; --blue:#0969da;
+        --lavender:#7f4fcf; --orange:#bc4c00; --teal:#116329;
+        --shadow:0 4px 24px rgba(0,0,0,0.08);
+        --header-bg:linear-gradient(135deg,#f6f8fa 0%,#ffffff 100%);
+        --mission-bg:linear-gradient(135deg,#f0ebff,#e8f4ff);
+        --mission-border:#c8b5f0;
+        --progress-fill:linear-gradient(90deg,#0969da,#7f4fcf);
+      }
     }
     *{box-sizing:border-box;margin:0;padding:0;}
     body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
       background:var(--bg);color:var(--text1);min-height:100vh;}
 
     /* Header */
-    .header{background:linear-gradient(135deg,#0d1117 0%,#161b22 100%);
+    .header{background:var(--header-bg);
       border-bottom:1px solid var(--border);padding:16px 20px;
       display:flex;align-items:center;justify-content:space-between;
       position:sticky;top:0;z-index:100;}
@@ -46,8 +63,8 @@
     .content{max-width:960px;margin:0 auto;padding:20px 16px 60px;}
 
     /* Mission banner */
-    .mission-banner{background:linear-gradient(135deg,#1a1025,#0d1a2e);
-      border:1px solid #30265a;border-radius:14px;padding:20px 24px;margin-bottom:20px;}
+    .mission-banner{background:var(--mission-bg);
+      border:1px solid var(--mission-border);border-radius:14px;padding:20px 24px;margin-bottom:20px;}
     .mission-label{font-size:10px;font-weight:800;letter-spacing:1px;
       text-transform:uppercase;color:var(--lavender);margin-bottom:8px;}
     .mission-text{font-size:14px;line-height:1.7;color:var(--text1);}
@@ -110,7 +127,7 @@
     .project-category{font-size:10px;color:var(--text2);margin-bottom:8px;}
     .project-desc{font-size:11px;color:var(--text2);line-height:1.5;margin-bottom:12px;}
     .progress-bar{height:4px;background:var(--surface2);border-radius:4px;overflow:hidden;margin-bottom:8px;}
-    .progress-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--blue),var(--lavender));}
+    .progress-fill{height:100%;border-radius:4px;background:var(--progress-fill);}
     .progress-label{font-size:10px;color:var(--text2);}
     .open-items{margin-top:10px;}
     .open-item{font-size:10px;color:var(--text2);padding:4px 0;
@@ -187,6 +204,9 @@
   <div class="header-right">
     <div class="status-dot"></div>
     <span class="status-text">Ava online</span>
+    <button id="themeToggle" onclick="toggleTheme()" title="Toggle theme"
+      style="background:var(--surface2);border:1px solid var(--border);border-radius:20px;
+      padding:4px 10px;font-size:12px;cursor:pointer;color:var(--text2);">🌙</button>
     <div class="time-badge" id="timeBadge">—</div>
   </div>
 </div>
@@ -331,6 +351,7 @@ Promise.all([
   var local = getLocalTasks();
   local.forEach(function(lt){ if(!data.tasks.find(function(t){return t.id===lt.id;})) data.tasks.push(lt); });
   renderAll();
+  updateThemeBtn();
 }).catch(function(e){
   // Fallback to localStorage only
   data.tasks = getLocalTasks();
@@ -341,6 +362,33 @@ function getLocalTasks(){var v=localStorage.getItem("mc_tasks");return v?JSON.pa
 function saveLocalTasks(t){localStorage.setItem("mc_tasks",JSON.stringify(t));}
 
 // ── Clock ──
+// ── Theme ──
+(function(){
+  var forced = localStorage.getItem("mc_theme");
+  if(forced==="light") document.documentElement.style.setProperty("color-scheme","light");
+  else if(forced==="dark") document.documentElement.style.setProperty("color-scheme","dark");
+})();
+function toggleTheme(){
+  var cur = localStorage.getItem("mc_theme");
+  var sys = window.matchMedia("(prefers-color-scheme:dark)").matches ? "dark" : "light";
+  var next;
+  if(!cur){ next = sys==="dark" ? "light" : "dark"; }
+  else if(cur==="dark"){ next = "light"; }
+  else { next = null; } // revert to system
+  if(next){ localStorage.setItem("mc_theme",next); document.documentElement.style.setProperty("color-scheme",next); }
+  else { localStorage.removeItem("mc_theme"); document.documentElement.style.removeProperty("color-scheme"); }
+  updateThemeBtn();
+}
+function updateThemeBtn(){
+  var btn=document.getElementById("themeToggle"); if(!btn)return;
+  var forced=localStorage.getItem("mc_theme");
+  var isDark = forced ? forced==="dark" : window.matchMedia("(prefers-color-scheme:dark)").matches;
+  btn.textContent = isDark ? "☀️" : "🌙";
+}
+window.matchMedia("(prefers-color-scheme:dark)").addEventListener("change",function(){
+  if(!localStorage.getItem("mc_theme")) updateThemeBtn();
+});
+
 function updateClock(){
   var now = new Date();
   var opts = {weekday:"short",month:"short",day:"numeric",hour:"2-digit",minute:"2-digit",timeZone:"America/New_York"};
