@@ -607,7 +607,7 @@ function cycleStatus(id){
   var prev=t.status;t.status=order[(order.indexOf(t.status)+1)%order.length];
   saveLocal(data.tasks.filter(function(x){return x.id.startsWith("local_");}));
   renderKanban();renderStatsInline();renderStatsCards();
-  addActivity("Ava","Moved ""+t.title.slice(0,30)+"…" → "+t.status,"just now","#f0c040");
+  addActivity('Ava','→ '+t.title.slice(0,35)+'... ('+t.status+')','just now','#f0c040');
 }
 
 // ── Projects ──
