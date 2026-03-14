@@ -384,6 +384,7 @@
               <button class="tb-btn" id="cal-filter-all" onclick="calFilter('all',this)" style="border-color:var(--blue);color:var(--blue);">All</button>
               <button class="tb-btn" id="cal-filter-enabled" onclick="calFilter('enabled',this)">Active</button>
               <button class="tb-btn" id="cal-filter-disabled" onclick="calFilter('disabled',this)">Disabled</button>
+              <button class="tb-btn" onclick="refreshCal()">↻ Refresh</button>
             </div>
           </div>
           <div id="calendarGrid"></div>
@@ -717,6 +718,9 @@ function saveNewTask(){
 
 // ── Calendar ──
 var calActiveFilter="all";
+function refreshCal(){
+  fetchJSON('crons.json').then(function(d){data.crons=d;renderCalendar();});
+}
 function calFilter(f,btn){
   calActiveFilter=f;
   document.querySelectorAll("[id^='cal-filter-']").forEach(function(b){b.style.borderColor="";b.style.color="";});
