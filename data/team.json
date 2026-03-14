@@ -1,0 +1,7 @@
+[
+  {"id":"ava","name":"Ava Sinclaire","emoji":"🖤","role":"Chief of Staff & Coordinator","model":"Claude Sonnet 4.6","scope":"Everything — operations, products, memory, dispatch","status":"online"},
+  {"id":"scout","name":"Scout","emoji":"🔍","role":"Vendor Research Agent","model":"Claude Sonnet 4.6","scope":"Daily vendor research → Monday.com + #vendor-scout","status":"scheduled"},
+  {"id":"picker","name":"Picker","emoji":"🛍️","role":"Sourcing Agent","model":"Claude Opus","scope":"Sourcing + outreach packages → #sourcing-desk","status":"standby"},
+  {"id":"auditor","name":"Auditor","emoji":"📋","role":"Quote Capture Agent","model":"Claude Sonnet 4.6","scope":"Email scan → HI Drive → triggers Analyst","status":"disabled"},
+  {"id":"analyst","name":"Analyst","emoji":"📊","role":"Report Builder Agent","model":"Claude Sonnet 4.6","scope":"Quote reports → Google Drive → #reports-preview","status":"standby"}
+]

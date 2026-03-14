@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mission Control — Ava & Shameen</title>
+  <style>
+    :root{
+      --bg:#0d1117; --surface:#161b22; --surface2:#21262d; --border:#30363d;
+      --text1:#e6edf3; --text2:#8b949e; --text3:#6e7681;
+      --gold:#f0c040; --rose:#ff6b8a; --sage:#3fb950; --blue:#58a6ff;
+      --lavender:#a371f7; --orange:#f0883e; --teal:#39d353;
+      --shadow:0 4px 24px rgba(0,0,0,0.4);
+    }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:var(--bg);color:var(--text1);min-height:100vh;}
+
+    /* Header */
+    .header{background:linear-gradient(135deg,#0d1117 0%,#161b22 100%);
+      border-bottom:1px solid var(--border);padding:16px 20px;
+      display:flex;align-items:center;justify-content:space-between;
+      position:sticky;top:0;z-index:100;}
+    .header-left{display:flex;align-items:center;gap:12px;}
+    .logo{font-size:20px;}
+    .header-title{font-size:16px;font-weight:800;color:var(--text1);}
+    .header-sub{font-size:11px;color:var(--text2);}
+    .header-right{display:flex;align-items:center;gap:8px;}
+    .status-dot{width:8px;height:8px;border-radius:50%;background:var(--sage);
+      box-shadow:0 0 6px var(--sage);}
+    .status-text{font-size:11px;color:var(--text2);}
+    .time-badge{font-size:11px;color:var(--text2);background:var(--surface2);
+      padding:4px 10px;border-radius:20px;border:1px solid var(--border);}
+
+    /* Nav */
+    .nav{display:flex;background:var(--surface);border-bottom:1px solid var(--border);
+      padding:0 12px;overflow-x:auto;scrollbar-width:none;}
+    .nav::-webkit-scrollbar{display:none;}
+    .nav-btn{padding:12px 16px;font-size:12px;font-weight:700;color:var(--text2);
+      background:none;border:none;cursor:pointer;border-bottom:2px solid transparent;
+      white-space:nowrap;transition:all 0.2s;}
+    .nav-btn.active{color:var(--gold);border-bottom-color:var(--gold);}
+    .nav-btn:hover{color:var(--text1);}
+
+    /* Content */
+    .content{max-width:960px;margin:0 auto;padding:20px 16px 60px;}
+
+    /* Mission banner */
+    .mission-banner{background:linear-gradient(135deg,#1a1025,#0d1a2e);
+      border:1px solid #30265a;border-radius:14px;padding:20px 24px;margin-bottom:20px;}
+    .mission-label{font-size:10px;font-weight:800;letter-spacing:1px;
+      text-transform:uppercase;color:var(--lavender);margin-bottom:8px;}
+    .mission-text{font-size:14px;line-height:1.7;color:var(--text1);}
+    .mission-pillars{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px;}
+    .mission-pillar{background:rgba(163,113,247,0.08);border:1px solid rgba(163,113,247,0.2);
+      border-radius:8px;padding:8px 12px;font-size:11px;color:var(--text2);}
+
+    /* Stats row */
+    .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px;}
+    .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;
+      padding:14px;text-align:center;}
+    .stat-val{font-size:24px;font-weight:800;color:var(--text1);}
+    .stat-lbl{font-size:10px;color:var(--text2);margin-top:2px;}
+
+    /* Section */
+    .section-title{font-size:12px;font-weight:800;text-transform:uppercase;
+      letter-spacing:0.8px;color:var(--text2);margin-bottom:12px;
+      display:flex;align-items:center;gap:8px;}
+    .section-badge{background:var(--surface2);border-radius:10px;padding:2px 8px;
+      font-size:10px;color:var(--text2);}
+
+    /* Kanban */
+    .kanban{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px;}
+    .kanban-col{background:var(--surface);border:1px solid var(--border);border-radius:12px;
+      padding:12px;}
+    .kanban-col-head{font-size:11px;font-weight:800;text-transform:uppercase;
+      letter-spacing:0.5px;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+    .col-dot{width:8px;height:8px;border-radius:50%;}
+    .kanban-card{background:var(--surface2);border:1px solid var(--border);border-radius:8px;
+      padding:10px;margin-bottom:8px;cursor:pointer;transition:border-color 0.2s;}
+    .kanban-card:hover{border-color:var(--gold);}
+    .card-title{font-size:12px;font-weight:600;color:var(--text1);line-height:1.4;margin-bottom:6px;}
+    .card-meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+    .card-tag{font-size:9px;padding:2px 6px;border-radius:6px;font-weight:700;}
+    .tag-hi{background:rgba(88,166,255,0.15);color:var(--blue);}
+    .tag-product{background:rgba(163,113,247,0.15);color:var(--lavender);}
+    .tag-finance{background:rgba(63,185,80,0.15);color:var(--sage);}
+    .tag-family{background:rgba(255,107,138,0.15);color:var(--rose);}
+    .card-assignee{font-size:9px;color:var(--text3);margin-left:auto;}
+    .priority-dot{width:6px;height:6px;border-radius:50%;}
+    .p-high{background:var(--rose);}
+    .p-medium{background:var(--gold);}
+    .p-low{background:var(--text3);}
+    .add-task-btn{width:100%;padding:8px;background:none;border:1px dashed var(--border);
+      border-radius:8px;font-size:11px;color:var(--text2);cursor:pointer;margin-top:4px;}
+    .add-task-btn:hover{border-color:var(--gold);color:var(--gold);}
+
+    /* Projects */
+    .project-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:28px;}
+    .project-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;
+      padding:16px;transition:border-color 0.2s;}
+    .project-card:hover{border-color:var(--blue);}
+    .project-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;}
+    .project-emoji{font-size:24px;}
+    .project-status{font-size:9px;font-weight:700;padding:3px 8px;border-radius:10px;}
+    .status-active{background:rgba(63,185,80,0.15);color:var(--sage);}
+    .status-planning{background:rgba(163,113,247,0.15);color:var(--lavender);}
+    .status-paused{background:rgba(139,148,158,0.15);color:var(--text2);}
+    .project-name{font-size:14px;font-weight:800;color:var(--text1);margin-bottom:4px;}
+    .project-category{font-size:10px;color:var(--text2);margin-bottom:8px;}
+    .project-desc{font-size:11px;color:var(--text2);line-height:1.5;margin-bottom:12px;}
+    .progress-bar{height:4px;background:var(--surface2);border-radius:4px;overflow:hidden;margin-bottom:8px;}
+    .progress-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--blue),var(--lavender));}
+    .progress-label{font-size:10px;color:var(--text2);}
+    .open-items{margin-top:10px;}
+    .open-item{font-size:10px;color:var(--text2);padding:4px 0;
+      border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:6px;}
+    .open-item:last-child{border-bottom:none;}
+    .open-item::before{content:"→";color:var(--gold);flex-shrink:0;}
+
+    /* Team */
+    .team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px;}
+    .agent-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;}
+    .agent-head{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+    .agent-emoji{font-size:28px;}
+    .agent-name{font-size:14px;font-weight:800;color:var(--text1);}
+    .agent-model{font-size:10px;color:var(--text2);}
+    .agent-role{font-size:12px;color:var(--gold);font-weight:600;margin-bottom:6px;}
+    .agent-scope{font-size:11px;color:var(--text2);line-height:1.4;}
+    .agent-status{display:inline-flex;align-items:center;gap:5px;font-size:10px;
+      padding:3px 8px;border-radius:10px;margin-top:8px;}
+    .s-online{background:rgba(63,185,80,0.15);color:var(--sage);}
+    .s-scheduled{background:rgba(88,166,255,0.15);color:var(--blue);}
+    .s-standby{background:rgba(240,192,64,0.15);color:var(--gold);}
+    .s-disabled{background:rgba(139,148,158,0.1);color:var(--text3);}
+
+    /* Memory */
+    .memory-list{display:flex;flex-direction:column;gap:8px;}
+    .memory-entry{background:var(--surface);border:1px solid var(--border);border-radius:10px;
+      padding:14px;cursor:pointer;transition:border-color 0.2s;}
+    .memory-entry:hover{border-color:var(--blue);}
+    .memory-date{font-size:12px;font-weight:700;color:var(--blue);margin-bottom:4px;}
+    .memory-preview{font-size:11px;color:var(--text2);line-height:1.5;}
+    .memory-tags{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;}
+    .memory-tag{font-size:9px;padding:2px 7px;border-radius:6px;
+      background:var(--surface2);color:var(--text2);}
+
+    /* Add task modal */
+    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:200;
+      display:flex;align-items:center;justify-content:center;padding:20px;}
+    .modal{background:var(--surface);border:1px solid var(--border);border-radius:16px;
+      padding:24px;width:100%;max-width:440px;}
+    .modal h3{font-size:16px;font-weight:800;margin-bottom:16px;}
+    .form-row{margin-bottom:12px;}
+    .form-label{font-size:11px;color:var(--text2);margin-bottom:4px;font-weight:600;}
+    .form-input,.form-select,.form-textarea{width:100%;background:var(--surface2);
+      border:1px solid var(--border);border-radius:8px;padding:8px 10px;
+      font-size:13px;color:var(--text1);font-family:inherit;}
+    .form-textarea{min-height:60px;resize:vertical;}
+    .form-input:focus,.form-select:focus,.form-textarea:focus{outline:none;border-color:var(--gold);}
+    .modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:16px;}
+    .btn{padding:8px 16px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;border:none;}
+    .btn-primary{background:var(--gold);color:#000;}
+    .btn-cancel{background:var(--surface2);color:var(--text2);}
+
+    .hidden{display:none;}
+
+    @media(max-width:600px){
+      .kanban{grid-template-columns:1fr 1fr;}
+      .project-grid{grid-template-columns:1fr;}
+      .team-grid{grid-template-columns:1fr 1fr;}
+      .stats-row{grid-template-columns:repeat(2,1fr);}
+      .mission-pillars{grid-template-columns:1fr;}
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="logo">🖤</div>
+    <div>
+      <div class="header-title">Mission Control</div>
+      <div class="header-sub">Ava & Shameen · Higney International</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="status-dot"></div>
+    <span class="status-text">Ava online</span>
+    <div class="time-badge" id="timeBadge">—</div>
+  </div>
+</div>
+
+<div class="nav">
+  <button class="nav-btn active" onclick="showTab('mission')">🎯 Mission</button>
+  <button class="nav-btn" onclick="showTab('tasks')">✅ Tasks</button>
+  <button class="nav-btn" onclick="showTab('projects')">📁 Projects</button>
+  <button class="nav-btn" onclick="showTab('team')">👥 Team</button>
+  <button class="nav-btn" onclick="showTab('memory')">🧠 Memory</button>
+</div>
+
+<div class="content">
+
+  <!-- MISSION -->
+  <div id="tab-mission">
+    <div class="mission-banner" id="missionBanner">
+      <div class="mission-label">🎯 Our Mission</div>
+      <div class="mission-text" id="missionText">Loading…</div>
+      <div class="mission-pillars" id="missionPillars"></div>
+    </div>
+    <div class="stats-row" id="statsRow"></div>
+    <div class="section-title">🔥 Active Right Now</div>
+    <div id="activeTasksPreview"></div>
+  </div>
+
+  <!-- TASKS -->
+  <div id="tab-tasks" class="hidden">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+      <div class="section-title" style="margin:0;">Task Board</div>
+      <button class="btn btn-primary" onclick="openAddTask()" style="font-size:11px;padding:6px 14px;">+ New Task</button>
+    </div>
+    <div class="kanban" id="kanbanBoard"></div>
+  </div>
+
+  <!-- PROJECTS -->
+  <div id="tab-projects" class="hidden">
+    <div class="section-title">All Projects <span class="section-badge" id="projCount"></span></div>
+    <div class="project-grid" id="projectGrid"></div>
+  </div>
+
+  <!-- TEAM -->
+  <div id="tab-team" class="hidden">
+    <div class="section-title">Agent Team</div>
+    <div class="team-grid" id="teamGrid"></div>
+  </div>
+
+  <!-- MEMORY -->
+  <div id="tab-memory" class="hidden">
+    <div class="section-title">Memory Log</div>
+    <div class="memory-list" id="memoryList"></div>
+  </div>
+
+</div>
+
+<!-- Add Task Modal -->
+<div class="modal-overlay hidden" id="addTaskModal">
+  <div class="modal">
+    <h3>➕ New Task</h3>
+    <div class="form-row">
+      <div class="form-label">Title</div>
+      <input class="form-input" id="newTitle" placeholder="What needs to be done?"/>
+    </div>
+    <div class="form-row">
+      <div class="form-label">Project</div>
+      <select class="form-select" id="newProject"></select>
+    </div>
+    <div class="form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+      <div>
+        <div class="form-label">Assigned to</div>
+        <select class="form-select" id="newAssignee">
+          <option value="ava">🖤 Ava</option>
+          <option value="shameen">👩 Shameen</option>
+        </select>
+      </div>
+      <div>
+        <div class="form-label">Priority</div>
+        <select class="form-select" id="newPriority">
+          <option value="high">🔴 High</option>
+          <option value="medium">🟡 Medium</option>
+          <option value="low">⚪ Low</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-label">Notes</div>
+      <textarea class="form-textarea" id="newNotes" placeholder="Optional context…"></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-cancel" onclick="closeAddTask()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveNewTask()">Add Task</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var RAW = "https://raw.githubusercontent.com/higneyintl/ava-mission-control/main/data/";
+var COLS = [
+  {id:"todo",    label:"Backlog",     color:"var(--text3)"},
+  {id:"inprogress", label:"In Progress", color:"var(--blue)"},
+  {id:"review",  label:"Review",      color:"var(--gold)"},
+  {id:"done",    label:"Done",        color:"var(--sage)"}
+];
+var PROJECT_CATS = {
+  "HI Operations":"hi","Product Ventures":"product",
+  "Financial Freedom":"finance","Family & Faith":"family"
+};
+var data = {mission:null, tasks:[], projects:[], team:[]};
+
+// ── Fetch data ──
+function fetchJSON(file) {
+  return fetch(RAW+file+"?t="+Date.now()).then(function(r){return r.json();});
+}
+
+Promise.all([
+  fetchJSON("mission.json"),
+  fetchJSON("tasks.json"),
+  fetchJSON("projects.json"),
+  fetchJSON("team.json")
+]).then(function(results) {
+  data.mission = results[0];
+  data.tasks = results[1];
+  data.projects = results[2];
+  data.team = results[3];
+  // Merge localStorage tasks
+  var local = getLocalTasks();
+  local.forEach(function(lt){ if(!data.tasks.find(function(t){return t.id===lt.id;})) data.tasks.push(lt); });
+  renderAll();
+}).catch(function(e){
+  // Fallback to localStorage only
+  data.tasks = getLocalTasks();
+  renderAll();
+});
+
+function getLocalTasks(){var v=localStorage.getItem("mc_tasks");return v?JSON.parse(v):[];}
+function saveLocalTasks(t){localStorage.setItem("mc_tasks",JSON.stringify(t));}
+
+// ── Clock ──
+function updateClock(){
+  var now = new Date();
+  var opts = {weekday:"short",month:"short",day:"numeric",hour:"2-digit",minute:"2-digit",timeZone:"America/New_York"};
+  document.getElementById("timeBadge").textContent = now.toLocaleString("en-US",opts)+" ET";
+}
+updateClock(); setInterval(updateClock,30000);
+
+// ── Render all ──
+function renderAll(){
+  renderMission();
+  renderStats();
+  renderActivePreview();
+  renderKanban();
+  renderProjects();
+  renderTeam();
+  renderMemory();
+}
+
+// ── Mission ──
+function renderMission(){
+  if(!data.mission)return;
+  document.getElementById("missionText").textContent = data.mission.statement;
+  var pillars = document.getElementById("missionPillars");
+  pillars.innerHTML="";
+  (data.mission.pillars||[]).forEach(function(p){
+    var d=document.createElement("div"); d.className="mission-pillar"; d.textContent=p;
+    pillars.appendChild(d);
+  });
+}
+
+// ── Stats ──
+function renderStats(){
+  var active = data.tasks.filter(function(t){return t.status!=="done";}).length;
+  var done = data.tasks.filter(function(t){return t.status==="done";}).length;
+  var projects = data.projects.filter(function(p){return p.status==="active";}).length;
+  var agents = data.team.filter(function(a){return a.status==="online"||a.status==="scheduled";}).length;
+  var stats = [
+    {val:active,lbl:"Open Tasks"},
+    {val:done,lbl:"Completed"},
+    {val:projects,lbl:"Active Projects"},
+    {val:agents,lbl:"Agents Active"}
+  ];
+  var row = document.getElementById("statsRow");
+  row.innerHTML="";
+  stats.forEach(function(s){
+    var d=document.createElement("div"); d.className="stat-card";
+    d.innerHTML="<div class=\"stat-val\">"+s.val+"</div><div class=\"stat-lbl\">"+s.lbl+"</div>";
+    row.appendChild(d);
+  });
+}
+
+// ── Active preview ──
+function renderActivePreview(){
+  var el = document.getElementById("activeTasksPreview");
+  var active = data.tasks.filter(function(t){return t.status==="inprogress"||t.status==="review";}).slice(0,5);
+  el.innerHTML="";
+  active.forEach(function(t){
+    var p = data.projects.find(function(x){return x.id===t.project;})||{name:"",category:""};
+    var cat = PROJECT_CATS[p.category]||"hi";
+    var d=document.createElement("div"); d.className="kanban-card"; d.style.marginBottom="8px";
+    d.innerHTML="<div class=\"card-title\">"+t.title+"</div>"+
+      "<div class=\"card-meta\">"+
+      "<span class=\"card-tag tag-"+cat+"\">"+p.name+"</span>"+
+      "<span class=\"priority-dot p-"+t.priority+"\" title=\""+t.priority+" priority\"></span>"+
+      "<span class=\"card-assignee\">"+(t.assignee==="ava"?"🖤 Ava":"👩 Shameen")+"</span></div>"+
+      (t.notes?"<div style=\"font-size:10px;color:var(--text3);margin-top:6px;\">"+t.notes+"</div>":"");
+    el.appendChild(d);
+  });
+  if(!active.length) el.innerHTML="<div style=\"color:var(--text2);font-size:13px;padding:20px 0;\">No tasks in progress — all clear! 🎉</div>";
+}
+
+// ── Kanban ──
+function renderKanban(){
+  var board = document.getElementById("kanbanBoard");
+  board.innerHTML="";
+  COLS.forEach(function(col){
+    var tasks = data.tasks.filter(function(t){return t.status===col.id;});
+    var div=document.createElement("div"); div.className="kanban-col";
+    var head="<div class=\"kanban-col-head\"><div class=\"col-dot\" style=\"background:"+col.color+";\"></div>"+col.label+" <span style=\"color:var(--text3);font-weight:400;\">("+tasks.length+")</span></div>";
+    var cards="";
+    tasks.forEach(function(t){
+      var p = data.projects.find(function(x){return x.id===t.project;})||{name:"",category:""};
+      var cat = PROJECT_CATS[p.category]||"hi";
+      cards+="<div class=\"kanban-card\" onclick=\"cycleStatus('"+t.id+"')\">"+
+        "<div class=\"card-title\">"+t.title+"</div>"+
+        "<div class=\"card-meta\">"+
+        "<span class=\"card-tag tag-"+cat+"\">"+p.name.split(" ")[0]+"</span>"+
+        "<div class=\"priority-dot p-"+t.priority+"\"></div>"+
+        "<span class=\"card-assignee\">"+(t.assignee==="ava"?"🖤":"👩")+"</span></div>"+
+        "</div>";
+    });
+    div.innerHTML=head+cards+"<button class=\"add-task-btn\" onclick=\"openAddTask('"+col.id+"')\">+ Add</button>";
+    board.appendChild(div);
+  });
+}
+
+function cycleStatus(id){
+  var order=["todo","inprogress","review","done"];
+  var task = data.tasks.find(function(t){return t.id===id;});
+  if(!task)return;
+  var idx=order.indexOf(task.status);
+  task.status=order[(idx+1)%order.length];
+  saveLocalTasks(data.tasks.filter(function(t){return t.id.startsWith("local_");}));
+  renderKanban(); renderStats(); renderActivePreview();
+}
+
+// ── Projects ──
+function renderProjects(){
+  var grid=document.getElementById("projectGrid");
+  var cnt=document.getElementById("projCount");
+  if(cnt) cnt.textContent=data.projects.length;
+  grid.innerHTML="";
+  data.projects.forEach(function(p){
+    var cat=PROJECT_CATS[p.category]||"hi";
+    var statusClass="status-"+(p.status||"active");
+    var items=(p.openItems||[]).slice(0,3).map(function(i){return "<div class=\"open-item\">"+i+"</div>";}).join("");
+    var card=document.createElement("div"); card.className="project-card";
+    card.innerHTML=
+      "<div class=\"project-head\"><span class=\"project-emoji\">"+p.emoji+"</span><span class=\"project-status "+statusClass+"\">"+p.status+"</span></div>"+
+      "<div class=\"project-name\">"+p.name+"</div>"+
+      "<div class=\"project-category\"><span class=\"card-tag tag-"+cat+"\">"+p.category+"</span></div>"+
+      "<div class=\"project-desc\">"+p.description+"</div>"+
+      "<div class=\"progress-bar\"><div class=\"progress-fill\" style=\"width:"+p.progress+"%\"></div></div>"+
+      "<div class=\"progress-label\">"+p.progress+"% progress</div>"+
+      (items?"<div class=\"open-items\">"+items+"</div>":"");
+    grid.appendChild(card);
+  });
+}
+
+// ── Team ──
+function renderTeam(){
+  var grid=document.getElementById("teamGrid");
+  grid.innerHTML="";
+  data.team.forEach(function(a){
+    var sc="s-"+a.status;
+    var card=document.createElement("div"); card.className="agent-card";
+    card.innerHTML=
+      "<div class=\"agent-head\"><span class=\"agent-emoji\">"+a.emoji+"</span>"+
+      "<div><div class=\"agent-name\">"+a.name+"</div><div class=\"agent-model\">"+a.model+"</div></div></div>"+
+      "<div class=\"agent-role\">"+a.role+"</div>"+
+      "<div class=\"agent-scope\">"+a.scope+"</div>"+
+      "<div class=\"agent-status "+sc+"\">● "+a.status+"</div>";
+    grid.appendChild(card);
+  });
+}
+
+// ── Memory ──
+function renderMemory(){
+  var list=document.getElementById("memoryList");
+  var entries=[
+    {date:"2026-03-14",preview:"Wellness app: Pregnancy tab, 6 daily health checks, day navigation, birth plan tab. Mission Control roadmap created. Data backup feature added.",tags:["Wellness App","Birth Plan","Mission Control"]},
+    {date:"2026-03-13",preview:"HI Procurement Tracker: Submitted for Client Approval status added. MetroLagoons_Items_to_Source_v3.pptx with Fire Pit Tables. Beach umbrella report updated.",tags:["Metro Lagoons","Tracker","PPTX"]},
+    {date:"2026-03-12",preview:"Manual backup completed to both Drive accounts. Budget summary sent to Jonathan Kelly ($100K net savings). Gateway reconnection fixed — Amphetamine added to Login Items.",tags:["Backup","Metro Lagoons","Infrastructure"]},
+    {date:"2026-03-10",preview:"Tiki hut permit research completed. FL §553.73(10)(i) chickee exemption documented. Security podium sourced. Decoscape Sectional Sofa v2 PPT redesigned.",tags:["Tiki Huts","Security Podium","PPT"]},
+    {date:"2026-03-09",preview:"All cron jobs fixed after gateway failure. March 9 journal written to #ava-journal. Chickee exemption report uploaded to Drive.",tags:["Cron Jobs","Discord","Infrastructure"]}
+  ];
+  list.innerHTML="";
+  entries.forEach(function(e){
+    var div=document.createElement("div"); div.className="memory-entry";
+    var tags=e.tags.map(function(t){return "<span class=\"memory-tag\">"+t+"</span>";}).join("");
+    div.innerHTML="<div class=\"memory-date\">📅 "+e.date+"</div><div class=\"memory-preview\">"+e.preview+"</div><div class=\"memory-tags\">"+tags+"</div>";
+    list.appendChild(div);
+  });
+}
+
+// ── Add task ──
+var addTaskDefaultStatus = "todo";
+function openAddTask(status){
+  addTaskDefaultStatus = status||"todo";
+  // Populate project dropdown
+  var sel=document.getElementById("newProject");
+  sel.innerHTML="";
+  data.projects.forEach(function(p){
+    var opt=document.createElement("option"); opt.value=p.id; opt.textContent=p.emoji+" "+p.name;
+    sel.appendChild(opt);
+  });
+  document.getElementById("addTaskModal").classList.remove("hidden");
+}
+function closeAddTask(){document.getElementById("addTaskModal").classList.add("hidden");}
+function saveNewTask(){
+  var title=document.getElementById("newTitle").value.trim();
+  if(!title)return;
+  var task={
+    id:"local_"+Date.now(), title:title,
+    project:document.getElementById("newProject").value,
+    assignee:document.getElementById("newAssignee").value,
+    priority:document.getElementById("newPriority").value,
+    status:addTaskDefaultStatus,
+    notes:document.getElementById("newNotes").value.trim(),
+    createdAt:new Date().toISOString().slice(0,10)
+  };
+  data.tasks.push(task);
+  var localTasks=getLocalTasks(); localTasks.push(task); saveLocalTasks(localTasks);
+  closeAddTask();
+  document.getElementById("newTitle").value="";
+  document.getElementById("newNotes").value="";
+  renderKanban(); renderStats(); renderActivePreview();
+}
+
+// ── Tabs ──
+function showTab(id){
+  document.querySelectorAll(".nav-btn").forEach(function(b){b.classList.remove("active");});
+  event.target.classList.add("active");
+  ["mission","tasks","projects","team","memory"].forEach(function(t){
+    var el=document.getElementById("tab-"+t);
+    if(el) el.classList.toggle("hidden",t!==id);
+  });
+}
+</script>
+</body>
+</html>
