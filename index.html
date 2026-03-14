@@ -273,6 +273,93 @@
     .btn-primary{background:var(--blue);color:#fff;}
     .btn-cancel{background:var(--surface2);color:var(--text2);}
     .hidden{display:none;}
+
+    /* ════════════════════════════════════════
+       MOBILE OPTIMIZATION (≤680px)
+    ════════════════════════════════════════ */
+    @media(max-width:680px){
+
+      /* Shell: stack vertically */
+      .shell{flex-direction:column;}
+
+      /* Sidebar → fixed bottom tab bar */
+      .sidebar{
+        width:100%; height:60px; flex-direction:row;
+        position:fixed; bottom:0; left:0; right:0; z-index:100;
+        border-right:none; border-top:1px solid var(--sidebar-border);
+        flex-shrink:0;
+      }
+      .sb-logo,.sb-footer,.sb-divider,.sb-section{display:none;}
+      .sb-nav{
+        display:flex; flex-direction:row; align-items:center;
+        justify-content:space-around; padding:0; width:100%;
+      }
+      .sb-item{
+        flex-direction:column; gap:2px; padding:6px 4px;
+        font-size:9px; font-weight:600; border-radius:8px;
+        min-width:52px; align-items:center; justify-content:center;
+        flex:1;
+      }
+      .sb-item-icon{font-size:18px; width:auto;}
+      .sb-item.active{background:rgba(79,142,247,0.12);}
+
+      /* Main: fill screen above bottom bar */
+      .main{flex:1; padding-bottom:60px;}
+
+      /* Topbar: compact */
+      .topbar{padding:0 12px; height:44px;}
+      .topbar-title{font-size:13px;}
+      .time-badge{display:none;}
+
+      /* Hide activity panel on mobile */
+      .activity-panel{display:none !important;}
+
+      /* Body: single column */
+      .body{flex-direction:column;}
+      .page{overflow:visible;}
+
+      /* Stats bar: compact */
+      .statsbar{padding:10px 12px 0;}
+      .stats-inline{gap:10px; margin-bottom:10px; flex-wrap:nowrap; overflow-x:auto;}
+      .stat-inline-val,.stat-inline-pct{font-size:18px;}
+      .stat-inline-lbl{font-size:10px;}
+      .stat-inline-sep{display:none;}
+
+      /* Filters row: scrollable */
+      .filters-row{flex-wrap:nowrap; overflow-x:auto; padding-bottom:10px; gap:6px;}
+      .filters-row::-webkit-scrollbar{display:none;}
+      .new-task-btn{white-space:nowrap; flex-shrink:0;}
+      .filter-btn{white-space:nowrap; flex-shrink:0;}
+
+      /* Kanban: vertical stack, full width */
+      .kanban-wrap{padding:0 12px 12px; overflow-x:hidden;}
+      .kanban{
+        display:flex; flex-direction:column; gap:12px;
+        min-width:unset; width:100%;
+      }
+      .k-col{width:100%;}
+      .k-cards{max-height:400px; overflow-y:auto;}
+
+      /* Tab content padding */
+      .tab-content{padding:12px;}
+
+      /* Projects: single column */
+      .project-grid{grid-template-columns:1fr;}
+      .stat-cards{grid-template-columns:repeat(2,1fr);}
+
+      /* Team: 2 col */
+      .team-grid{grid-template-columns:1fr 1fr;}
+
+      /* Calendar grid: single column */
+      .cal-grid{grid-template-columns:1fr;}
+
+      /* Mission pillars: single column */
+      .mission-pillars{grid-template-columns:1fr;}
+
+      /* Modal: full screen bottom sheet */
+      .modal-overlay{align-items:flex-end; padding:0;}
+      .modal{border-radius:16px 16px 0 0; max-width:100%; padding:20px 16px 32px;}
+    }
   </style>
 </head>
 <body>
