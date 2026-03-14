@@ -429,6 +429,8 @@
       /* Team: 2 col */
       .team-grid{grid-template-columns:1fr 1fr;}
 
+      /* Hide calendar legend + nav on mobile — redundant */
+      #calLegend{display:none;}
       /* Calendar grid: single column */
       .cal-grid{grid-template-columns:1fr;}
 
@@ -580,7 +582,7 @@
               <button class="tb-btn" onclick="refreshCal()">↻</button>
             </div>
           </div>
-          <div class="cal-legend">
+          <div class="cal-legend" id="calLegend">
             <div class="cal-legend-item"><div class="cal-legend-dot" style="background:rgba(62,207,110,0.4);"></div>Ran OK</div>
             <div class="cal-legend-item"><div class="cal-legend-dot" style="background:rgba(255,95,135,0.4);"></div>Error</div>
             <div class="cal-legend-item"><div class="cal-legend-dot" style="background:rgba(79,142,247,0.3);"></div>Scheduled</div>
