@@ -37,7 +37,8 @@
     "status": "inprogress",
     "priority": "medium",
     "notes": "Draft sent to sales@thesecuritystation.com",
-    "createdAt": "2026-03-14"
+    "createdAt": "2026-03-14",
+    "dueDate": "2026-03-21"
   },
   {
     "id": "t5",
@@ -57,7 +58,8 @@
     "status": "todo",
     "priority": "low",
     "notes": "~$12 on Namecheap or GoDaddy",
-    "createdAt": "2026-03-14"
+    "createdAt": "2026-03-14",
+    "dueDate": "2026-04-01"
   },
   {
     "id": "t7",
@@ -67,7 +69,8 @@
     "status": "done",
     "priority": "high",
     "notes": "Apr 5 deadline. Need: scripture content, color palette, SEO keywords, pricing",
-    "createdAt": "2026-03-14"
+    "createdAt": "2026-03-14",
+    "dueDate": "2026-04-05"
   },
   {
     "id": "t8",
@@ -87,7 +90,8 @@
     "status": "todo",
     "priority": "medium",
     "notes": "Diapering / faith / feeding / childhood approach preferences",
-    "createdAt": "2026-03-14"
+    "createdAt": "2026-03-14",
+    "dueDate": "2026-04-15"
   },
   {
     "id": "t10",
@@ -97,7 +101,8 @@
     "status": "todo",
     "priority": "medium",
     "notes": "Browse & add exercises, custom exercises, remove/reorder",
-    "createdAt": "2026-03-14"
+    "createdAt": "2026-03-14",
+    "dueDate": "2026-04-15"
   },
   {
     "id": "t11",
@@ -127,7 +132,8 @@
     "status": "todo",
     "priority": "medium",
     "notes": "Required before submitting passport application",
-    "createdAt": "2026-03-14"
+    "createdAt": "2026-03-14",
+    "dueDate": "2026-03-28"
   },
   {
     "id": "t14",
@@ -137,7 +143,8 @@
     "status": "todo",
     "priority": "medium",
     "notes": "Do after photos are taken",
-    "createdAt": "2026-03-14"
+    "createdAt": "2026-03-14",
+    "dueDate": "2026-04-07"
   },
   {
     "id": "t15",
@@ -147,7 +154,8 @@
     "status": "todo",
     "priority": "medium",
     "notes": "https://email.notification.circle.so/c/eJwUzUvOKiEQQOHVwAwDBfIYMLiT3oahi2olUo1BvIm7_-P4JOfDwfw52_reWs0GnDVW1uwdmlAlZROCNVHHFOUjB41YnXFA3obd-nANxaW4e7ge0RiULfu06xQIwLoDbyaid9pGC...",
-    "createdAt": "2026-03-14"
+    "createdAt": "2026-03-14",
+    "dueDate": "2026-03-21"
   },
   {
     "id": "t16",
@@ -157,7 +165,8 @@
     "status": "todo",
     "priority": "medium",
     "notes": "https://email.notification.circle.so/c/eJwUzUGOwyAMQNHTwI4q2BSSBYvZ5BqVg900GgiVS0fq7Uddf-m_0lt7n8f43A7OHgJ6tJxjKD6xlexTwjABwmwfOWG4EvrIidEnJJ8mFuHEcQGOGO2R47LhfeYUCNjffOKFJpw...",
-    "createdAt": "2026-03-14"
+    "createdAt": "2026-03-14",
+    "dueDate": "2026-03-21"
   },
   {
     "id": "t17",
@@ -167,6 +176,7 @@
     "status": "todo",
     "priority": "medium",
     "notes": "Monthly delivery box \u2014 grass-fed, pasture-raised. Research options, compare price/quality.",
-    "createdAt": "2026-03-14"
+    "createdAt": "2026-03-14",
+    "dueDate": "2026-03-21"
   }
 ]
