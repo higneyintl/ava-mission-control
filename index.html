@@ -279,8 +279,14 @@
     ════════════════════════════════════════ */
     @media(max-width:680px){
 
-      /* Shell: stack vertically */
-      .shell{flex-direction:column;}
+      /* Allow full-page scroll on mobile */
+      html,body{overflow:auto; height:auto;}
+      .shell{flex-direction:column; height:auto; min-height:100vh; overflow:visible;}
+      .main{overflow:visible; height:auto;}
+      .body{flex-direction:column; overflow:visible; height:auto;}
+      .page{overflow:visible; height:auto; flex:none;}
+      .kanban-wrap{overflow:visible; height:auto;}
+      .k-cards{max-height:none; overflow:visible;}
 
       /* Sidebar → fixed bottom tab bar */
       .sidebar{
