@@ -1,0 +1,82 @@
+[
+  {
+    "date": "2026-03-14",
+    "title": "Mission Control built + major dashboard day",
+    "summary": "Built Mission Control from scratch \u2014 sidebar nav, Kanban task board, Projects, Calendar, Team, Memory tabs. Added live sync from memory files, task detail modals, project detail panels. Renamed Wellness App \u2192 Mommy. Added Personal project with passport tasks, TD Accelerator watch tasks, steak box research.",
+    "decisions": [
+      "White Oak Pastures shortlisted for steak box",
+      "Wellness App renamed Mommy",
+      "Personal project created for Shameen's life admin"
+    ],
+    "openItems": [
+      "Steak box subscription to set up",
+      "TD Accelerator meetings to watch",
+      "Canadian passport photos + application"
+    ],
+    "projects": [
+      "Mission Control",
+      "Mommy",
+      "Personal"
+    ]
+  },
+  {
+    "date": "2026-03-13",
+    "title": "Tracker deploy + PPTX v3 + beach umbrella report",
+    "summary": "Fixed Netlify deploy (avasinclaire3 account paused, switched to shameen@higneyintl.com). Added Submitted for Client Approval status to tracker. Built MetroLagoons_Items_to_Source_v3.pptx with Fire Pit Tables slide. Updated beach umbrella aluminum HTML report \u2014 removed internal badges, JEAREY references, client-approved labels.",
+    "decisions": [
+      "Tracker deploys manual via CLI only \u2014 no GitHub webhook",
+      "Netlify account: shameen@higneyintl.com (Higney International)"
+    ],
+    "openItems": [
+      "Beach umbrella report awaiting Shameen approval before HI Drive upload"
+    ],
+    "projects": [
+      "Metro Lagoons"
+    ]
+  },
+  {
+    "date": "2026-03-12",
+    "title": "Budget summary sent + backup fixed + gateway outage resolved",
+    "summary": "Metro Lagoons budget summary built and sent to Jonathan Kelly ($100K net savings). Fixed nightly backup script \u2014 now uploads to both HI Drive and personal Drive. Gateway outage root cause found: Mac reboot after software update, Amphetamine not in Login Items. Fixed. OpenClaw updated to 2026.3.12.",
+    "decisions": [
+      "Amphetamine added to Login Items to survive reboots",
+      "Backup dual-uploads: HI Drive + avasinclaire3 Drive nightly"
+    ],
+    "openItems": [
+      "Valrose ~$57K invoice OVERDUE"
+    ],
+    "projects": [
+      "Metro Lagoons",
+      "Infrastructure"
+    ]
+  },
+  {
+    "date": "2026-03-10",
+    "title": "Tiki hut permits + security podium + Decoscape PPT",
+    "summary": "Researched FL \u00a7553.73(10)(i) chickee exemption \u2014 documented 3 client options. Built permit options report (MD + PDF), uploaded to Drive. Dispatched Picker for security podium sourcing \u2014 3 options found, trade inquiry drafted to The Security Station. Redesigned Decoscape Sectional Sofa v1 \u2192 v2 PPT. Drafted tiki hut email to Jonathan Kelly.",
+    "decisions": [
+      "HI only covers Option 2 (Indian exemption cert) or Option 3 (build without docs)",
+      "Option choice belongs to client, not HI"
+    ],
+    "openItems": [
+      "Tiki hut email awaiting Shameen send",
+      "Security podium awaiting vendor response"
+    ],
+    "projects": [
+      "Metro Lagoons"
+    ]
+  },
+  {
+    "date": "2026-03-09",
+    "title": "All cron jobs fixed after gateway failure",
+    "summary": "All 8 cron jobs were failing after Sunday Mar 8 setup. Root cause: timeoutSeconds in wrong location, channel routing wrong for Discord/Telegram. Fixed all jobs. Confirmed crypto-signal-alert healthy. March 9 journal written to #ava-journal.",
+    "decisions": [
+      "timeoutSeconds lives inside payload object, not top-level",
+      "FF&E agent jobs \u2192 Discord; Ava's own ops jobs \u2192 Telegram"
+    ],
+    "openItems": [],
+    "projects": [
+      "Infrastructure"
+    ]
+  }
+]
