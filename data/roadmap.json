@@ -1,0 +1,181 @@
+{
+  "p2": {
+    "projectName": "Mommy",
+    "lastUpdated": "2026-03-14",
+    "phases": [
+      {
+        "id": "built",
+        "label": "\u2705 Already Built",
+        "color": "#3ecf6e",
+        "items": [
+          {
+            "id": "r1",
+            "title": "Daily stretch routine (8 exercises)",
+            "status": "built"
+          },
+          {
+            "id": "r2",
+            "title": "Timers + rep counters on exercises",
+            "status": "built"
+          },
+          {
+            "id": "r3",
+            "title": "Weekly exercise rotation (weeks 31\u201340)",
+            "status": "built"
+          },
+          {
+            "id": "r4",
+            "title": "Streak tracking + points system",
+            "status": "built"
+          },
+          {
+            "id": "r5",
+            "title": "8 achievement badges",
+            "status": "built"
+          },
+          {
+            "id": "r6",
+            "title": "Prenatal vitamin tracker",
+            "status": "built"
+          },
+          {
+            "id": "r7",
+            "title": "6 daily health checks (water, sleep, movement, protein, kick counts, rest/prayer)",
+            "status": "built"
+          },
+          {
+            "id": "r8",
+            "title": "Progress ring \u2014 all daily items combined",
+            "status": "built"
+          },
+          {
+            "id": "r9",
+            "title": "Day navigation \u2014 view + edit any past day",
+            "status": "built"
+          },
+          {
+            "id": "r10",
+            "title": "Baby Guide tab (unlocks at birth)",
+            "status": "built"
+          },
+          {
+            "id": "r11",
+            "title": "EC tip rotation (from Go Diaper Free)",
+            "status": "built"
+          },
+          {
+            "id": "r12",
+            "title": "Feed + diaper log tab",
+            "status": "built"
+          },
+          {
+            "id": "r13",
+            "title": "Stats/Summary tab \u2014 heatmap, weekly bars, points history",
+            "status": "built"
+          },
+          {
+            "id": "r14",
+            "title": "Birth Plan tab \u2014 pre-populated, editable, print-to-PDF",
+            "status": "built"
+          },
+          {
+            "id": "r15",
+            "title": "Back Up / Restore data (JSON export)",
+            "status": "built"
+          },
+          {
+            "id": "r16",
+            "title": "Compact 5-tab layout, scrollable on mobile",
+            "status": "built"
+          }
+        ]
+      },
+      {
+        "id": "next",
+        "label": "\ud83c\udfd7\ufe0f Next Up",
+        "color": "#4f8ef7",
+        "items": [
+          {
+            "id": "r17",
+            "title": "Onboarding questionnaire \u2014 diapering method, faith/mindfulness, feeding plan, childhood approach",
+            "status": "next",
+            "notes": "Highest priority \u2014 needed for app to serve other moms"
+          },
+          {
+            "id": "r18",
+            "title": "Settings screen \u2014 update any preference anytime",
+            "status": "next"
+          },
+          {
+            "id": "r19",
+            "title": "Exercise library + custom exercises",
+            "status": "next",
+            "notes": "Browse library, add/hide/reorder, create custom, My Routine model"
+          },
+          {
+            "id": "r20",
+            "title": "Week-by-week progression \u2014 early pregnancy (wks 4\u201326) + postpartum mode",
+            "status": "next"
+          },
+          {
+            "id": "r21",
+            "title": "Baby activity library by week of life (Montessori, RIE, Waldorf)",
+            "status": "next"
+          }
+        ]
+      },
+      {
+        "id": "ideas",
+        "label": "\ud83d\udca1 Ideas & Future",
+        "color": "#9b6dff",
+        "items": [
+          {
+            "id": "r22",
+            "title": "Partner view \u2014 read-only access for Peter (kick counts, birth plan)",
+            "status": "idea"
+          },
+          {
+            "id": "r23",
+            "title": "Cloud sync \u2014 back up to Google Drive automatically",
+            "status": "idea"
+          },
+          {
+            "id": "r24",
+            "title": "Affirmations / Scripture rotation \u2014 daily faith card",
+            "status": "idea"
+          },
+          {
+            "id": "r25",
+            "title": "Contraction timer \u2014 for active labor",
+            "status": "idea"
+          },
+          {
+            "id": "r26",
+            "title": "Postpartum mode \u2014 healing tracker, mood log, baby milestones",
+            "status": "idea"
+          },
+          {
+            "id": "r27",
+            "title": "App Store launch (iOS PWA or React Native)",
+            "status": "idea"
+          },
+          {
+            "id": "r28",
+            "title": "Other moms onboarding \u2014 share with other pregnant friends",
+            "status": "idea"
+          },
+          {
+            "id": "r29",
+            "title": "Meal planning / protein tracker integration",
+            "status": "idea"
+          },
+          {
+            "id": "r30",
+            "title": "Sleep quality log with pattern visualization",
+            "status": "idea"
+          }
+        ]
+      }
+    ]
+  }
+}
