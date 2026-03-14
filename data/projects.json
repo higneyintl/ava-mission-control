@@ -61,5 +61,17 @@
       "Scripture/devotional content",
       "SEO keywords + pricing"
     ]
+  },
+  {
+    "id": "p9",
+    "name": "Personal",
+    "emoji": "\ud83d\ude4b",
+    "category": "Personal",
+    "status": "active",
+    "description": "Personal tasks and life admin for Shameen.",
+    "progress": 0,
+    "openItems": [
+      "Canadian passport renewal"
+    ]
   }
 ]
