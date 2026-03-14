@@ -769,7 +769,7 @@ function renderKanban(){
     var cards="";
     colTasks.forEach(function(t){
       var pm=PROJECT_MAP[t.project]||{name:"",cat:"hi"};
-      cards+="<div class='k-card' onclick='cycleStatus(\""+t.id+"\")'><div class='k-card-title'>"+t.title+"</div>"+
+      cards+="<div class='k-card' onclick='openDetail(\""+t.id+"\")'><div class='k-card-title'>"+t.title+"</div>"+
         "<div class='k-card-foot'><span class='k-tag k-tag-"+pm.cat+"'>"+pm.name.split(" ")[0]+"</span>"+
         "<span class='p-dot p-"+t.priority+"'></span>"+
         "<span class='k-avatar'>"+(t.assignee==="ava"?"🖤":"👩")+"</span></div></div>";
