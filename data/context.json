@@ -1,0 +1,107 @@
+{
+  "p1": {
+    "name": "Metro Lagoons",
+    "lastWorked": "2026-03-14",
+    "status": "Active \u2014 multiple items sourcing",
+    "keyContacts": [
+      {
+        "name": "Jonathan Kelly",
+        "email": "jonathan.kelly@metrolagoons.com",
+        "role": "Client"
+      },
+      {
+        "name": "Liz Iwanski",
+        "email": "",
+        "role": "Planter sourcing contact"
+      }
+    ],
+    "notes": "Project Seaire, 9411 Carter Rd., Palmetto FL 34221. Budget summary sent Mar 12 ($100K net savings). Tiki hut email drafted, awaiting Shameen send. Valrose ~$57K OVERDUE.",
+    "files": [
+      {
+        "name": "Budget Summary",
+        "id": "1pzmFVsojxC6n6Vfjq6OMWJz8-6iMl2oa"
+      },
+      {
+        "name": "Items to Source v3 PPTX",
+        "id": "1pRqHrdTYjwhOGfS_-sKo589eMTmGFtEz"
+      },
+      {
+        "name": "Beach Umbrella Report",
+        "id": "1fmTLeKbYVXfglm17uGDur9joOEhoTGlW"
+      }
+    ],
+    "openItems": [
+      "Tiki hut email \u2192 Jonathan",
+      "Beach umbrella \u2192 HI Drive after approval",
+      "Security podium \u2192 awaiting vendor response",
+      "Planters \u2192 need qty + height from Liz"
+    ]
+  },
+  "p2": {
+    "name": "Mommy",
+    "lastWorked": "2026-03-14",
+    "status": "Active \u2014 app live, building features",
+    "keyContacts": [],
+    "notes": "Live at https://higneyintl.github.io/shameen-wellness/ \u2014 repo: higneyintl/shameen-wellness. Pregnancy week 31 starting Mar 15. Baby boy due May 17. Tabs: Wellness, Baby, Feeds, Stats, Birth Plan.",
+    "files": [],
+    "openItems": [
+      "Onboarding questionnaire (top priority)",
+      "Exercise library + custom exercises",
+      "Week-by-week progression (weeks 4-40)",
+      "Settings screen"
+    ]
+  },
+  "p3": {
+    "name": "Get Newly Named",
+    "lastWorked": "2026-03-14",
+    "status": "Planning \u2014 proposal built",
+    "keyContacts": [
+      {
+        "name": "Lutfiya Miller",
+        "email": "",
+        "role": "Co-founder"
+      }
+    ],
+    "notes": "Name-change tracker app for newlyweds. $19-29 one-time purchase. Proposal PDF + HTML built and on Drive. Domain GetNewlyNamed.com not yet registered (~$12).",
+    "files": [
+      {
+        "name": "Proposal PDF",
+        "id": "1ssBGTczE8pIaIcMq-YAE0io8aEqwrhe4"
+      },
+      {
+        "name": "Proposal HTML",
+        "id": "1nlstLiweFCyK-m3RWSYE-958lt1_R3eG"
+      }
+    ],
+    "openItems": [
+      "Register GetNewlyNamed.com domain",
+      "Share proposal with Lutfiya"
+    ]
+  },
+  "p4": {
+    "name": "Etsy",
+    "lastWorked": "2026-03-14",
+    "status": "Active \u2014 Easter pack due Apr 5",
+    "keyContacts": [],
+    "notes": "Store: Faithful Nest Studio. Account: avasinclaire3@gmail.com. Easter bundle (Apr 5 deadline) + Paycheck Budget Pro in pipeline.",
+    "files": [],
+    "openItems": [
+      "Easter bundle Canva design session",
+      "Scripture content + color palette + SEO + pricing"
+    ]
+  },
+  "p9": {
+    "name": "Personal",
+    "lastWorked": "2026-03-14",
+    "status": "Active",
+    "keyContacts": [],
+    "notes": "Shameen's personal life admin tasks.",
+    "files": [],
+    "openItems": [
+      "Canadian passport photos",
+      "Canadian passport application",
+      "Watch TD Accelerator meetings (Mar 10 + Mar 12)",
+      "Set up steak box subscription"
+    ]
+  }
+}
