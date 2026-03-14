@@ -1444,9 +1444,70 @@ function cronFitsDay(c,day){
   if(Array.isArray(sch.days))return sch.days.indexOf(dow)>-1;
   return true;
 }
+function renderCalendarList(crons){
+  var el=document.getElementById("calendarGrid"); if(!el)return;
+  var lbl=document.getElementById("calWeekLabel"); if(lbl)lbl.textContent="This Week";
+  var enabled=crons.filter(function(c){return c.enabled;});
+  enabled.sort(function(a,b){
+    var ha=a.schedule?a.schedule.hour||0:0, hb=b.schedule?b.schedule.hour||0:0;
+    return ha-hb;
+  });
+  var html="";
+  var CAT_COLORS={ffe:"var(--blue)",wellness:"var(--sage)",crypto:"var(--gold)",ops:"var(--lavender)"};
+  enabled.forEach(function(c){
+    var stOk=c.lastStatus==="ok", col=stOk?"var(--sage)":"var(--rose)";
+    var icon=stOk?"✓":"✗";
+    html+="<div style='background:var(--surface);border:1px solid var(--border);border-radius:10px;"+
+      "padding:12px 14px;margin-bottom:8px;display:flex;align-items:center;gap:12px;'>"+
+      "<div style='font-size:22px;'>"+c.emoji+"</div>"+
+      "<div style='flex:1;min-width:0;'>"+
+        "<div style='font-size:13px;font-weight:700;color:var(--text1);'>"+c.name+"</div>"+
+        "<div style='font-size:11px;color:var(--blue);font-weight:600;margin-top:2px;'>⏰ "+scheduleStr(c)+"</div>"+
+        "<div style='font-size:11px;color:var(--text2);margin-top:2px;'>"+c.description+"</div>"+
+      "</div>"+
+      "<div style='text-align:right;flex-shrink:0;'>"+
+        "<div style='font-size:13px;font-weight:800;color:"+col+";'>"+icon+"</div>"+
+        "<div style='font-size:9px;color:var(--text3);margin-top:2px;'>"+c.lastRun+"</div>"+
+      "</div>"+
+      "</div>";
+  });
+  el.innerHTML=html||"<div style='color:var(--text2);font-size:12px;padding:16px 0;'>No active automations.</div>";
+
+  // Disabled below
+  var disEl=document.getElementById("calDisabledList"); if(!disEl)return;
+  var dis=crons.filter(function(c){return !c.enabled;});
+  if(dis.length){
+    var h="<div style='font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.6px;color:var(--text3);margin:16px 0 8px;'>Disabled</div>";
+    dis.forEach(function(c){
+      h+="<div style='background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 14px;margin-bottom:6px;opacity:0.5;display:flex;align-items:center;gap:10px;'>"+
+        "<span style='font-size:18px;'>"+c.emoji+"</span>"+
+        "<div style='flex:1;font-size:12px;font-weight:600;color:var(--text2);'>"+c.name+
+          "<div style='font-size:10px;color:var(--text3);font-weight:400;'>"+c.description+"</div></div>"+
+        "<span style='font-size:9px;font-weight:700;padding:2px 8px;border-radius:6px;background:rgba(122,132,153,0.1);color:var(--text3);'>OFF</span></div>";
+    });
+    disEl.innerHTML=h;
+  } else disEl.innerHTML="";
+}
+
+function scheduleStr(c){
+  var sch=c.schedule||{};
+  if(sch.label) return sch.label;
+  if(sch.hour==null) return "Recurring";
+  var h=sch.hour,m=sch.minute||0;
+  var label=(h%12||12)+":"+(m<10?"0":"")+m+(h<12?"am":"pm");
+  var days=sch.days==="daily"?"daily":sch.days==="weekdays"?"weekdays":sch.days==="weekends"?"weekends":
+    Array.isArray(sch.days)?["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].filter(function(_,i){return sch.days.indexOf(i)>-1;}).join(","):"";
+  return label+(days?" · "+days:"");
+}
 function renderCalendar(){
   var el=document.getElementById("calendarGrid"); if(!el)return;
   var crons=data.crons||[];
+
+  // Mobile: render as a clean list
+  if(window.innerWidth<=680){
+    renderCalendarList(crons); return;
+  }
+
   var days=getWeekDates(calWeekOffset);
   var today=new Date(); today.setHours(0,0,0,0);
   var lbl=document.getElementById("calWeekLabel");
@@ -1550,41 +1611,7 @@ function calFilter(f,btn){
 }
 var CAT_LABELS={ffe:"FF&E Operations",wellness:"Wellness & Family",crypto:"Crypto & Finance",ops:"System & Memory"};
 var CAT_ORDER=["ffe","wellness","crypto","ops"];
-function renderCalendar(){
-  var el=document.getElementById("calendarGrid");if(!el)return;
-  var crons=data.crons||[];
-  if(calActiveFilter==="enabled") crons=crons.filter(function(c){return c.enabled;});
-  else if(calActiveFilter==="disabled") crons=crons.filter(function(c){return !c.enabled;});
-  el.innerHTML="";
-  CAT_ORDER.forEach(function(cat){
-    var group=crons.filter(function(c){return c.category===cat;});
-    if(!group.length)return;
-    var lbl=document.createElement("div");lbl.className="cal-section-label";
-    lbl.textContent=CAT_LABELS[cat]||cat;
-    el.appendChild(lbl);
-    var grid=document.createElement("div");grid.className="cal-grid";
-    group.forEach(function(c){
-      var card=document.createElement("div");
-      card.className="cron-card"+(c.enabled?"":" disabled");
-      card.innerHTML="<div class='cron-head'>"+
-        "<span class='cron-emoji'>"+c.emoji+"</span>"+
-        "<div style='flex:1'><div class='cron-name'>"+c.name+"</div></div>"+
-        "<span class='cron-badge "+(c.enabled?"badge-on":"badge-off")+"'>"+(c.enabled?"● ON":"OFF")+"</span></div>"+
-        "<div class='cron-schedule'>⏰ "+c.schedule+"</div>"+
-        "<div class='cron-desc'>"+c.description+"</div>"+
-        "<div class='cron-meta'>"+
-        "<div class='cron-meta-item'>Agent: <span>"+c.agent+"</span></div>"+
-        (c.lastRun?"<div class='cron-meta-item'>Last: <span>"+c.lastRun+"</span></div>":"")+
-        (c.nextRun&&c.enabled?"<div class='cron-meta-item'>Next: <span>"+c.nextRun+"</span></div>":"")+
-        "</div>";
-      grid.appendChild(card);
-    });
-    el.appendChild(grid);
-  });
-  if(!crons.length)el.innerHTML="<div style='color:var(--text2);font-size:12px;padding:20px 0;'>No crons match filter.</div>";
-}
 
-// ── Tabs ──
 function showTab(id,btn){
   document.querySelectorAll(".sb-item").forEach(function(b){b.classList.remove("active");});
   if(btn)btn.classList.add("active");
