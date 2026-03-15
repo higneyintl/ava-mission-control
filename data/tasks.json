@@ -208,5 +208,15 @@
     "priority": "medium",
     "notes": "",
     "createdAt": "2026-03-15"
+  },
+  {
+    "id": "t1773618670",
+    "title": "Wellness App: Learn tab (education library)",
+    "project": "p2",
+    "assignee": "ava",
+    "status": "todo",
+    "priority": "medium",
+    "notes": "",
+    "createdAt": "2026-03-15"
   }
 ]
