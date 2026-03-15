@@ -739,6 +739,18 @@
         </select>
       </div>
       <div>
+        <div class="form-label">Project</div>
+        <select class="form-select" id="detailProjectSelect" onchange="updateDetailProject()">
+          <option value="p1">🏊 Metro Lagoons</option>
+          <option value="p2">🤰 Mommy</option>
+          <option value="p3">✨ Get Newly Named</option>
+          <option value="p4">🛍️ Etsy</option>
+          <option value="p9">👤 Personal</option>
+        </select>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
+      <div>
         <div class="form-label">Created</div>
         <div style="font-size:12px;color:var(--text2);padding:8px 0;" id="detailCreated"></div>
       </div>
@@ -1143,6 +1155,8 @@ function openDetail(id){
   document.getElementById("detailStatus").value = t.status||"todo";
   document.getElementById("detailPriority").value = t.priority||"medium";
   document.getElementById("detailAssignee").value = t.assignee||"ava";
+  var detailProjSel = document.getElementById("detailProjectSelect");
+  if(detailProjSel) detailProjSel.value = t.project||"p9";
   document.getElementById("detailCreated").textContent = t.createdAt||"—";
   var dueInput = document.getElementById("detailDueInput");
   if(dueInput) dueInput.value = t.dueDate||"";
@@ -1240,6 +1254,14 @@ function updateDetailPriority(){
 function updateDetailAssignee(){
   var t=data.tasks.find(function(x){return x.id===detailTaskId;}); if(!t)return;
   t.assignee=document.getElementById("detailAssignee").value;
+  saveLocal(data.tasks.filter(function(x){return x.id.startsWith("local_");}));
+  renderKanban();
+}
+function updateDetailProject(){
+  var t=data.tasks.find(function(x){return x.id===detailTaskId;}); if(!t)return;
+  t.project=document.getElementById("detailProjectSelect").value;
+  var pm=PROJECT_MAP[t.project]||{name:"Personal"};
+  document.getElementById("detailProject").textContent=pm.name;
   saveLocal(data.tasks.filter(function(x){return x.id.startsWith("local_");}));
   renderKanban();
 }
