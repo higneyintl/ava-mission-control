@@ -1,6 +1,30 @@
 [
   {
     "date": "2026-03-14",
+    "title": "Wellness app launched + Mission Control built",
+    "summary": "Built and shipped the Shameen Wellness (Mommy) App \u2014 prenatal stretch tracker with 5 tabs, daily health checks, birth plan, day navigation, and data backup \u2014 deployed to GitHub Pages. Built Mission Control dashboard with Kanban, calendar, project panels, session log, and live memory sync. Cleared 8 completed tasks and added 5 new ones.",
+    "decisions": [
+      "White Oak Pastures shortlisted as top steak box pick",
+      "Personal project created for life admin (passport, TD Accelerator, steak box)",
+      "Wellness App renamed Mommy; Trading/Crypto/Fiverr/Baby projects removed from board",
+      "Pregnancy week 31 starts March 15 \u2014 app calibrated to Shameen's due date (May 17)"
+    ],
+    "openItems": [
+      "Security podium \u2014 awaiting vendor trade pricing (t4)",
+      "Canadian passport photos + application (t13, t14)",
+      "TD Accelerator meetings to watch (t15, t16)",
+      "Steak box subscription to finalize (t17)",
+      "Get Newly Named domain not registered yet (t6)",
+      "Valrose invoices ~$57K still outstanding"
+    ],
+    "projects": [
+      "Mommy",
+      "Mission Control",
+      "Personal"
+    ]
+  },
+  {
+    "date": "2026-03-14",
     "title": "Mission Control built + major dashboard day",
     "summary": "Built Mission Control from scratch \u2014 sidebar nav, Kanban task board, Projects, Calendar, Team, Memory tabs. Added live sync from memory files, task detail modals, project detail panels. Renamed Wellness App \u2192 Mommy. Added Personal project with passport tasks, TD Accelerator watch tasks, steak box research.",
     "decisions": [
