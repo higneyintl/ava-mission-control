@@ -535,6 +535,15 @@
             <button class="filter-btn active" id="filter-all" onclick="setFilter('all',this)">All</button>
             <button class="filter-btn" id="filter-ava" onclick="setFilter('ava',this)">🖤 Ava</button>
             <button class="filter-btn" id="filter-shameen" onclick="setFilter('shameen',this)">👩 Shameen</button>
+            <div class="filters-sep">|</div>
+            <select class="filter-select" id="projectFilterSelect" onchange="setProjectFilter(this.value)" style="min-width:130px;">
+              <option value="all">📁 All Projects</option>
+              <option value="p1">🏊 Metro Lagoons</option>
+              <option value="p2">🤰 Mommy</option>
+              <option value="p3">✨ Get Newly Named</option>
+              <option value="p4">🛍️ Etsy</option>
+              <option value="p9">👤 Personal</option>
+            </select>
           </div>
         </div>
         <div class="kanban-wrap">
@@ -813,6 +822,7 @@ var PROJECT_MAP={p1:{name:"Metro Lagoons",cat:"hi"},p2:{name:"Mommy",cat:"produc
   p3:{name:"Get Newly Named",cat:"gnn"},p4:{name:"Etsy",cat:"etsy"},p9:{name:"Personal",cat:"personal"}};
 var data={mission:null,tasks:[],projects:[],team:[],crons:[],sessions:[],context:{},roadmap:{}};
 var activeFilter="all";
+var activeProjectFilter="all";
 
 // ── Fetch ──
 function fetchJSON(f){return fetch(RAW+f+"?nc="+Date.now(),{cache:"no-store"}).then(function(r){return r.json();});}
@@ -974,13 +984,19 @@ function renderUpcoming(){
 
 // ── Filter ──
 function filteredTasks(){
-  if(activeFilter==="all")return data.tasks;
-  return data.tasks.filter(function(t){return t.assignee===activeFilter;});
+  var tasks=data.tasks;
+  if(activeFilter!=="all") tasks=tasks.filter(function(t){return t.assignee===activeFilter;});
+  if(activeProjectFilter!=="all") tasks=tasks.filter(function(t){return t.project===activeProjectFilter;});
+  return tasks;
 }
 function setFilter(f,btn){
   activeFilter=f;
   document.querySelectorAll(".filter-btn").forEach(function(b){b.classList.remove("active");});
   btn.classList.add("active");
+  renderKanban();renderStatsInline();
+}
+function setProjectFilter(val){
+  activeProjectFilter=val;
   renderKanban();renderStatsInline();
 }
 
@@ -1606,3 +1622,4 @@ showTab(savedTab);
 <div class="cal-tooltip hidden" id="calTooltip"></div>
 </body>
 </html>
+
