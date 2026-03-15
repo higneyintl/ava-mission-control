@@ -1431,9 +1431,9 @@ function renderSessions(){
 }
 
 // ── Calendar ──
-var calWeekOffset=0;
-function calNavWeek(d){calWeekOffset+=d;renderCalendar();}
-function calGoToday(){calWeekOffset=0;renderCalendar();}
+var calWeekOffset=parseInt(localStorage.getItem("mc_calWeek")||"0");
+function calNavWeek(d){calWeekOffset+=d;localStorage.setItem("mc_calWeek",calWeekOffset);renderCalendar();}
+function calGoToday(){calWeekOffset=0;localStorage.setItem("mc_calWeek","0");renderCalendar();}
 function refreshCal(){fetchJSON("crons.json").then(function(d){data.crons=d;renderCalendar();});}
 
 var HOURS=[0,2,6,8,9,10,11,12,14,16,18,20,22,23];
