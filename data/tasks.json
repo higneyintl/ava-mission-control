@@ -178,5 +178,15 @@
     "notes": "Monthly delivery box \u2014 grass-fed, pasture-raised. Research options, compare price/quality.",
     "createdAt": "2026-03-14",
     "dueDate": "2026-03-21"
+  },
+  {
+    "id": "t1773617936",
+    "title": "Enable auto-reload on Anthropic API key",
+    "project": "p1",
+    "assignee": "shameen",
+    "status": "todo",
+    "priority": "high",
+    "notes": "",
+    "createdAt": "2026-03-15"
   }
 ]
