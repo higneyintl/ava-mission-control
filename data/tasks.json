@@ -198,5 +198,15 @@
     "priority": "high",
     "notes": "",
     "createdAt": "2026-03-15"
+  },
+  {
+    "id": "t1773618669",
+    "title": "Wellness App: Phase-gated content (week-based task unlocking)",
+    "project": "p2",
+    "assignee": "ava",
+    "status": "todo",
+    "priority": "medium",
+    "notes": "",
+    "createdAt": "2026-03-15"
   }
 ]
