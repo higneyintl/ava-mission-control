@@ -596,12 +596,7 @@
               <button class="tb-btn" onclick="refreshCal()">↻</button>
             </div>
           </div>
-          <div class="cal-legend" id="calLegend">
-            <div class="cal-legend-item"><div class="cal-legend-dot" style="background:rgba(62,207,110,0.4);"></div>Ran OK</div>
-            <div class="cal-legend-item"><div class="cal-legend-dot" style="background:rgba(255,95,135,0.4);"></div>Error</div>
-            <div class="cal-legend-item"><div class="cal-legend-dot" style="background:rgba(79,142,247,0.3);"></div>Scheduled</div>
-            <div class="cal-legend-item"><div class="cal-legend-dot" style="background:rgba(122,132,153,0.2);"></div>Disabled</div>
-          </div>
+
           <div id="calendarGrid" style="overflow-x:auto;"></div>
           <div class="cal-disabled-list" id="calDisabledList"></div>
         </div>
@@ -1515,7 +1510,7 @@ function renderCalendar(){
       });
       var ec="";
       evts.forEach(function(c){
-        var ran=c.lastRun===todayStr;
+        var dStr=d.toISOString().slice(0,10); var ran=c.lastRun===dStr;
         var cls=(isPast||ran)?(c.lastStatus==="ok"?"gcal-ev-ok":"gcal-ev-err"):"gcal-ev-future";
         var icon=(isPast||ran)?(c.lastStatus==="ok"?"✓":"✗"):"◦";
         var sn=c.name.length>13?c.name.slice(0,12)+"…":c.name;
