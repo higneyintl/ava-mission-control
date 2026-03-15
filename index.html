@@ -1510,9 +1510,14 @@ function renderCalendar(){
       });
       var ec="";
       evts.forEach(function(c){
-        var dStr=d.toISOString().slice(0,10); var ran=c.lastRun===dStr;
-        var cls=(isPast||ran)?(c.lastStatus==="ok"?"gcal-ev-ok":"gcal-ev-err"):"gcal-ev-future";
-        var icon=(isPast||ran)?(c.lastStatus==="ok"?"✓":"✗"):"◦";
+        var dStr=d.toISOString().slice(0,10);
+        var ran=c.lastRun===dStr;
+        var nowHour=new Date().getHours();
+        var cronHr=c.schedule?c.schedule.hour:null;
+        // For today: only mark ran if the hour has already passed
+        var hasRun=isPast||(ran&&(cronHr===null||cronHr<=nowHour));
+        var cls=hasRun?(c.lastStatus==="ok"?"gcal-ev-ok":"gcal-ev-err"):"gcal-ev-future";
+        var icon=hasRun?(c.lastStatus==="ok"?"✓":"✗"):"◦";
         var sn=c.name.length>13?c.name.slice(0,12)+"…":c.name;
         ec+="<div class='gcal-ev "+cls+"' data-cid='"+c.id+"' onmouseenter='showCalTip(event,this.dataset.cid)' onmouseleave='hideCalTip()'>"+icon+" "+sn+"</div>";
       });
