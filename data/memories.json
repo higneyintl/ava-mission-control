@@ -1,10 +1,21 @@
 [
   {
     "date": "HOT MEMORY",
-    "preview": "# MEMORY.md \u2014 Ava Hot Memory\n*Keep under 1.5KB. Full context \u2192 memory/facts/*\n\n## Shameen\n- Shameen Higney (n\u00e9e Miller) | she/her | Fort Lauderdale, FL | EST\n- Husband: Peter | Stepson: Austin | Baby due May 17, 2026 (third trimester)\n- CPA | Born-again Christian | Direct, efficiency-first, visual t...",
+    "preview": "# MEMORY.md \u2014 Ava Hot Memory\n*Keep under 1.5KB. Full context \u2192 memory/facts/*\n\n## Shameen\nHigney (n\u00e9e Miller) | Fort Lauderdale FL EST | CPA | Born-again Christian | Direct\nHusband Peter \u00b7 Stepson Austin \u00b7 Baby due May 17 \u2014 **Week 31 started Mar 15**\n\n## Active Projects\n**HI/Metro Lagoons** \u2014 tracke...",
     "tags": [
       "Long-term",
       "Always loaded"
+    ],
+    "hasContent": true
+  },
+  {
+    "date": "2026-03-15",
+    "preview": "- Shameen reported \"API limit reached\" on Telegram ~7pm EDT - Root cause: multiple crons + heartbeat firing simultaneously at :00 marks, competing for API quota - Anthropic API account balance confirmed fine ($13.14)",
+    "tags": [
+      "Rate Limit Issue (evening)",
+      "Fixes Applied",
+      "Cron Staggering",
+      "Discord Heartbeat Relay \u2014 DISABLED"
     ],
     "hasContent": true
   },
