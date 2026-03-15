@@ -188,5 +188,15 @@
     "priority": "high",
     "notes": "",
     "createdAt": "2026-03-15"
+  },
+  {
+    "id": "t1773618668",
+    "title": "Wellness App: Settings screen (edit preferences post-onboarding)",
+    "project": "p2",
+    "assignee": "ava",
+    "status": "todo",
+    "priority": "high",
+    "notes": "",
+    "createdAt": "2026-03-15"
   }
 ]
