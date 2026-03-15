@@ -1,4 +1,46 @@
-<!DOCTYPE html>
+    /* ── Calendar ── */
+    .gcal-wrap{display:flex;flex-direction:column;height:100%;min-height:600px;border:1px solid var(--border);border-radius:12px;overflow:hidden;background:var(--surface);}
+    .gcal-header{display:grid;grid-template-columns:60px repeat(7,1fr);background:var(--surface2);border-bottom:1px solid var(--border);flex-shrink:0;}
+    .gcal-corner{border-right:1px solid var(--border);}
+    .gcal-day-head{padding:8px 4px;text-align:center;border-right:1px solid var(--border);}
+    .gcal-day-head:last-child{border-right:none;}
+    .gcal-day-name{font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:0.5px;}
+    .gcal-day-num{font-size:20px;font-weight:800;color:var(--text1);line-height:1.2;margin-top:2px;}
+    .gcal-day-head.today .gcal-day-num{background:var(--blue);color:#fff;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;margin:2px auto 0;}
+    .gcal-body{display:grid;grid-template-columns:60px repeat(7,1fr);flex:1;overflow-y:auto;}
+    .gcal-times{border-right:1px solid var(--border);}
+    .gcal-time-cell{height:60px;border-bottom:1px solid var(--border);padding:4px 6px 0 0;text-align:right;font-size:10px;color:var(--text3);position:relative;top:-8px;}
+    .gcal-col{border-right:1px solid var(--border);position:relative;}
+    .gcal-col:last-child{border-right:none;}
+    .gcal-col.today-col{background:rgba(79,142,247,0.03);}
+    .gcal-cell{height:60px;border-bottom:1px solid var(--border);padding:2px 3px;position:relative;}
+    .gcal-event{border-radius:4px;padding:2px 5px;font-size:10px;font-weight:600;
+      margin-bottom:2px;cursor:pointer;display:flex;align-items:center;gap:3px;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.4;}
+    .gcal-event:hover{filter:brightness(1.1);}
+    .gcal-ev-ok{background:#1e3a2e;color:#4ade80;border-left:3px solid #3ecf6e;}
+    .gcal-ev-error{background:#3a1e24;color:#f87171;border-left:3px solid #ff5f87;}
+    .gcal-ev-future{background:#1a2a4a;color:#7eb3f7;border-left:3px solid #4f8ef7;}
+    .gcal-ev-disabled{background:var(--surface2);color:var(--text3);border-left:3px solid var(--border);}
+    .gcal-legend{display:flex;gap:16px;padding:10px 16px;border-top:1px solid var(--border);flex-shrink:0;flex-wrap:wrap;}
+    .gcal-legend-item{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text2);}
+    .gcal-legend-dot{width:12px;height:12px;border-radius:3px;}
+    .cal-tooltip{position:fixed;background:var(--surface);border:1px solid var(--border);
+      border-radius:10px;padding:12px 14px;font-size:12px;z-index:500;max-width:240px;
+      box-shadow:0 8px 32px rgba(0,0,0,0.4);pointer-events:none;}
+    .cal-tooltip-name{font-weight:800;color:var(--text1);margin-bottom:4px;}
+    .cal-tooltip-time{color:var(--blue);font-size:11px;margin-bottom:4px;}
+    .cal-tooltip-desc{color:var(--text2);font-size:11px;line-height:1.4;}
+    .cal-tooltip-status{font-size:10px;font-weight:700;margin-top:6px;}
+    .cal-disabled-list{padding:16px;}
+    .cron-card{background:var(--surface2);border:1px solid var(--border);border-radius:8px;
+      padding:10px 14px;margin-bottom:6px;opacity:0.55;display:flex;align-items:center;gap:10px;}
+    .cron-card-name{font-size:12px;font-weight:700;color:var(--text2);flex:1;}
+    .cron-card-label{font-size:10px;color:var(--text3);font-weight:400;}
+    .badge-off{font-size:9px;font-weight:700;padding:2px 8px;border-radius:6px;
+      background:rgba(122,132,153,0.1);color:var(--text3);}
+
+    /* ── Sub-tasks ── */<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
@@ -571,29 +613,23 @@
 
       <!-- ─ CALENDAR page ─ -->
       <div class="page hidden" id="tab-calendar">
-        <div class="tab-content">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+        <div class="tab-content" style="display:flex;flex-direction:column;height:calc(100vh - 100px);padding-bottom:0;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-shrink:0;">
             <div class="section-title" style="margin:0;">Automation Calendar</div>
             <div style="display:flex;align-items:center;gap:8px;">
-              <button class="tb-btn" onclick="calNavWeek(-1)">‹ Prev</button>
-              <span id="calWeekLabel" style="font-size:12px;font-weight:700;color:var(--text1);white-space:nowrap;"></span>
-              <button class="tb-btn" onclick="calNavWeek(1)">Next ›</button>
+              <button class="tb-btn" onclick="calNavWeek(-1)">‹</button>
+              <span id="calWeekLabel" style="font-size:12px;font-weight:700;color:var(--text1);white-space:nowrap;min-width:140px;text-align:center;"></span>
+              <button class="tb-btn" onclick="calNavWeek(1)">›</button>
               <button class="tb-btn" onclick="calGoToday()">Today</button>
               <button class="tb-btn" onclick="refreshCal()">↻</button>
             </div>
           </div>
-          <div class="cal-legend" id="calLegend">
-            <div class="cal-legend-item"><div class="cal-legend-dot" style="background:rgba(62,207,110,0.4);"></div>Ran OK</div>
-            <div class="cal-legend-item"><div class="cal-legend-dot" style="background:rgba(255,95,135,0.4);"></div>Error</div>
-            <div class="cal-legend-item"><div class="cal-legend-dot" style="background:rgba(79,142,247,0.3);"></div>Scheduled</div>
-            <div class="cal-legend-item"><div class="cal-legend-dot" style="background:rgba(122,132,153,0.2);"></div>Disabled</div>
-          </div>
-          <div id="calendarGrid" style="overflow-x:auto;"></div>
+          <div id="calendarGrid" style="flex:1;overflow:hidden;"></div>
           <div class="cal-disabled-list" id="calDisabledList"></div>
         </div>
       </div>
 
-      <!-- ─ SESSION LOG page ─ -->
+            <!-- ─ SESSION LOG page ─ -->
       <div class="page hidden" id="tab-sessions">
         <div class="tab-content">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
@@ -1446,21 +1482,23 @@ function cronFitsDay(c,day){
   if(Array.isArray(sch.days))return sch.days.indexOf(dow)>-1;
   return true;
 }
+function scheduleStr(c){
+  var sch=c.schedule||{};
+  if(sch.label) return sch.label;
+  if(sch.hour==null) return "Recurring";
+  var h=sch.hour,m=sch.minute||0;
+  return (h%12||12)+":"+(m<10?"0":"")+m+(h<12?"am":"pm");
+}
+
 function renderCalendarList(crons){
   var el=document.getElementById("calendarGrid"); if(!el)return;
   var lbl=document.getElementById("calWeekLabel"); if(lbl)lbl.textContent="This Week";
   var enabled=crons.filter(function(c){return c.enabled;});
-  enabled.sort(function(a,b){
-    var ha=a.schedule?a.schedule.hour||0:0, hb=b.schedule?b.schedule.hour||0:0;
-    return ha-hb;
-  });
+  enabled.sort(function(a,b){return (a.schedule?a.schedule.hour||0:0)-(b.schedule?b.schedule.hour||0:0);});
   var html="";
-  var CAT_COLORS={ffe:"var(--blue)",wellness:"var(--sage)",crypto:"var(--gold)",ops:"var(--lavender)"};
   enabled.forEach(function(c){
-    var stOk=c.lastStatus==="ok", col=stOk?"var(--sage)":"var(--rose)";
-    var icon=stOk?"✓":"✗";
-    html+="<div style='background:var(--surface);border:1px solid var(--border);border-radius:10px;"+
-      "padding:12px 14px;margin-bottom:8px;display:flex;align-items:center;gap:12px;'>"+
+    var ok=c.lastStatus==="ok",col=ok?"var(--sage)":"var(--rose)",icon=ok?"✓":"✗";
+    html+="<div style='background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:8px;display:flex;align-items:center;gap:12px;'>"+
       "<div style='font-size:22px;'>"+c.emoji+"</div>"+
       "<div style='flex:1;min-width:0;'>"+
         "<div style='font-size:13px;font-weight:700;color:var(--text1);'>"+c.name+"</div>"+
@@ -1468,98 +1506,98 @@ function renderCalendarList(crons){
         "<div style='font-size:11px;color:var(--text2);margin-top:2px;'>"+c.description+"</div>"+
       "</div>"+
       "<div style='text-align:right;flex-shrink:0;'>"+
-        "<div style='font-size:13px;font-weight:800;color:"+col+";'>"+icon+"</div>"+
+        "<div style='font-size:14px;font-weight:800;color:"+col+";'>"+icon+"</div>"+
         "<div style='font-size:9px;color:var(--text3);margin-top:2px;'>"+c.lastRun+"</div>"+
-      "</div>"+
-      "</div>";
+      "</div></div>";
   });
+  el.style.overflowY="auto";
   el.innerHTML=html||"<div style='color:var(--text2);font-size:12px;padding:16px 0;'>No active automations.</div>";
+  var disEl=document.getElementById("calDisabledList"); if(!disEl)return;
+  var dis=crons.filter(function(c){return !c.enabled;});
+  if(dis.length){
+    var h="<div style='font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.6px;color:var(--text3);margin:8px 0 8px;'>Disabled</div>";
+    dis.forEach(function(c){h+="<div class='cron-card'><span style='font-size:18px;'>"+c.emoji+"</span><div class='cron-card-name'>"+c.name+"<div class='cron-card-label'>"+c.description+"</div></div><span class='badge-off'>OFF</span></div>";});
+    disEl.innerHTML=h;
+  } else disEl.innerHTML="";
+}
+
+var GCAL_HOURS=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23];
+var DAY_SHORT=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+
+function renderCalendar(){
+  var el=document.getElementById("calendarGrid"); if(!el)return;
+  var crons=data.crons||[];
+  if(window.innerWidth<=680){renderCalendarList(crons);return;}
+
+  var days=getWeekDates(calWeekOffset);
+  var today=new Date(); today.setHours(0,0,0,0);
+  var todayStr=today.toISOString().slice(0,10);
+  var lbl=document.getElementById("calWeekLabel");
+  if(lbl) lbl.textContent=DAY_SHORT[days[0].getDay()]+" "+days[0].getDate()+" — "+DAY_SHORT[days[6].getDay()]+" "+days[6].getDate()+", "+days[6].getFullYear();
+
+  // Build header
+  var hHtml="<div class='gcal-header'><div class='gcal-corner'></div>";
+  days.forEach(function(d){
+    var isT=d.getTime()===today.getTime();
+    hHtml+="<div class='gcal-day-head"+(isT?" today":"")+"'>"+
+      "<div class='gcal-day-name'>"+DAY_SHORT[d.getDay()]+"</div>"+
+      "<div class='gcal-day-num'>"+d.getDate()+"</div></div>";
+  });
+  hHtml+="</div>";
+
+  // Build body
+  var bHtml="<div class='gcal-body'><div class='gcal-times'>";
+  GCAL_HOURS.forEach(function(h){
+    var label=h===0?"":h<12?h+"am":h===12?"12pm":(h-12)+"pm";
+    bHtml+="<div class='gcal-time-cell'>"+label+"</div>";
+  });
+  bHtml+="</div>";
+
+  days.forEach(function(d){
+    var isT=d.getTime()===today.getTime();
+    var isPast=d<today;
+    bHtml+="<div class='gcal-col"+(isT?" today-col":"")+"'>";
+    GCAL_HOURS.forEach(function(h){
+      var evts=crons.filter(function(c){
+        if(!c.enabled||!c.schedule)return false;
+        if(c.schedule.type==="interval") return h===8&&cronFitsDay(c,d);
+        return c.schedule.hour===h&&cronFitsDay(c,d);
+      });
+      var evHtml="";
+      evts.forEach(function(c){
+        var ranToday=c.lastRun===todayStr;
+        var cls=(isPast||ranToday)?(c.lastStatus==="ok"?"gcal-ev-ok":"gcal-ev-error"):"gcal-ev-future";
+        var icon=(isPast||ranToday)?(c.lastStatus==="ok"?"✓":"✗"):"◦";
+        var sn=c.name.length>14?c.name.slice(0,13)+"…":c.name;
+        evHtml+="<div class='gcal-event "+cls+"' data-cid='"+c.id+"' "+
+          "onmouseenter='showCalTip(event,this.dataset.cid)' onmouseleave='hideCalTip()'>"+
+          icon+" "+sn+"</div>";
+      });
+      bHtml+="<div class='gcal-cell'>"+evHtml+"</div>";
+    });
+    bHtml+="</div>";
+  });
+  bHtml+="</div>";
+
+  // Legend
+  var lgHtml="<div class='gcal-legend'>"+
+    "<div class='gcal-legend-item'><div class='gcal-legend-dot' style='background:#1e3a2e;border-left:3px solid #3ecf6e;'></div>Ran OK</div>"+
+    "<div class='gcal-legend-item'><div class='gcal-legend-dot' style='background:#3a1e24;border-left:3px solid #ff5f87;'></div>Error</div>"+
+    "<div class='gcal-legend-item'><div class='gcal-legend-dot' style='background:#1a2a4a;border-left:3px solid #4f8ef7;'></div>Scheduled</div>"+
+    "</div>";
+
+  el.innerHTML="<div class='gcal-wrap'>"+hHtml+bHtml+lgHtml+"</div>";
 
   // Disabled below
   var disEl=document.getElementById("calDisabledList"); if(!disEl)return;
   var dis=crons.filter(function(c){return !c.enabled;});
   if(dis.length){
-    var h="<div style='font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.6px;color:var(--text3);margin:16px 0 8px;'>Disabled</div>";
-    dis.forEach(function(c){
-      h+="<div style='background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 14px;margin-bottom:6px;opacity:0.5;display:flex;align-items:center;gap:10px;'>"+
-        "<span style='font-size:18px;'>"+c.emoji+"</span>"+
-        "<div style='flex:1;font-size:12px;font-weight:600;color:var(--text2);'>"+c.name+
-          "<div style='font-size:10px;color:var(--text3);font-weight:400;'>"+c.description+"</div></div>"+
-        "<span style='font-size:9px;font-weight:700;padding:2px 8px;border-radius:6px;background:rgba(122,132,153,0.1);color:var(--text3);'>OFF</span></div>";
-    });
+    var h="<div style='font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.6px;color:var(--text3);margin:12px 0 8px;'>Disabled Automations</div>";
+    dis.forEach(function(c){h+="<div class='cron-card'><span style='font-size:18px;'>"+c.emoji+"</span><div class='cron-card-name'>"+c.name+"<div class='cron-card-label'>"+c.description+"</div></div><span class='badge-off'>OFF</span></div>";});
     disEl.innerHTML=h;
   } else disEl.innerHTML="";
 }
 
-function scheduleStr(c){
-  var sch=c.schedule||{};
-  if(sch.label) return sch.label;
-  if(sch.hour==null) return "Recurring";
-  var h=sch.hour,m=sch.minute||0;
-  var label=(h%12||12)+":"+(m<10?"0":"")+m+(h<12?"am":"pm");
-  var days=sch.days==="daily"?"daily":sch.days==="weekdays"?"weekdays":sch.days==="weekends"?"weekends":
-    Array.isArray(sch.days)?["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].filter(function(_,i){return sch.days.indexOf(i)>-1;}).join(","):"";
-  return label+(days?" · "+days:"");
-}
-function renderCalendar(){
-  var el=document.getElementById("calendarGrid"); if(!el)return;
-  var crons=data.crons||[];
-
-  // Mobile: render as a clean list
-  if(window.innerWidth<=680){
-    renderCalendarList(crons); return;
-  }
-
-  var days=getWeekDates(calWeekOffset);
-  var today=new Date(); today.setHours(0,0,0,0);
-  var lbl=document.getElementById("calWeekLabel");
-  if(lbl)lbl.textContent=(days[0].getMonth()+1)+"/"+days[0].getDate()+" – "+(days[6].getMonth()+1)+"/"+days[6].getDate()+", "+days[6].getFullYear();
-
-  var html="<div class='cal-week-grid'>";
-  // Header
-  html+="<div class='cal-time-col cal-day-header' style='background:var(--surface2);border-bottom:1px solid var(--border);padding:8px 4px;'></div>";
-  days.forEach(function(d){
-    var isToday=d.getTime()===today.getTime();
-    html+="<div class='cal-day-header"+(isToday?" today":"")+"'>"+DAY_LABELS[d.getDay()]+"<span>"+d.getDate()+"</span></div>";
-  });
-  // Rows
-  HOURS.forEach(function(hour){
-    html+="<div class='cal-time-col cal-time-slot'>"+(hour===0?"12am":hour<12?hour+"am":hour===12?"12pm":(hour-12)+"pm")+"</div>";
-    days.forEach(function(d){
-      var isPast=d<today,isToday=d.getTime()===today.getTime();
-      var todayStr=today.toISOString().slice(0,10);
-      var evts=crons.filter(function(c){
-        if(!c.enabled||!c.schedule)return false;
-        if(c.schedule.type==="interval")return hour===8&&cronFitsDay(c,d);
-        return c.schedule.hour===hour&&cronFitsDay(c,d);
-      });
-      var evHtml="";
-      evts.forEach(function(c){
-        var ranToday=c.lastRun===todayStr;
-        var cls=(isPast||ranToday)?(c.lastStatus==="ok"?"cal-event-ok":"cal-event-error"):"cal-event-future";
-        var icon=(isPast||ranToday)?(c.lastStatus==="ok"?"✓":"✗"):"◦";
-        var sn=c.name.length>13?c.name.slice(0,12)+"…":c.name;
-        evHtml+="<div class='cal-event "+cls+"' data-cid='"+c.id+"' onmouseenter='showCalTip(event,this.dataset.cid)' onmouseleave='hideCalTip()'>"+icon+" "+c.emoji+" "+sn+"</div>";
-      });
-      html+="<div class='cal-cell'"+(isToday?" style='background:rgba(79,142,247,0.04);'":"")+">"+ evHtml+"</div>";
-    });
-  });
-  html+="</div>";
-  el.innerHTML=html;
-
-  // Disabled list
-  var disEl=document.getElementById("calDisabledList"); if(!disEl)return;
-  var dis=crons.filter(function(c){return !c.enabled;});
-  if(dis.length){
-    var h="<div style='font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.6px;color:var(--text3);margin:16px 0 8px;'>Disabled Automations</div>";
-    dis.forEach(function(c){
-      h+="<div class='cron-card'><span style='font-size:18px;'>"+c.emoji+"</span>"+
-        "<div class='cron-card-name'>"+c.name+"<div class='cron-card-label'>"+c.description+"</div></div>"+
-        "<span class='badge-off'>OFF</span></div>";
-    });
-    disEl.innerHTML=h;
-  } else disEl.innerHTML="";
-}
 function showCalTip(e,id){
   var c=(data.crons||[]).find(function(x){return x.id===id;}); if(!c)return;
   var sch=c.schedule||{};
