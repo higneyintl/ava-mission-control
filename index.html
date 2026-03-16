@@ -1300,11 +1300,12 @@ function openProjectDetail(pid){
     (ctx&&ctx.files||[]).forEach(function(f){
       var wrap=document.createElement("div");
       wrap.style.cssText="display:flex;align-items:center;gap:8px;padding:4px 0;";
-      var driveColor=f.drive==="HI"?"var(--blue)":"var(--lavender)";
-      var driveIcon=f.drive==="HI"?"🏢":"👤";
+      var href=f.url||(f.id?"https://drive.google.com/file/d/"+f.id+"/view":"#");
+      var driveColor=f.drive==="HI"?"var(--blue)":f.drive==="Doc"?"var(--sage)":"var(--lavender)";
+      var driveIcon=f.drive==="HI"?"🏢":f.drive==="Doc"?"📝":f.drive==="App"?"🌐":"👤";
       wrap.innerHTML=
         "<span style='font-size:9px;font-weight:700;padding:2px 7px;border-radius:5px;background:var(--surface2);color:"+driveColor+";flex-shrink:0;'>"+driveIcon+" "+(f.drive||"Drive")+"</span>"+
-        "<a href='https://drive.google.com/file/d/"+f.id+"/view' target='_blank' style='font-size:11px;color:var(--blue);text-decoration:none;'>📎 "+f.name+"</a>";
+        "<a href='"+href+"' target='_blank' style='font-size:11px;color:var(--blue);text-decoration:none;'>📎 "+f.name+"</a>";
       filesEl.appendChild(wrap);
     });
     filesEl.parentElement.style.display = (ctx&&ctx.files&&ctx.files.length) ? "block" : "none";
