@@ -258,5 +258,15 @@
     "priority": "low",
     "notes": "",
     "createdAt": "2026-03-15"
+  },
+  {
+    "id": "t1773620849",
+    "title": "Wellness App: Symptom tracker (pregnancy symptoms + custom, midwife report)",
+    "project": "p2",
+    "assignee": "ava",
+    "status": "todo",
+    "priority": "high",
+    "notes": "",
+    "createdAt": "2026-03-15"
   }
 ]
