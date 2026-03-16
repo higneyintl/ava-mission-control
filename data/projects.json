@@ -26,10 +26,24 @@
     "progress": 60,
     "keyContact": "Shameen",
     "openItems": [
-      "Onboarding questionnaire",
+      "Settings screen (in review)",
       "Exercise library",
-      "Week-by-week progression",
-      "Settings screen"
+      "Phase-gated content",
+      "Symptom tracker"
+    ],
+    "links": [
+      {
+        "label": "Content Plan (Living Doc)",
+        "url": "https://docs.google.com/document/d/18WWE9zHem0Y0sLuOHnw8Z1VOs2SHw-PiCnxsX6MERyk/edit"
+      },
+      {
+        "label": "Live App",
+        "url": "https://higneyintl.github.io/shameen-wellness/"
+      },
+      {
+        "label": "Settings Preview",
+        "url": "https://69b74d8b55d43c0e5a69b03b--capable-tarsier-27628a.netlify.app"
+      }
     ]
   },
   {
