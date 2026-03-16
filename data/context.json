@@ -2,7 +2,7 @@
   "p1": {
     "name": "Metro Lagoons",
     "lastWorked": "2026-03-14",
-    "status": "Active \u2014 multiple items sourcing",
+    "status": "Active — multiple items sourcing",
     "keyContacts": [
       {
         "name": "Jonathan Kelly",
@@ -39,19 +39,30 @@
       }
     ],
     "openItems": [
-      "Tiki hut email \u2192 Jonathan",
-      "Beach umbrella \u2192 HI Drive after approval",
-      "Security podium \u2192 awaiting vendor response",
-      "Planters \u2192 need qty + height from Liz"
+      "Tiki hut email → Jonathan",
+      "Beach umbrella → HI Drive after approval",
+      "Security podium → awaiting vendor response",
+      "Planters → need qty + height from Liz"
     ]
   },
   "p2": {
     "name": "Mommy",
     "lastWorked": "2026-03-14",
-    "status": "Active \u2014 app live, building features",
+    "status": "Active — app live, building features",
     "keyContacts": [],
-    "notes": "Live at https://higneyintl.github.io/shameen-wellness/ \u2014 repo: higneyintl/shameen-wellness. Pregnancy week 31 starting Mar 15. Baby boy due May 17. Tabs: Wellness, Baby, Feeds, Stats, Birth Plan.",
-    "files": [],
+    "notes": "Live at https://higneyintl.github.io/shameen-wellness/ — repo: higneyintl/shameen-wellness. Pregnancy week 31 starting Mar 15. Baby boy due May 17. Tabs: Wellness, Baby, Feeds, Stats, Birth Plan.",
+    "files": [
+      {
+        "name": "Content Plan (Living Doc)",
+        "url": "https://docs.google.com/document/d/18WWE9zHem0Y0sLuOHnw8Z1VOs2SHw-PiCnxsX6MERyk/edit",
+        "drive": "Doc"
+      },
+      {
+        "name": "Live App",
+        "url": "https://higneyintl.github.io/shameen-wellness/",
+        "drive": "App"
+      }
+    ],
     "openItems": [
       "Onboarding questionnaire (top priority)",
       "Exercise library + custom exercises",
@@ -62,7 +73,7 @@
   "p3": {
     "name": "Get Newly Named",
     "lastWorked": "2026-03-14",
-    "status": "Planning \u2014 proposal built",
+    "status": "Planning — proposal built",
     "keyContacts": [
       {
         "name": "Lutfiya Miller",
@@ -91,7 +102,7 @@
   "p4": {
     "name": "Etsy",
     "lastWorked": "2026-03-14",
-    "status": "Active \u2014 Easter pack due Apr 5",
+    "status": "Active — Easter pack due Apr 5",
     "keyContacts": [],
     "notes": "Store: Faithful Nest Studio. Account: avasinclaire3@gmail.com. Easter bundle (Apr 5 deadline) + Paycheck Budget Pro in pipeline.",
     "files": [],
