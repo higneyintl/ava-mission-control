@@ -1,19 +1,45 @@
 [
   {
-    "date": "2026-03-15",
-    "title": "Mommy app onboarding + settings shipped \u2014 quiet Sunday",
-    "summary": "Shipped the Mommy app onboarding questionnaire (4-screen flow: journey stage, due date/LMP, diapering preference) and fixed the feed log. Evening session: built full settings screen with complete spec (faith labels, diapering options, parenting style, feeding approach), deployed preview to Netlify for Shameen's review. Fixed infra issues: Picker downgraded Opus\u2192Sonnet, nightly journal cron patched, gog auth for avasinclaire3 restored. Week 31 starts today \u2014 63 days to May 17.",
+    "date": "2026-03-16",
+    "title": "Mommy app mega-sprint + tax review + Drive auth fixed",
+    "summary": "Massive Mommy App feature day: phase-gated content system, hidden locked cards, collapsible stretches, phase 1 one-time tasks, education cards, trimester color themes, week picker + date picker with full sync. Google OAuth consent screen moved to Production — Drive tokens now persist indefinitely. Reviewed 2025 taxes (joint balance $12,498; flagged Shameen's HI salary had zero federal withholding). Formatted Metro Lagoons client update email and prepared Peter's CEO opportunity question list for Friday meeting.",
     "decisions": [
-      "Onboarding trimmed to 4 screens \u2014 feeding screen removed for simplicity",
+      "Google OAuth app moved to Production — Drive tokens no longer expire weekly",
+      "Netlify replaced by GitHub Pages for Mommy app going forward",
+      "FFE Scout daily cron disabled (API rate limits)",
+      "Mommy app locked cards hidden entirely — single unlock teaser line",
+      "Tax: Shameen's HI payroll needs federal withholding added"
+    ],
+    "openItems": [
+      "Mommy app week-off-by-one bug (shows 32 instead of 31)",
+      "QA 'Customize My Checks' feature (built by agent ~10:36pm)",
+      "Mommy app phases 2–5 one-time tasks + exercise library",
+      "Peter CEO meeting Friday — question list ready",
+      "Valrose ~$57K invoices still outstanding",
+      "Security podium awaiting vendor trade pricing"
+    ],
+    "projects": [
+      "Mommy",
+      "Infrastructure",
+      "Metro Lagoons",
+      "Personal"
+    ]
+  },
+  {
+    "date": "2026-03-15",
+    "title": "Mommy app onboarding + settings shipped — quiet Sunday",
+    "summary": "Shipped the Mommy app onboarding questionnaire (4-screen flow: journey stage, due date/LMP, diapering preference) and fixed the feed log. Evening session: built full settings screen with complete spec (faith labels, diapering options, parenting style, feeding approach), deployed preview to Netlify for Shameen's review. Fixed infra issues: Picker downgraded Opus→Sonnet, nightly journal cron patched, gog auth for avasinclaire3 restored. Week 31 starts today — 63 days to May 17.",
+    "decisions": [
+      "Onboarding trimmed to 4 screens — feeding screen removed for simplicity",
       "Due date picker + LMP fallback both supported",
-      "Picker downgraded Opus \u2192 Sonnet (cost control)",
+      "Picker downgraded Opus → Sonnet (cost control)",
       "Nightly journal cron fixed to not relay agent output to Telegram",
       "avasinclaire3@gmail.com gog auth restored"
     ],
     "openItems": [
-      "Mommy app settings screen \u2014 Shameen reviewing Mar 16",
+      "Mommy app settings screen — Shameen reviewing Mar 16",
       "Mommy app exercise library (t10)",
-      "Security podium \u2014 awaiting vendor trade pricing (t4)",
+      "Security podium — awaiting vendor trade pricing (t4)",
       "Canadian passport photos + application (t13, t14)",
       "TD Accelerator recordings to watch (t15, t16)",
       "Steak box subscription to finalize (t17)",
@@ -28,15 +54,15 @@
   {
     "date": "2026-03-14",
     "title": "Wellness app launched + Mission Control built",
-    "summary": "Built and shipped the Shameen Wellness (Mommy) App \u2014 prenatal stretch tracker with 5 tabs, daily health checks, birth plan, day navigation, and data backup \u2014 deployed to GitHub Pages. Built Mission Control dashboard with Kanban, calendar, project panels, session log, and live memory sync. Cleared 8 completed tasks and added 5 new ones.",
+    "summary": "Built and shipped the Shameen Wellness (Mommy) App — prenatal stretch tracker with 5 tabs, daily health checks, birth plan, day navigation, and data backup — deployed to GitHub Pages. Built Mission Control dashboard with Kanban, calendar, project panels, session log, and live memory sync. Cleared 8 completed tasks and added 5 new ones.",
     "decisions": [
       "White Oak Pastures shortlisted as top steak box pick",
       "Personal project created for life admin (passport, TD Accelerator, steak box)",
       "Wellness App renamed Mommy; Trading/Crypto/Fiverr/Baby projects removed from board",
-      "Pregnancy week 31 starts March 15 \u2014 app calibrated to Shameen's due date (May 17)"
+      "Pregnancy week 31 starts March 15 — app calibrated to Shameen's due date (May 17)"
     ],
     "openItems": [
-      "Security podium \u2014 awaiting vendor trade pricing (t4)",
+      "Security podium — awaiting vendor trade pricing (t4)",
       "Canadian passport photos + application (t13, t14)",
       "TD Accelerator meetings to watch (t15, t16)",
       "Steak box subscription to finalize (t17)",
@@ -52,9 +78,9 @@
   {
     "date": "2026-03-13",
     "title": "Tracker deploy + PPTX v3 + beach umbrella report",
-    "summary": "Fixed Netlify deploy (avasinclaire3 account paused, switched to shameen@higneyintl.com). Added Submitted for Client Approval status to tracker. Built MetroLagoons_Items_to_Source_v3.pptx with Fire Pit Tables slide. Updated beach umbrella aluminum HTML report \u2014 removed internal badges, JEAREY references, client-approved labels.",
+    "summary": "Fixed Netlify deploy (avasinclaire3 account paused, switched to shameen@higneyintl.com). Added Submitted for Client Approval status to tracker. Built MetroLagoons_Items_to_Source_v3.pptx with Fire Pit Tables slide. Updated beach umbrella aluminum HTML report — removed internal badges, JEAREY references, client-approved labels.",
     "decisions": [
-      "Tracker deploys manual via CLI only \u2014 no GitHub webhook",
+      "Tracker deploys manual via CLI only — no GitHub webhook",
       "Netlify account: shameen@higneyintl.com (Higney International)"
     ],
     "openItems": [
@@ -67,7 +93,7 @@
   {
     "date": "2026-03-12",
     "title": "Budget summary sent + backup fixed + gateway outage resolved",
-    "summary": "Metro Lagoons budget summary built and sent to Jonathan Kelly ($100K net savings). Fixed nightly backup script \u2014 now uploads to both HI Drive and personal Drive. Gateway outage root cause found: Mac reboot after software update, Amphetamine not in Login Items. Fixed. OpenClaw updated to 2026.3.12.",
+    "summary": "Metro Lagoons budget summary built and sent to Jonathan Kelly ($100K net savings). Fixed nightly backup script — now uploads to both HI Drive and personal Drive. Gateway outage root cause found: Mac reboot after software update, Amphetamine not in Login Items. Fixed. OpenClaw updated to 2026.3.12.",
     "decisions": [
       "Amphetamine added to Login Items to survive reboots",
       "Backup dual-uploads: HI Drive + avasinclaire3 Drive nightly"
@@ -83,7 +109,7 @@
   {
     "date": "2026-03-10",
     "title": "Tiki hut permits + security podium + Decoscape PPT",
-    "summary": "Researched FL \u00a7553.73(10)(i) chickee exemption \u2014 documented 3 client options. Built permit options report (MD + PDF), uploaded to Drive. Dispatched Picker for security podium sourcing \u2014 3 options found, trade inquiry drafted to The Security Station. Redesigned Decoscape Sectional Sofa v1 \u2192 v2 PPT. Drafted tiki hut email to Jonathan Kelly.",
+    "summary": "Researched FL §553.73(10)(i) chickee exemption — documented 3 client options. Built permit options report (MD + PDF), uploaded to Drive. Dispatched Picker for security podium sourcing — 3 options found, trade inquiry drafted to The Security Station. Redesigned Decoscape Sectional Sofa v1 → v2 PPT. Drafted tiki hut email to Jonathan Kelly.",
     "decisions": [
       "HI only covers Option 2 (Indian exemption cert) or Option 3 (build without docs)",
       "Option choice belongs to client, not HI"
@@ -102,7 +128,7 @@
     "summary": "All 8 cron jobs were failing after Sunday Mar 8 setup. Root cause: timeoutSeconds in wrong location, channel routing wrong for Discord/Telegram. Fixed all jobs. Confirmed crypto-signal-alert healthy. March 9 journal written to #ava-journal.",
     "decisions": [
       "timeoutSeconds lives inside payload object, not top-level",
-      "FF&E agent jobs \u2192 Discord; Ava's own ops jobs \u2192 Telegram"
+      "FF&E agent jobs → Discord; Ava's own ops jobs → Telegram"
     ],
     "openItems": [],
     "projects": [
