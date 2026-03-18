@@ -1,5 +1,31 @@
 [
   {
+    "date": "2026-03-17",
+    "title": "Mommy app task library + QA sprint — Batch 3 deployed pending morning review",
+    "summary": "Full day iterating on the Mommy app's new task library and 'Customize My Checks' feature. Completed QA Batches 1 and 2, fixing a root-cause bug where isPreview blocked all button handlers. Batch 3 (one-time task Pregnancy Timeline, toast, date input fixes) deployed to Netlify preview — Shameen went to sleep before testing, QA picks up tomorrow morning. Also bootstrapped Picker and Analyst agent workspaces and built the Get Newly Named proposal HTML.",
+    "decisions": [
+      "One-time tasks disappear on check → move to Stats page 'Pregnancy Timeline' with Undo",
+      "Past weeks fully editable; only future weeks are read-only preview (not 'not today')",
+      "feature/task-library stays off main until Batch 3 QA passes",
+      "Active Checks in Settings scoped to currently unlocked tasks only"
+    ],
+    "openItems": [
+      "Batch 3 QA tomorrow morning (Netlify preview link ready)",
+      "Merge feature/task-library to main after QA",
+      "Phases 2-5 one-time tasks + exercise library (r19)",
+      "Week-off-by-one bug — verify via browser console (may be correct math)",
+      "Peter CEO meeting Friday",
+      "Valrose ~$57K invoices outstanding",
+      "Security podium vendor pricing pending",
+      "GNN domain (~$12) unregistered (t6)"
+    ],
+    "projects": [
+      "Mommy",
+      "Infrastructure",
+      "Get Newly Named"
+    ]
+  },
+  {
     "date": "2026-03-16",
     "title": "Mommy app mega-sprint + tax review + Drive auth fixed",
     "summary": "Massive Mommy App feature day: phase-gated content system, hidden locked cards, collapsible stretches, phase 1 one-time tasks, education cards, trimester color themes, week picker + date picker with full sync. Google OAuth consent screen moved to Production — Drive tokens now persist indefinitely. Reviewed 2025 taxes (joint balance $12,498; flagged Shameen's HI salary had zero federal withholding). Formatted Metro Lagoons client update email and prepared Peter's CEO opportunity question list for Friday meeting.",
