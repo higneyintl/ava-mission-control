@@ -1,5 +1,29 @@
 [
   {
+    "date": "2026-03-20",
+    "title": "Tend: The birth of the 'forgotten mom' app + Sales Tax + Rental Bond",
+    "summary": "Today was the pivot point where Tend was born. Built v1 app and content bible (593KB) after competitive research showed a massive gap for faith-based/natural-minded moms. Also filed Florida sales tax ($8,853.29) and secured the Hollywood FL apartment lease bond.",
+    "decisions": [
+      "Tend is the product: focused on natural/faith-based pregnancy + long-term postpartum",
+      "Co-founders: Shameen Miller (Vision), her sister (Pharmacologist/Dev), and Ava (AI Dev/Lead)",
+      "Spiritual heartbeat: 1 John 4:18 (There is no fear in love)",
+      "Sales tax: DR-15 filed for Manatee County ($8,631.96 net paid)",
+      "Rental: DepositQ bond processed for Hollywood FL apartment"
+    ],
+    "openItems": [
+      "Tend Batch 1 feedback from Shameen's sister",
+      "Tend Logo/Branding design",
+      "G's DAP vaccine record backup",
+      "Peter's CEO meeting outcomes",
+      "Lund & Pullara container clearing"
+    ],
+    "projects": [
+      "Tend",
+      "Higney International",
+      "Personal"
+    ]
+  },
+  {
     "date": "2026-03-18",
     "title": "Mommy app marathon QA \u2014 Batches 4/5 + Birth Plan rebuild",
     "summary": "All-day Mommy app QA sprint. Shipped Batches 4 and 5 (compliance chart, Pregnancy Timeline with Undo, vitamins in DHC grid, kick counts tap-to-type, education card week number, stretches above edu card, milestones section, isPreview fix for exercises). Built a full Birth Plan library rebuild \u2014 Standard + Natural/Crunchy checkbox model with dynamic title and Birth Preferences settings. Finalized confirm-due-date task logic. Flagged urgent Lund & Pullara container LFD alert (March 19).",
