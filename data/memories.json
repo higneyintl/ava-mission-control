@@ -51,16 +51,5 @@
       "Heartbeat Interval"
     ],
     "hasContent": true
-  },
-  {
-    "date": "2026-03-08",
-    "preview": "Full procurement tracking system for Metro Lagoons / Project Seaire (Parrish FL) \u2014 client-facing dashboard with live Google Sheets backend. - **Client dashboard:** https://metro-lagoons-seaire.netlify.app - **Google Sheet:** https://docs.google.com/spreadsheets/d/1EssKx6mBy-xJ6nP...",
-    "tags": [
-      "Major Build: Metro Lagoons FF&E Procurement Tracker",
-      "What We Built",
-      "Live URLs",
-      "Tech Stack"
-    ],
-    "hasContent": true
   }
 ]
