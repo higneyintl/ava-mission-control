@@ -40,16 +40,5 @@
       "Round 1: Round Bowl Planters (Liz Iwanski)"
     ],
     "hasContent": true
-  },
-  {
-    "date": "2026-03-12",
-    "preview": "- Shameen ran `openclaw update` this morning to restart gateway (it had gone offline overnight) - Root cause: `networkoversleep = 0` \u2014 network dropped when Mac slept - **Fix applied:** `sudo pmset -a networkoversleep 1` and `sudo pmset -a disksleep 0`",
-    "tags": [
-      "Infrastructure Fixes (Morning)",
-      "Gateway Disconnection Root Cause",
-      "Cron Jobs \u2014 Delivery Fix",
-      "Heartbeat Interval"
-    ],
-    "hasContent": true
   }
 ]
