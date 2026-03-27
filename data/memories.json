@@ -9,6 +9,17 @@
     "hasContent": true
   },
   {
+    "date": "2026-03-27",
+    "preview": "--- - Lawyer did NOT speak to Ford \u2014 received email in time - Now formally demanding Ford take truck back (buyback)",
+    "tags": [
+      "Ford Lemon Law",
+      "Tend App \u2014 Key Decisions Made Today",
+      "Christian App \u2014 Final Decision",
+      "Tend Content Decisions"
+    ],
+    "hasContent": true
+  },
+  {
     "date": "2026-03-15",
     "preview": "- Shameen reported \"API limit reached\" on Telegram ~7pm EDT - Root cause: multiple crons + heartbeat firing simultaneously at :00 marks, competing for API quota - Anthropic API account balance confirmed fine ($13.14)",
     "tags": [
