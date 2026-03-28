@@ -1,5 +1,27 @@
 [
   {
+    "date": "2026-03-27",
+    "title": "Tend Vision Deep-Dive + Ritz-Carlton BH Procurement Launch",
+    "summary": "Finalized the core 'Christian-only' vision for Tend with a 12-section deep vision doc covering theology of birth and postpartum. Built and deployed the full Ritz-Carlton Bal Harbour procurement tracker (105 items) with a Drive-to-Netlify sync workflow.",
+    "decisions": [
+      "Tend is 100% Christian, adaptive only within faith frameworks",
+      "Tend tech stack: Next.js + Tailwind + shadcn/ui",
+      "Ritz-Carlton BH Tracker: XLSX on Drive -> sync.py -> Netlify",
+      "QBO flow: Trust account for project tranches -> Transfer commission to Operating"
+    ],
+    "openItems": [
+      "Sync Ritz tracker after Shameen finalizes XLSX edits",
+      "Build Tend prototype shell",
+      "Follow up on Ford Lemon Law buyback demand"
+    ],
+    "projects": [
+      "Tend",
+      "Ritz-Carlton BH",
+      "Higney International",
+      "Personal"
+    ]
+  },
+  {
     "date": "2026-03-20",
     "title": "Tend: The birth of the 'forgotten mom' app + Sales Tax + Rental Bond",
     "summary": "Today was the pivot point where Tend was born. Built v1 app and content bible (593KB) after competitive research showed a massive gap for faith-based/natural-minded moms. Also filed Florida sales tax ($8,853.29) and secured the Hollywood FL apartment lease bond.",
@@ -197,19 +219,6 @@
     ],
     "projects": [
       "Metro Lagoons"
-    ]
-  },
-  {
-    "date": "2026-03-09",
-    "title": "All cron jobs fixed after gateway failure",
-    "summary": "All 8 cron jobs were failing after Sunday Mar 8 setup. Root cause: timeoutSeconds in wrong location, channel routing wrong for Discord/Telegram. Fixed all jobs. Confirmed crypto-signal-alert healthy. March 9 journal written to #ava-journal.",
-    "decisions": [
-      "timeoutSeconds lives inside payload object, not top-level",
-      "FF&E agent jobs \u2192 Discord; Ava's own ops jobs \u2192 Telegram"
-    ],
-    "openItems": [],
-    "projects": [
-      "Infrastructure"
     ]
   }
 ]
