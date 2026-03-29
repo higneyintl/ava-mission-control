@@ -1,7 +1,7 @@
 [
   {
     "date": "HOT MEMORY",
-    "preview": "# MEMORY.md \u2014 Ava Hot Memory\n*Keep under 1.5KB. Full context \u2192 memory/facts/*\n\n## Shameen\nHigney | Fort Lauderdale EST | CPA | Born-again Christian | Direct\nPeter (husband) \u00b7 Austin (stepson) \u00b7 **Baby Oliver** due May 17 \u2014 Week 33 ~Mar 28\n\n## Active Projects\n\n**Tend** \u2192 facts/tend.md | higneyintl.gi...",
+    "preview": "# MEMORY.md \u2014 Ava Hot Memory\n*Keep under 1.5KB. Full context \u2192 memory/facts/*\n\n## Shameen\nHigney | Fort Lauderdale EST | CPA | Born-again Christian | Direct\nPeter (husband) \u00b7 Austin (stepson) \u00b7 **Baby Oliver** due May 17 \u2014 Week 33 started Mar 29\n\n## Active Projects\n\n**Tend** \u2192 facts/tend.md | higney...",
     "tags": [
       "Long-term",
       "Always loaded"
@@ -16,17 +16,6 @@
       "Tend App \u2014 Key Decisions Made Today",
       "Christian App \u2014 Final Decision",
       "Tend Content Decisions"
-    ],
-    "hasContent": true
-  },
-  {
-    "date": "2026-03-15",
-    "preview": "- Shameen reported \"API limit reached\" on Telegram ~7pm EDT - Root cause: multiple crons + heartbeat firing simultaneously at :00 marks, competing for API quota - Anthropic API account balance confirmed fine ($13.14)",
-    "tags": [
-      "Rate Limit Issue (evening)",
-      "Fixes Applied",
-      "Cron Staggering",
-      "Discord Heartbeat Relay \u2014 DISABLED"
     ],
     "hasContent": true
   }
