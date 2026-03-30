@@ -1,5 +1,24 @@
 [
   {
+    "date": "2026-03-29",
+    "title": "Tend Blog Cluster Launch + nanobanana-mcp Integration",
+    "summary": "Automated the creation and deployment of a 19-post SEO blog cluster for Tend using the new semantic-cluster-engine and nanobanana-mcp for AI image generation. Built a branded HTML site with high-end typography and a sage/cream palette, now live on Netlify.",
+    "decisions": [
+      "Tend blog stack: Markdown + nanobanana-mcp (Gemini) + Netlify",
+      "Semantic clustering for hub-and-spoke content architecture",
+      "Tone adjustment: Shifting from scientific/expert to Tend's warm/faith-based voice in the next iteration"
+    ],
+    "openItems": [
+      "Pull updated blog repo from Lutfiya and rebuild with corrected voice",
+      "Regenerate all inline images using nanobanana-mcp (remove Unsplash fallbacks)",
+      "Review Week 33 milestones for Shameen (Oliver due May 17)"
+    ],
+    "projects": [
+      "Tend",
+      "Infrastructure"
+    ]
+  },
+  {
     "date": "2026-03-27",
     "title": "Tend Vision Deep-Dive + Ritz-Carlton BH Procurement Launch",
     "summary": "Finalized the core 'Christian-only' vision for Tend with a 12-section deep vision doc covering theology of birth and postpartum. Built and deployed the full Ritz-Carlton Bal Harbour procurement tracker (105 items) with a Drive-to-Netlify sync workflow.",
@@ -203,22 +222,6 @@
     "projects": [
       "Metro Lagoons",
       "Infrastructure"
-    ]
-  },
-  {
-    "date": "2026-03-10",
-    "title": "Tiki hut permits + security podium + Decoscape PPT",
-    "summary": "Researched FL \u00a7553.73(10)(i) chickee exemption \u2014 documented 3 client options. Built permit options report (MD + PDF), uploaded to Drive. Dispatched Picker for security podium sourcing \u2014 3 options found, trade inquiry drafted to The Security Station. Redesigned Decoscape Sectional Sofa v1 \u2192 v2 PPT. Drafted tiki hut email to Jonathan Kelly.",
-    "decisions": [
-      "HI only covers Option 2 (Indian exemption cert) or Option 3 (build without docs)",
-      "Option choice belongs to client, not HI"
-    ],
-    "openItems": [
-      "Tiki hut email awaiting Shameen send",
-      "Security podium awaiting vendor response"
-    ],
-    "projects": [
-      "Metro Lagoons"
     ]
   }
 ]
