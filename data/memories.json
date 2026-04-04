@@ -9,6 +9,17 @@
     "hasContent": true
   },
   {
+    "date": "2026-04-04",
+    "preview": "- Anthropic announced extra usage pricing for third-party tools (OpenClaw) effective Apr 4 - Peter Steinberger (OpenClaw creator) posted workaround same day - Shameen ran: `openclaw models auth login --provider anthropic --method cli --set-default`",
+    "tags": [
+      "CLI Auth Migration (Critical)",
+      "Security Cleanup Done",
+      "Back-up Plan if CLI Auth Breaks",
+      "Context for Shameen"
+    ],
+    "hasContent": true
+  },
+  {
     "date": "2026-03-27",
     "preview": "--- - Lawyer did NOT speak to Ford \u2014 received email in time - Now formally demanding Ford take truck back (buyback)",
     "tags": [
