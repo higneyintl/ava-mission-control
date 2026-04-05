@@ -1,5 +1,28 @@
 [
   {
+    "date": "2026-04-04",
+    "title": "Config Patch + Cron Triage + Memory Checkpoints",
+    "summary": "April 4 was mostly an infrastructure and continuity day. OpenClaw was patched to keep openai-codex/gpt-5.4 as the primary model while adding a Claude fallback, and memory/checkpoint files were updated throughout the day. Cron review showed the weekly distill failing on a bad model reference, the daily backup still timing out, and Discord/Telegram delivery paths still needing cleanup.",
+    "decisions": [
+      "Keep OpenAI (openai-codex/gpt-5.4) as the primary model for now",
+      "Add Claude only as a fallback until auth/model routing is stable",
+      "Treat Telegram restoration as a credential issue because the live token is missing/redacted",
+      "Prioritize cron reliability before trusting automated delivery"
+    ],
+    "openItems": [
+      "Restore Telegram with the real bot token",
+      "Fix Weekly Memory Distill model reference (currently invalid)",
+      "Fix Daily Memory Backup timeout",
+      "Repair Discord outbound/channel support for cron delivery",
+      "Verify whether the expected self-update/use-case-report jobs still exist in the active cron set"
+    ],
+    "projects": [
+      "Infrastructure",
+      "Memory system",
+      "Crypto alert automation"
+    ]
+  },
+  {
     "date": "2026-04-01",
     "title": "Tend Mama Full Content Build + Metro Lagoons In-Pool Loungers",
     "summary": "Completed the full Tend Mama content build \u2014 42 pregnancy weeks, 833 adaptive prayers, 84 postpartum days, and weeks 13-52 weekly content (3,462 lines, 613KB). Shipped feedback round 2 items including dynamic baby name personalization, light/dark/system mode, and 'What's Normal Today' extended through all 84 PP days. Also sourced in-pool loungers for Metro Lagoons/Seaire with FL Building Code compliance research and Ledge Lounger quotes.",
@@ -216,30 +239,6 @@
     "projects": [
       "Mommy",
       "Infrastructure"
-    ]
-  },
-  {
-    "date": "2026-03-14",
-    "title": "Wellness app launched + Mission Control built",
-    "summary": "Built and shipped the Shameen Wellness (Mommy) App \u2014 prenatal stretch tracker with 5 tabs, daily health checks, birth plan, day navigation, and data backup \u2014 deployed to GitHub Pages. Built Mission Control dashboard with Kanban, calendar, project panels, session log, and live memory sync. Cleared 8 completed tasks and added 5 new ones.",
-    "decisions": [
-      "White Oak Pastures shortlisted as top steak box pick",
-      "Personal project created for life admin (passport, TD Accelerator, steak box)",
-      "Wellness App renamed Mommy; Trading/Crypto/Fiverr/Baby projects removed from board",
-      "Pregnancy week 31 starts March 15 \u2014 app calibrated to Shameen's due date (May 17)"
-    ],
-    "openItems": [
-      "Security podium \u2014 awaiting vendor trade pricing (t4)",
-      "Canadian passport photos + application (t13, t14)",
-      "TD Accelerator meetings to watch (t15, t16)",
-      "Steak box subscription to finalize (t17)",
-      "Get Newly Named domain not registered yet (t6)",
-      "Valrose invoices ~$57K still outstanding"
-    ],
-    "projects": [
-      "Mommy",
-      "Mission Control",
-      "Personal"
     ]
   }
 ]
