@@ -1,5 +1,28 @@
 [
   {
+    "date": "2026-04-05",
+    "title": "Backup Recovery + Cron Drift Review",
+    "summary": "April 5 was a quiet infrastructure and continuity day rather than a build day. No new FF&E job files, quotes, or reports landed in the local workspace, but cron review showed the daily memory backup recovered successfully and uploaded the 2026-04-05 archive to HI Drive. The crypto alert still produced output but Discord delivery remains broken, so automation health is improving unevenly.",
+    "decisions": [
+      "Treat April 5 as a maintenance/continuity day, not a production-work day",
+      "Count the successful daily backup recovery as the main operational win",
+      "Keep Discord cron delivery repair on the active open-items list until outbound support actually works",
+      "No new sourcing, procurement, or project-direction decisions were recorded from local files today"
+    ],
+    "openItems": [
+      "Repair Discord outbound/channel support for cron delivery",
+      "Confirm the Daily Memory Backup stays stable after today's recovery",
+      "Monitor the Nightly Session Journal job for clean completion",
+      "Verify whether expected self-update/use-case reporting jobs are still missing from the active cron set"
+    ],
+    "projects": [
+      "Infrastructure",
+      "Memory system",
+      "Backup automation",
+      "Crypto alert automation"
+    ]
+  },
+  {
     "date": "2026-04-04",
     "title": "Config Patch + Cron Triage + Memory Checkpoints",
     "summary": "April 4 was mostly an infrastructure and continuity day. OpenClaw was patched to keep openai-codex/gpt-5.4 as the primary model while adding a Claude fallback, and memory/checkpoint files were updated throughout the day. Cron review showed the weekly distill failing on a bad model reference, the daily backup still timing out, and Discord/Telegram delivery paths still needing cleanup.",
@@ -213,32 +236,6 @@
       "Infrastructure",
       "Metro Lagoons",
       "Personal"
-    ]
-  },
-  {
-    "date": "2026-03-15",
-    "title": "Mommy app onboarding + settings shipped \u2014 quiet Sunday",
-    "summary": "Shipped the Mommy app onboarding questionnaire (4-screen flow: journey stage, due date/LMP, diapering preference) and fixed the feed log. Evening session: built full settings screen with complete spec (faith labels, diapering options, parenting style, feeding approach), deployed preview to Netlify for Shameen's review. Fixed infra issues: Picker downgraded Opus\u2192Sonnet, nightly journal cron patched, gog auth for avasinclaire3 restored. Week 31 starts today \u2014 63 days to May 17.",
-    "decisions": [
-      "Onboarding trimmed to 4 screens \u2014 feeding screen removed for simplicity",
-      "Due date picker + LMP fallback both supported",
-      "Picker downgraded Opus \u2192 Sonnet (cost control)",
-      "Nightly journal cron fixed to not relay agent output to Telegram",
-      "avasinclaire3@gmail.com gog auth restored"
-    ],
-    "openItems": [
-      "Mommy app settings screen \u2014 Shameen reviewing Mar 16",
-      "Mommy app exercise library (t10)",
-      "Security podium \u2014 awaiting vendor trade pricing (t4)",
-      "Canadian passport photos + application (t13, t14)",
-      "TD Accelerator recordings to watch (t15, t16)",
-      "Steak box subscription to finalize (t17)",
-      "Get Newly Named domain ~$12 not registered (t6)",
-      "Valrose invoices ~$57K still outstanding"
-    ],
-    "projects": [
-      "Mommy",
-      "Infrastructure"
     ]
   }
 ]
