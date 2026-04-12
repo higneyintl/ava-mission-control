@@ -1,5 +1,28 @@
 [
   {
+    "date": "2026-04-11",
+    "title": "Second Brain migration day, backup verified, ops cleanups landed",
+    "summary": "April 11 was mostly a systems and continuity day rather than a quote-output day inside the legacy FFE_Operations tree. The durable work happened in the Second Brain wiki: structure, indexing, migration, and operating-context pages were built out, while the daily memory backup and weekly memory distill both completed cleanly. The crypto signal alert also produced a real XRP infrastructure/regulatory signal tonight, with no comparable BTC or SOL trigger.",
+    "keyDecisions": [
+      "Use the Second Brain wiki as the primary durable operating layer instead of treating the legacy workspace as the main knowledge store.",
+      "Count verified automation health as real progress on low-file-activity days instead of forcing fake output.",
+      "Keep Discord as the approved private/internal delivery surface for summaries and status posts."
+    ],
+    "openItems": [
+      "Keep watching Discord delivery reliability for cron-related posts and summaries.",
+      "Confirm the Nightly Session Journal plus Mission Control update path continue running cleanly.",
+      "Continue moving organized knowledge and operating context into the wiki instead of the legacy workspace."
+    ],
+    "projectsTouched": [
+      "Second Brain wiki / knowledge system",
+      "Ava automation / cron operations",
+      "Memory backup workflow",
+      "Weekly memory distill",
+      "Crypto signal automation",
+      "Mission Control session logging"
+    ]
+  },
+  {
     "date": "2026-04-10",
     "title": "Backup verified, crypto quiet, cron reliability still needs cleanup",
     "summary": "April 10 was mostly an automation and continuity day, not a build-output day. No new quote captures or reports landed in the external Ava workspace, but the daily memory backup completed cleanly and verified the 2026-04-10 archive in the HI Ava Drive folder. The crypto signal cron ran and returned NO_SIGNAL, while Weekly Memory Distill remained the main unresolved automation issue because of its invalid model reference.",
@@ -196,28 +219,6 @@
     "projects": [
       "Tend",
       "Infrastructure"
-    ]
-  },
-  {
-    "date": "2026-03-27",
-    "title": "Tend Vision Deep-Dive + Ritz-Carlton BH Procurement Launch",
-    "summary": "Finalized the core 'Christian-only' vision for Tend with a 12-section deep vision doc covering theology of birth and postpartum. Built and deployed the full Ritz-Carlton Bal Harbour procurement tracker (105 items) with a Drive-to-Netlify sync workflow.",
-    "decisions": [
-      "Tend is 100% Christian, adaptive only within faith frameworks",
-      "Tend tech stack: Next.js + Tailwind + shadcn/ui",
-      "Ritz-Carlton BH Tracker: XLSX on Drive -> sync.py -> Netlify",
-      "QBO flow: Trust account for project tranches -> Transfer commission to Operating"
-    ],
-    "openItems": [
-      "Sync Ritz tracker after Shameen finalizes XLSX edits",
-      "Build Tend prototype shell",
-      "Follow up on Ford Lemon Law buyback demand"
-    ],
-    "projects": [
-      "Tend",
-      "Ritz-Carlton BH",
-      "Higney International",
-      "Personal"
     ]
   }
 ]
